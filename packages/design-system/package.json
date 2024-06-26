@@ -8,7 +8,6 @@
     "./code": "./src/code.tsx"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
     "generate:component": "turbo gen react-component"
   },
   "peerDependencies": {
@@ -16,7 +15,6 @@
     "react": "18.2.0"
   },
   "devDependencies": {
-    "@package/eslint-config": "workspace:*",
     "@package/typescript-config": "workspace:*"
   }
 }
