@@ -11,6 +11,8 @@
     "clean": "rm -rf .swc .turbo coverage dist storybook-static",
     "dev": "pnpm build --watch",
     "build": "tsc --noEmit",
+    "storybook:dev": "storybook dev --quiet --port 6006",
+    "storybook:build": "storybook build",
     "test:unit": "jest --ci --coverage",
     "test:watch": "jest --watch"
   },
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "@package/jest-config": "workspace:*",
+    "@package/storybook-config": "workspace:*",
     "@package/tailwindcss-config": "workspace:*",
     "@package/typescript-config": "workspace:*"
   }

@@ -27,6 +27,15 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "storybook:dev": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "persistent": true
+    },
+    "storybook:build": {
+      "dependsOn": ["^build"],
+      "outputs": ["storybook-static/**"]
+    },
     "test:unit": {
       "cache": false,
       "dependsOn": ["^build"]
