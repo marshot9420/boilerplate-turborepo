@@ -17,6 +17,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@package/tailwindcss-config": "workspace:*",
     "@package/typescript-config": "workspace:*"
   }
 }
