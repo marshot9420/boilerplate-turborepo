@@ -13,10 +13,12 @@
     "@package/design-system": "workspace:*",
     "@prisma/client": "^5.16.0",
     "next": "13.4.12",
+    "next-themes": "0.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@package/next-config": "workspace:*",
     "@package/tailwindcss-config": "workspace:*",
     "@package/typescript-config": "workspace:*"
   }
