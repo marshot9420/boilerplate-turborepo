@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@package/jest-config": "workspace:*",
+    "@package/lighthouse-config": "workspace:*",
     "@package/next-config": "workspace:*",
     "@package/tailwindcss-config": "workspace:*",
     "@package/typescript-config": "workspace:*"
