@@ -1,8 +1,15 @@
 import Image from "next/image";
+
+import { prisma } from "@package/database";
 import { Button } from "@package/design-system/button";
+
 import styles from "./page.module.css";
 
 export default function Home() {
+  const user = prisma.user.findFirst();
+
+  console.log(user);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
