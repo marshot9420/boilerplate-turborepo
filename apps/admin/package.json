@@ -3,21 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "clean": "rm -rf .lighthouseci .next .swc .turbo coverage dist e2e-report e2e-results out storybook-static",
+    "dev": "next dev --port 3001",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:unit": "jest --ci --coverage",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@package/database": "workspace:*",
     "@package/design-system": "workspace:*",
     "@prisma/client": "^5.16.0",
+    "@headlessui/react": "1.7.15",
+    "clsx": "2.0.0",
     "next": "13.4.12",
     "next-themes": "0.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@package/jest-config": "workspace:*",
     "@package/next-config": "workspace:*",
     "@package/tailwindcss-config": "workspace:*",
     "@package/typescript-config": "workspace:*"

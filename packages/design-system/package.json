@@ -8,13 +8,20 @@
     "./code": "./src/code.tsx"
   },
   "scripts": {
-    "generate:component": "turbo gen react-component"
+    "clean": "rm -rf .swc .turbo coverage dist storybook-static",
+    "dev": "pnpm build --watch",
+    "build": "tsc --noEmit",
+    "test:unit": "jest --ci --coverage",
+    "test:watch": "jest --watch"
   },
   "peerDependencies": {
+    "@headlessui/react": "1.7.15",
+    "clsx": "2.0.0",
     "next": "13.4.12",
     "react": "18.2.0"
   },
   "devDependencies": {
+    "@package/jest-config": "workspace:*",
     "@package/tailwindcss-config": "workspace:*",
     "@package/typescript-config": "workspace:*"
   }

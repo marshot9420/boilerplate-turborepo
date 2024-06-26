@@ -2,6 +2,18 @@
   "$schema": "https://turbo.build/schema.json",
   "globalEnv": ["DATABASE_URL"],
   "tasks": {
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false
+    },
+    "db:reset": {
+      "cache": false
+    },
     "build": {
       "dependsOn": ["^db:generate", "^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
@@ -15,17 +27,9 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
-    "db:generate": {
-      "cache": false
-    },
-    "db:push": {
-      "cache": false
-    },
-    "db:migrate": {
-      "cache": false
-    },
-    "db:reset": {
-      "cache": false
+    "test:unit": {
+      "cache": false,
+      "dependsOn": ["^build"]
     }
   }
 }
