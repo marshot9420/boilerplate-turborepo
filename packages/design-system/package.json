@@ -2,10 +2,25 @@
   "name": "@package/design-system",
   "version": "0.0.0",
   "private": true,
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "type": "module",
   "exports": {
-    "./button": "./src/button.tsx",
-    "./card": "./src/card.tsx",
-    "./code": "./src/code.tsx"
+    ".": "./src/index.ts",
+    "./*": [
+      "./src/*.ts",
+      "./src/*.tsx",
+      "./src/*/index.ts"
+    ]
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./src/*",
+        "./src/*/index"
+      ]
+    }
   },
   "scripts": {
     "clean": "rm -rf .swc .turbo coverage dist storybook-static",

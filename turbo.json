@@ -36,6 +36,10 @@
       "dependsOn": ["^build"],
       "outputs": ["storybook-static/**"]
     },
+    "test:e2e": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
     "test:unit": {
       "cache": false,
       "dependsOn": ["^build"]

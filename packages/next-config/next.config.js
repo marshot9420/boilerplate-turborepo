@@ -1,6 +1,10 @@
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: !!process.env.ANALYZE,
 });
+const path = require("path");
+const dotenv = require("dotenv");
+
+dotenv.config({ path: path.resolve(__dirname, "../database/.env") });
 
 module.exports = ({ basePath }) => {
   /** @type {import('next').NextConfig} */
@@ -11,6 +15,9 @@ module.exports = ({ basePath }) => {
     pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
     reactStrictMode: true,
     transpilePackages: ["@package/design-system"],
+    env: {
+      DATABASE_URL: process.env.DATABASE_URL,
+    },
   };
 
   return withBundleAnalyzer(config);
