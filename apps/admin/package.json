@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@package/eslint-config": "workspace:*",
+    "@package/next-config": "workspace:*",
     "@package/typescript-config": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^18",
