@@ -11,7 +11,8 @@
     "storybook:build": "turbo run storybook:build --no-daemon",
     "lint:prettier": "prettier --plugin-search-dir=. --check .",
     "lint:eslint": "eslint --cache .",
-    "lint": "run-s lint:*"
+    "lint": "run-s lint:*",
+    "test:unit": "turbo run test:unit --concurrency=1 --no-daemon"
   },
   "devDependencies": {
     "@package/eslint-config": "workspace:*",
@@ -19,10 +20,15 @@
     "@storybook/jest": "^0.2.3",
     "@storybook/react": "^8.2.9",
     "@storybook/testing-library": "^0.2.2",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
+    "jest": "^29.7.0",
     "lint-staged": "^15.2.9",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.6.6",

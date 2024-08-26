@@ -1,0 +1,9 @@
+{
+  "name": "@package/jest-config",
+  "version": "0.0.0",
+  "private": true,
+  "devDependencies": {
+    "jest-environment-jsdom": "^29.7.0",
+    "next": "14.2.6"
+  }
+}

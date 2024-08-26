@@ -2,6 +2,9 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
+    "clean": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true
@@ -22,6 +25,10 @@
     },
     "lint": {
       "dependsOn": ["^lint"]
+    },
+    "test:unit": {
+      "cache": false,
+      "dependsOn": ["^build"]
     }
   }
 }

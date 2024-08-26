@@ -1,10 +1,12 @@
 {
   "extends": "@package/typescript-config/react-library.json",
   "compilerOptions": {
+    "rootDir": "src",
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"]
-    }
+    },
+    "types": ["../../node_modules/@testing-library/jest-dom"]
   },
   "include": ["src"]
 }

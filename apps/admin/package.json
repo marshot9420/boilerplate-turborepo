@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@package/eslint-config": "workspace:*",
+    "@package/jest-config": "workspace:*",
     "@package/next-config": "workspace:*",
     "@package/storybook-config": "workspace:*",
     "@package/tailwindcss-config": "workspace:*",
