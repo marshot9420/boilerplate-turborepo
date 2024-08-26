@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo --port 3001",
+    "clean": "rm -rf .lighthouseci .next .swc .turbo coverage dist e2e-report e2e-results out storybook-static",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
+    "storybook:dev": "storybook dev --quiet --port 6002",
+    "storybook:build": "storybook build",
     "lint": "next lint"
   },
   "dependencies": {
     "@package/design-system": "workspace:*",
+    "clsx": "^2.1.1",
     "next": "14.2.6",
     "react": "18.3.1",
     "react-dom": "18.3.1"
@@ -17,10 +21,8 @@
   "devDependencies": {
     "@package/eslint-config": "workspace:*",
     "@package/next-config": "workspace:*",
+    "@package/storybook-config": "workspace:*",
     "@package/tailwindcss-config": "workspace:*",
-    "@package/typescript-config": "workspace:*",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18"
+    "@package/typescript-config": "workspace:*"
   }
 }

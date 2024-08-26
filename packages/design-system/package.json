@@ -2,27 +2,41 @@
   "name": "@package/design-system",
   "version": "0.0.0",
   "private": true,
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "type": "module",
   "exports": {
-    "./button": "./src/button.tsx",
-    "./card": "./src/card.tsx",
-    "./code": "./src/code.tsx"
+    ".": "./src/index.ts",
+    "./*": [
+      "./src/*.ts",
+      "./src/*.tsx",
+      "./src/*/index.ts"
+    ]
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./src/*",
+        "./src/*/index"
+      ]
+    }
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
-    "generate:component": "turbo gen react-component"
+    "clean": "rm -rf .swc .turbo coverage dist storybook-static",
+    "dev": "pnpm build --watch",
+    "build": "tsc --noEmit",
+    "storybook:dev": "storybook dev --quiet --port 6006",
+    "storybook:build": "storybook build"
+  },
+  "peerDependencies": {
+    "clsx": "^2.1.1",
+    "next": "14.2.6",
+    "react": "18.3.1"
   },
   "devDependencies": {
-    "@package/eslint-config": "workspace:*",
-    "@package/typescript-config": "workspace:*",
-    "@turbo/gen": "^1.12.4",
-    "@types/node": "^20.11.24",
-    "@types/eslint": "^8.56.5",
-    "@types/react": "^18.2.61",
-    "@types/react-dom": "^18.2.19",
-    "eslint": "^8.57.0",
-    "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "react": "^18.2.0"
+    "@package/storybook-config": "workspace:*",
+    "@package/tailwindcss-config": "workspace:*",
+    "@package/typescript-config": "workspace:*"
   }
 }
