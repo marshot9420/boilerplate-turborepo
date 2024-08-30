@@ -4,12 +4,15 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf .lighthouseci .next .swc .turbo coverage dist e2e-report e2e-results out storybook-static",
-    "dev": "next dev --turbo",
+    "dev": "next dev --turbo --port 3002",
     "build": "next build",
     "start": "next start",
     "storybook:dev": "storybook dev --quiet --port 6002",
     "storybook:build": "storybook build",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:e2e": "playwright test",
+    "test:unit": "jest --ci --coverage",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@package/design-system": "workspace:*",
@@ -22,6 +25,7 @@
     "@package/eslint-config": "workspace:*",
     "@package/jest-config": "workspace:*",
     "@package/next-config": "workspace:*",
+    "@package/playwright-config": "workspace:*",
     "@package/storybook-config": "workspace:*",
     "@package/tailwindcss-config": "workspace:*",
     "@package/typescript-config": "workspace:*"

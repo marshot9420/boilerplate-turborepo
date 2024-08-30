@@ -12,10 +12,15 @@
     "lint:prettier": "prettier --plugin-search-dir=. --check .",
     "lint:eslint": "eslint --cache .",
     "lint": "run-s lint:*",
-    "test:unit": "turbo run test:unit --concurrency=1 --no-daemon"
+    "fix:eslint": "eslint --fix .",
+    "fix:prettier": "prettier --plugin-search-dir=. --write .",
+    "fix": "run-s fix:*",
+    "test:unit": "turbo run test:unit --concurrency=1 --no-daemon",
+    "test:e2e": "turbo run test:e2e --concurrency=1 --no-daemon"
   },
   "devDependencies": {
     "@package/eslint-config": "workspace:*",
+    "@playwright/test": "1.36.1",
     "@storybook/blocks": "^8.2.9",
     "@storybook/react": "^8.2.9",
     "@storybook/test": "^8.2.9",
