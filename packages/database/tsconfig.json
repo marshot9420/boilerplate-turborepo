@@ -1,0 +1,10 @@
+{
+  "extends": "@package/typescript-config/react-library.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "jsx": "preserve",
+    "baseUrl": "./src",
+    "lib": ["esnext"]
+  }
+}
