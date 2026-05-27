@@ -1,0 +1,25 @@
+{
+  "name": "boilerplate-turborepo",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,mdx,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,mdx,css}\"",
+    "check-types": "turbo run check-types",
+    "check": "pnpm lint && pnpm check-types && pnpm format:check",
+    "clean": "turbo run clean && rm -rf node_modules .turbo"
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4",
+    "turbo": "^2.9.15",
+    "typescript": "5.9.2"
+  },
+  "packageManager": "pnpm@10.12.1",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  }
+}
