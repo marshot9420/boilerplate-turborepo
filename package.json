@@ -10,7 +10,11 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,mdx,css}\"",
     "check-types": "turbo run check-types",
     "check": "pnpm lint && pnpm check-types && pnpm format:check",
-    "clean": "turbo run clean && rm -rf node_modules .turbo"
+    "clean": "turbo run clean && rm -rf node_modules .turbo",
+    "db:generate": "pnpm --filter @repo/database db:generate",
+    "db:push": "pnpm --filter @repo/database db:push",
+    "db:migrate": "pnpm --filter @repo/database db:migrate",
+    "db:studio": "pnpm --filter @repo/database db:studio"
   },
   "devDependencies": {
     "prettier": "^3.7.4",
@@ -19,7 +23,7 @@
   },
   "packageManager": "pnpm@10.12.1",
   "engines": {
-    "node": ">=22",
+    "node": ">=22.12 <23",
     "pnpm": ">=10"
   }
 }
