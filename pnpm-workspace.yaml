@@ -2,5 +2,14 @@ packages:
   - apps/*
   - packages/*
 
+allowBuilds:
+  '@prisma/engines': true
+  prisma: true
+  sharp: true
+
 ignoredBuiltDependencies:
   - sharp
+
+onlyBuiltDependencies:
+  - '@prisma/engines'
+  - prisma
