@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-export const clientEnvSchema = z.object({
+import { sharedEnvSchema } from "./shared";
+
+export const clientEnvSchema = sharedEnvSchema.extend({
   NEXT_PUBLIC_APP_URL: z.url("NEXT_PUBLIC_APP_URL must be a valid URL"),
 });
 
