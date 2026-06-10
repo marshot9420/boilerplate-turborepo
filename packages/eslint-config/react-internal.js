@@ -45,3 +45,5 @@ export const reactInternalConfig = [
     },
   },
 ];
+
+export default reactInternalConfig;

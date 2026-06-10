@@ -5,8 +5,10 @@
   "private": true,
   "exports": {
     "./base": "./base.js",
-    "./next-js": "./next.js",
-    "./react-internal": "./react-internal.js"
+    "./next-js": "./next-js.js",
+    "./react-internal": "./react-internal.js",
+    "./node": "./node.js",
+    "./test": "./test.js"
   },
   "scripts": {
     "clean": "rm -rf node_modules"
@@ -16,6 +18,8 @@
     "@next/eslint-plugin-next": "^16.2.0",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.1",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-only-warn": "^1.1.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
