@@ -59,7 +59,6 @@ export const baseConfig = [
             "external",
             "internal",
             ["parent", "sibling", "index"],
-            "type",
           ],
 
           pathGroups: [
