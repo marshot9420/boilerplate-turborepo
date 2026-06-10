@@ -17,7 +17,8 @@
     "db:push": "pnpm --filter @repo/database db:push",
     "db:migrate": "pnpm --filter @repo/database db:migrate",
     "db:studio": "pnpm --filter @repo/database db:studio",
-    "scripts:clean": "pnpm --filter @repo/scripts run clean"
+    "scripts:clean": "pnpm --filter @repo/scripts run clean",
+    "generate": "pnpm --filter @repo/generators generate"
   },
   "devDependencies": {
     "@types/node": "^22.15.3",

@@ -1,0 +1,8 @@
+{
+  "extends": "@repo/typescript-config/node-library.json",
+  "compilerOptions": {
+    "rootDir": "."
+  },
+  "include": ["src", "eslint.config.js"],
+  "exclude": ["node_modules"]
+}
