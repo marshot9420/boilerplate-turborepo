@@ -15,7 +15,9 @@
     "check-types": "tsc --noEmit",
     "clean": "rm -rf node_modules .turbo",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -30,6 +32,7 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/storybook-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@repo/vitest-config": "workspace:*",
     "@storybook/addon-a11y": "^10.4.2",
     "@storybook/addon-docs": "^10.4.2",
     "@storybook/react-vite": "^10.4.2",
