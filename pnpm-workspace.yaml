@@ -1,9 +1,11 @@
 packages:
   - apps/*
   - packages/*
+  - tooling/*
 
 allowBuilds:
-  '@prisma/engines': true
+  "@prisma/engines": true
+  esbuild: true
   prisma: true
   sharp: true
   unrs-resolver: true
@@ -12,5 +14,5 @@ ignoredBuiltDependencies:
   - sharp
 
 onlyBuiltDependencies:
-  - '@prisma/engines'
+  - "@prisma/engines"
   - prisma
