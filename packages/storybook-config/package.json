@@ -5,7 +5,8 @@
   "type": "module",
   "exports": {
     "./nextjs": "./nextjs.ts",
-    "./preview": "./preview.ts"
+    "./preview": "./preview.ts",
+    "./react": "./react.ts"
   },
   "scripts": {
     "clean": "rm -rf node_modules .turbo"
