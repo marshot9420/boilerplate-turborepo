@@ -1,7 +1,9 @@
 {
   "extends": "@repo/typescript-config/node-library.json",
   "compilerOptions": {
-    "types": ["node"]
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["node", "vitest/globals"]
   },
   "include": ["*.ts"]
 }
