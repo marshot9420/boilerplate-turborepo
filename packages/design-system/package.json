@@ -3,26 +3,33 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./*": "./src/*.tsx"
+    "./utils": "./src/utils/index.ts",
+    "./button": "./src/primitives/button/index.ts",
+    "./input": "./src/primitives/input/index.ts",
+    "./textarea": "./src/primitives/textarea/index.ts",
+    "./label": "./src/primitives/label/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
-    "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit",
-    "clean": "rm -rf node_modules"
+    "clean": "rm -rf node_modules .turbo"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.6.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.15.3",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "eslint": "^9.39.1",
     "typescript": "5.9.2"
-  },
-  "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
   }
 }
