@@ -1,11 +1,8 @@
 {
-  "extends": "@repo/typescript-config/base.json",
+  "extends": "@repo/typescript-config/node-library.json",
   "compilerOptions": {
-    "noEmit": true,
-    "types": ["node"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler"
+    "outDir": "dist"
   },
-  "include": ["src", "prisma"],
-  "exclude": ["node_modules"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }
