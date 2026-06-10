@@ -1,0 +1,32 @@
+{
+  "name": "@repo/domain",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./user/client": "./src/user/client.ts",
+    "./user/server": "./src/user/server.ts",
+    "./content/client": "./src/content/client.ts",
+    "./content/server": "./src/content/server.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf node_modules .turbo"
+  },
+  "dependencies": {
+    "@prisma/client": "7.8.0",
+    "@repo/core": "workspace:*",
+    "@repo/database": "workspace:*",
+    "server-only": "^0.0.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "eslint": "^9.39.1",
+    "prisma": "7.8.0",
+    "typescript": "5.9.2"
+  }
+}

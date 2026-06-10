@@ -4,16 +4,15 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./result": "./src/result/index.ts",
-    "./errors": "./src/errors/index.ts",
-    "./validation": "./src/validation/index.ts",
     "./action": "./src/action/index.ts",
+    "./errors": "./src/errors/index.ts",
     "./logger": "./src/logger/index.ts",
     "./pagination": "./src/pagination/index.ts",
+    "./result": "./src/result/index.ts",
     "./search-params": "./src/search-params/index.ts",
     "./types": "./src/types/index.ts",
-    "./utils": "./src/utils/index.ts"
+    "./utils": "./src/utils/index.ts",
+    "./validation": "./src/validation/index.ts"
   },
   "scripts": {
     "lint": "eslint .",

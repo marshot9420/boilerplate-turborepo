@@ -6,12 +6,26 @@ export function zRequiredString(message = "필수 입력값입니다.") {
 
 export function zOptionalString() {
   return z.preprocess((value) => {
-    if (value === "") {
-      return undefined;
+    if (typeof value !== "string") {
+      return value;
     }
 
-    return value;
-  }, z.string().trim().optional());
+    const trimmed = value.trim();
+
+    return trimmed.length === 0 ? undefined : trimmed;
+  }, z.string().optional());
+}
+
+export function zNullableString() {
+  return z.preprocess((value) => {
+    if (typeof value !== "string") {
+      return value;
+    }
+
+    const trimmed = value.trim();
+
+    return trimmed.length === 0 ? null : trimmed;
+  }, z.string().nullable().optional());
 }
 
 export function zOptionalNumber() {
