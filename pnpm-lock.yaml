@@ -121,9 +121,6 @@ importers:
       '@prisma/client':
         specifier: 7.8.0
         version: 7.8.0(prisma@7.8.0(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(typescript@5.9.2)
-      '@repo/core':
-        specifier: workspace:*
-        version: link:../core
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
@@ -202,7 +199,7 @@ importers:
         specifier: ^10.1.1
         version: 10.1.1(eslint@9.39.1(jiti@2.7.0))
       eslint-import-resolver-typescript:
-        specifier: ^4.4.5
+        specifier: ^4.4.4
         version: 4.4.5(eslint-plugin-import@2.32.0)(eslint@9.39.1(jiti@2.7.0))
       eslint-plugin-import:
         specifier: ^2.32.0
