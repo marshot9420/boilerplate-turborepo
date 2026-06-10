@@ -5,7 +5,9 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./client": "./src/client.ts"
+    "./client": "./src/client.ts",
+    "./transaction": "./src/transaction.ts",
+    "./errors": "./src/errors/index.ts"
   },
   "scripts": {
     "db:generate": "prisma generate",
@@ -20,12 +22,13 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "7.8.0",
+    "@repo/core": "workspace:*",
+    "@repo/env": "workspace:*",
     "dotenv": "^17.4.2",
     "pg": "^8.21.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@repo/env": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
