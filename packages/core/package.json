@@ -22,7 +22,7 @@
     "clean": "rm -rf .turbo node_modules"
   },
   "dependencies": {
-    "zod": "^4.1.13"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
