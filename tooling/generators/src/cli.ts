@@ -1,4 +1,8 @@
-import { availableGenerators } from "./generators";
+import {
+  availableGenerators,
+  generateDomain,
+  isGeneratorType,
+} from "./generators";
 
 function printHelp() {
   console.info(`
@@ -22,12 +26,20 @@ async function main() {
     return;
   }
 
-  console.info("[generators] received request", {
-    type,
-    name,
-  });
+  if (!isGeneratorType(type)) {
+    console.error(`[generators] unsupported generator type: ${type}`);
+    printHelp();
+    process.exitCode = 1;
+    return;
+  }
 
-  console.info("[generators] generator implementation is not ready yet.");
+  if (type === "domain") {
+    await generateDomain({ name });
+    return;
+  }
+
+  console.error(`[generators] ${type} generator is not implemented yet.`);
+  process.exitCode = 1;
 }
 
 await main();

@@ -1,3 +1,5 @@
+export * from "./domain.generator";
+
 export const availableGenerators = ["domain", "feature", "package"] as const;
 
 export type GeneratorType = (typeof availableGenerators)[number];
