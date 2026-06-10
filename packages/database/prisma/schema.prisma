@@ -54,8 +54,8 @@ model UserOAuthAccount {
 
     email String @db.VarChar(255)
 
-    provider       String @db.VarChar(50)
-    providerUserId String @map("provider_user_id") @db.VarChar(255)
+    provider       AuthProvider
+    providerUserId String       @map("provider_user_id") @db.VarChar(255)
 
     createdAt DateTime @default(now()) @map("created_at")
 
