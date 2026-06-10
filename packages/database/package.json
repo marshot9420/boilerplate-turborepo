@@ -7,7 +7,10 @@
     ".": "./src/index.ts",
     "./client": "./src/client.ts",
     "./transaction": "./src/transaction.ts",
-    "./errors": "./src/errors/index.ts"
+    "./errors": "./src/errors/index.ts",
+    "./user": "./src/user/index.ts",
+    "./user-oauth-account": "./src/user-oauth-account/index.ts",
+    "./content": "./src/content/index.ts"
   },
   "scripts": {
     "db:generate": "prisma generate",
