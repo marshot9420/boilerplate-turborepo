@@ -17,6 +17,7 @@
     "db:studio": "pnpm --filter @repo/database db:studio"
   },
   "devDependencies": {
+    "@types/node": "^22.15.3",
     "prettier": "^3.7.4",
     "turbo": "^2.9.16",
     "typescript": "5.9.2"
