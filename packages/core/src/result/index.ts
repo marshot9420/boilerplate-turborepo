@@ -1,23 +1,9 @@
-export type Result<TData, TError = string> =
-  | {
-      ok: true;
-      data: TData;
-    }
-  | {
-      ok: false;
-      error: TError;
-    };
-
-export function success<TData>(data: TData): Result<TData, never> {
-  return {
-    ok: true,
-    data,
-  };
-}
-
-export function failure<TError>(error: TError): Result<never, TError> {
-  return {
-    ok: false,
-    error,
-  };
-}
+export {
+  failure,
+  isFailure,
+  isSuccess,
+  success,
+  type Failure,
+  type Result,
+  type Success,
+} from "./result";

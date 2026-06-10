@@ -6,21 +6,27 @@
   "exports": {
     ".": "./src/index.ts",
     "./result": "./src/result/index.ts",
-    "./action": "./src/action/index.ts",
     "./errors": "./src/errors/index.ts",
-    "./logger": "./src/logger/index.ts"
+    "./validation": "./src/validation/index.ts",
+    "./action": "./src/action/index.ts",
+    "./logger": "./src/logger/index.ts",
+    "./pagination": "./src/pagination/index.ts",
+    "./search-params": "./src/search-params/index.ts",
+    "./types": "./src/types/index.ts",
+    "./utils": "./src/utils/index.ts"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
+    "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check-types": "tsc --noEmit",
-    "clean": "rm -rf node_modules"
+    "clean": "rm -rf .turbo node_modules"
+  },
+  "dependencies": {
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.15.3",
-    "eslint": "^9.39.1",
-    "typescript": "5.9.2"
+    "typescript": "^5.9.3"
   }
 }
