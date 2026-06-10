@@ -1,9 +1,7 @@
 "use client";
 
-import { ReactNode } from "react";
-
 interface ButtonProps {
-  children: ReactNode;
+  children: React.ReactNode;
   className?: string;
   appName: string;
 }

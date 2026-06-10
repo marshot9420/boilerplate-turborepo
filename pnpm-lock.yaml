@@ -107,6 +107,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.1(jiti@2.7.0)
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
