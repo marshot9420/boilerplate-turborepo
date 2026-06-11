@@ -9,7 +9,8 @@
     "./errors": "./src/errors/index.ts",
     "./transaction": "./src/transaction.ts",
     "./user": "./src/user/index.ts",
-    "./user-oauth-account": "./src/user-oauth-account/index.ts"
+    "./user-oauth-account": "./src/user-oauth-account/index.ts",
+    "./user-session": "./src/user-session/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
