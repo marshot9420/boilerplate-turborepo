@@ -23,6 +23,7 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@repo/env": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/storybook-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",

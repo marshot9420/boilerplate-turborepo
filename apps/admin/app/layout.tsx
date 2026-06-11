@@ -2,7 +2,13 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 
+import type { ReactNode } from "react";
+
+import { clientEnv } from "@repo/env/client";
+import { serverEnv } from "@repo/env/server";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(clientEnv.NEXT_PUBLIC_APP_URL),
   title: "Admin",
   description: "Admin application",
 };
@@ -10,9 +16,9 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
-  const isDev = process.env.NODE_ENV !== "production";
+  const isDev = serverEnv.NODE_ENV !== "production";
 
   return (
     <html lang="ko">
