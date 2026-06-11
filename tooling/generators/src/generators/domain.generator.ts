@@ -25,6 +25,7 @@ export async function generateDomain(options: GenerateDomainOptions) {
     "../../packages/database/src",
     kebabName,
   );
+  const domainTestDir = join(domainDir, "__test__");
 
   const domainFiles = [
     {
@@ -196,6 +197,251 @@ export * from "./${kebabName}.service";
     },
   ];
 
+  const domainTestFiles = [
+    {
+      path: join(domainTestDir, `${kebabName}.schema.test.ts`),
+      content: `import { describe, expect, it } from "vitest";
+
+import {
+  Create${pascalName}Request,
+  ${pascalName}IdParam,
+  ${pascalName}ListSortKeys,
+  Update${pascalName}Request,
+} from "../${kebabName}.schema";
+
+describe("${pascalName} schema", () => {
+  it("올바른 id 파라미터를 검증한다", () => {
+    const result = ${pascalName}IdParam.safeParse({
+      id: "00000000-0000-4000-8000-000000000000",
+    });
+
+    expect(result.success).toBe(true);
+  });
+
+  it("올바르지 않은 id 파라미터를 거부한다", () => {
+    const result = ${pascalName}IdParam.safeParse({
+      id: "invalid-id",
+    });
+
+    expect(result.success).toBe(false);
+  });
+
+  it("생성 요청을 검증한다", () => {
+    const result = Create${pascalName}Request.safeParse({});
+
+    expect(result.success).toBe(true);
+  });
+
+  it("수정 요청을 검증한다", () => {
+    const result = Update${pascalName}Request.safeParse({});
+
+    expect(result.success).toBe(true);
+  });
+
+  it("목록 정렬 키를 가진다", () => {
+    expect([...${pascalName}ListSortKeys]).toEqual(["CREATED_AT", "UPDATED_AT"]);
+  });
+});
+`,
+    },
+    {
+      path: join(domainTestDir, `${kebabName}.mapper.test.ts`),
+      content: `import type { ${pascalName} } from "@prisma/client";
+
+import { describe, expect, it } from "vitest";
+
+import {
+  to${pascalName}DetailResponse,
+  to${pascalName}Response,
+} from "../${kebabName}.mapper";
+
+function createMock${pascalName}(
+  overrides: Partial<${pascalName}> = {},
+): ${pascalName} {
+  const now = new Date("2026-01-01T00:00:00.000Z");
+
+  return {
+    id: "00000000-0000-4000-8000-000000000000",
+    createdAt: now,
+    updatedAt: now,
+    ...overrides,
+  } as ${pascalName};
+}
+
+describe("${pascalName} mapper", () => {
+  it("${pascalName}Response로 변환한다", () => {
+    const ${camelName} = createMock${pascalName}();
+
+    const result = to${pascalName}Response(${camelName});
+
+    expect(result).toEqual({
+      id: ${camelName}.id,
+      createdAt: ${camelName}.createdAt.toISOString(),
+      updatedAt: ${camelName}.updatedAt.toISOString(),
+    });
+  });
+
+  it("${pascalName}DetailResponse로 변환한다", () => {
+    const ${camelName} = createMock${pascalName}();
+
+    const result = to${pascalName}DetailResponse(${camelName});
+
+    expect(result).toEqual({
+      id: ${camelName}.id,
+      createdAt: ${camelName}.createdAt.toISOString(),
+      updatedAt: ${camelName}.updatedAt.toISOString(),
+    });
+  });
+});
+`,
+    },
+    {
+      path: join(domainTestDir, `${kebabName}.permission.test.ts`),
+      content: `import { describe, expect, it } from "vitest";
+
+import {
+  canCreate${pascalName},
+  canDelete${pascalName},
+  canRead${pascalName},
+  canUpdate${pascalName},
+  type ${pascalName}PermissionActor,
+} from "../${kebabName}.permission";
+
+describe("${pascalName} permission", () => {
+  const actor: ${pascalName}PermissionActor = {
+    id: "actor-id",
+  };
+
+  it("읽기 권한을 확인한다", () => {
+    expect(canRead${pascalName}(actor)).toBe(true);
+  });
+
+  it("생성 권한을 확인한다", () => {
+    expect(canCreate${pascalName}(actor)).toBe(true);
+  });
+
+  it("수정 권한을 확인한다", () => {
+    expect(canUpdate${pascalName}(actor)).toBe(true);
+  });
+
+  it("삭제 권한을 확인한다", () => {
+    expect(canDelete${pascalName}(actor)).toBe(true);
+  });
+});
+`,
+    },
+    {
+      path: join(domainTestDir, `${kebabName}.service.test.ts`),
+      content: `import type { ${pascalName} } from "@prisma/client";
+
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { logger } from "@repo/core/logger";
+import { find${pascalName}ByIdRepository } from "@repo/database/${kebabName}";
+
+import { ${constantName}_ERROR_CODE } from "../${kebabName}.error";
+import { get${pascalName}ByIdService } from "../${kebabName}.service";
+
+vi.mock("@repo/database/${kebabName}", () => ({
+  find${pascalName}ByIdRepository: vi.fn(),
+}));
+
+vi.mock("@repo/core/logger", () => ({
+  logger: {
+    error: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+  },
+}));
+
+const mockFind${pascalName}ByIdRepository = vi.mocked(
+  find${pascalName}ByIdRepository,
+);
+
+const mockLoggerError = vi.mocked(logger.error);
+
+function createMock${pascalName}(
+  overrides: Partial<${pascalName}> = {},
+): ${pascalName} {
+  const now = new Date("2026-01-01T00:00:00.000Z");
+
+  return {
+    id: "00000000-0000-4000-8000-000000000000",
+    createdAt: now,
+    updatedAt: now,
+    ...overrides,
+  } as ${pascalName};
+}
+
+describe("${pascalName} service", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("${pascalName}을 조회하고 DetailResponse를 반환한다", async () => {
+    const ${camelName} = createMock${pascalName}();
+
+    mockFind${pascalName}ByIdRepository.mockResolvedValueOnce(${camelName});
+
+    const result = await get${pascalName}ByIdService(${camelName}.id);
+
+    expect(result.ok).toBe(true);
+
+    if (!result.ok) {
+      throw new Error("Expected success result");
+    }
+
+    expect(result.data).toEqual({
+      id: ${camelName}.id,
+      createdAt: ${camelName}.createdAt.toISOString(),
+      updatedAt: ${camelName}.updatedAt.toISOString(),
+    });
+  });
+
+  it("${pascalName}이 없으면 NOT_FOUND 실패 Result를 반환한다", async () => {
+    mockFind${pascalName}ByIdRepository.mockResolvedValueOnce(null);
+
+    const result = await get${pascalName}ByIdService(
+      "00000000-0000-4000-8000-000000000000",
+    );
+
+    expect(result.ok).toBe(false);
+
+    if (result.ok) {
+      throw new Error("Expected failure result");
+    }
+
+    expect(result.error.code).toBe(${constantName}_ERROR_CODE.NOT_FOUND);
+  });
+
+  it("repository 에러가 발생하면 실패 Result를 반환하고 로그를 남긴다", async () => {
+    const ${camelName}Id = "00000000-0000-4000-8000-000000000000";
+    const repositoryError = {
+      code: "DATABASE_UNKNOWN_ERROR",
+      message: "데이터 처리 중 오류가 발생했습니다.",
+    };
+
+    mockFind${pascalName}ByIdRepository.mockRejectedValueOnce(repositoryError);
+
+    const result = await get${pascalName}ByIdService(${camelName}Id);
+
+    expect(result.ok).toBe(false);
+
+    if (result.ok) {
+      throw new Error("Expected failure result");
+    }
+
+    expect(result.error).toBe(repositoryError);
+    expect(mockLoggerError).toHaveBeenCalledWith("${camelName}.get_by_id.failed", {
+      ${camelName}Id,
+      error: repositoryError,
+    });
+  });
+});
+`,
+    },
+  ];
+
   const databaseFiles = [
     {
       path: join(databaseDir, `${kebabName}.repository.ts`),
@@ -266,6 +512,148 @@ export async function delete${pascalName}Repository(
     },
   ];
 
+  const databaseTestFiles = [
+    {
+      path: join(databaseDir, `${kebabName}.repository.test.ts`),
+      content: `import type { Prisma, ${pascalName} } from "@prisma/client";
+
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
+
+import { prisma } from "../client";
+import { mapPrismaError } from "../errors";
+import {
+  create${pascalName}Repository,
+  delete${pascalName}Repository,
+  find${pascalName}ByIdRepository,
+  update${pascalName}Repository,
+} from "./${kebabName}.repository";
+
+vi.mock("../client", () => ({
+  prisma: {
+    ${camelName}: {
+      create: vi.fn(),
+      findUnique: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    },
+  },
+}));
+
+vi.mock("../errors", () => ({
+  mapPrismaError: vi.fn((error: unknown) => ({
+    code: "DATABASE_UNKNOWN_ERROR",
+    message: "데이터 처리 중 오류가 발생했습니다.",
+    cause: error,
+  })),
+}));
+
+const mockCreate = prisma.${camelName}.create as unknown as Mock;
+const mockFindUnique = prisma.${camelName}.findUnique as unknown as Mock;
+const mockUpdate = prisma.${camelName}.update as unknown as Mock;
+const mockDelete = prisma.${camelName}.delete as unknown as Mock;
+const mockMapPrismaError = vi.mocked(mapPrismaError);
+
+function createMock${pascalName}(
+  overrides: Partial<${pascalName}> = {},
+): ${pascalName} {
+  const now = new Date("2026-01-01T00:00:00.000Z");
+
+  return {
+    id: "00000000-0000-4000-8000-000000000000",
+    createdAt: now,
+    updatedAt: now,
+    ...overrides,
+  } as ${pascalName};
+}
+
+describe("${pascalName} repository", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("${pascalName}을 생성한다", async () => {
+    const data = {} as Prisma.${pascalName}CreateInput;
+    const ${camelName} = createMock${pascalName}();
+
+    mockCreate.mockResolvedValueOnce(${camelName});
+
+    const result = await create${pascalName}Repository(data);
+
+    expect(result).toEqual(${camelName});
+    expect(mockCreate).toHaveBeenCalledWith({
+      data,
+    });
+  });
+
+  it("${pascalName}을 id로 조회한다", async () => {
+    const ${camelName} = createMock${pascalName}();
+
+    mockFindUnique.mockResolvedValueOnce(${camelName});
+
+    const result = await find${pascalName}ByIdRepository(${camelName}.id);
+
+    expect(result).toEqual(${camelName});
+    expect(mockFindUnique).toHaveBeenCalledWith({
+      where: {
+        id: ${camelName}.id,
+      },
+    });
+  });
+
+  it("${pascalName}을 수정한다", async () => {
+    const ${camelName} = createMock${pascalName}();
+    const data = {} as Prisma.${pascalName}UpdateInput;
+
+    mockUpdate.mockResolvedValueOnce(${camelName});
+
+    const result = await update${pascalName}Repository(${camelName}.id, data);
+
+    expect(result).toEqual(${camelName});
+    expect(mockUpdate).toHaveBeenCalledWith({
+      where: {
+        id: ${camelName}.id,
+      },
+      data,
+    });
+  });
+
+  it("${pascalName}을 삭제한다", async () => {
+    const ${camelName} = createMock${pascalName}();
+
+    mockDelete.mockResolvedValueOnce(${camelName});
+
+    const result = await delete${pascalName}Repository(${camelName}.id);
+
+    expect(result).toEqual(${camelName});
+    expect(mockDelete).toHaveBeenCalledWith({
+      where: {
+        id: ${camelName}.id,
+      },
+    });
+  });
+
+  it("Prisma 에러를 AppError로 변환해 다시 throw한다", async () => {
+    const originalError = new Error("database error");
+    const mappedError = {
+      code: "DATABASE_UNKNOWN_ERROR",
+      message: "데이터 처리 중 오류가 발생했습니다.",
+      cause: originalError,
+    };
+
+    mockFindUnique.mockRejectedValueOnce(originalError);
+    mockMapPrismaError.mockReturnValueOnce(mappedError);
+
+    await expect(
+      find${pascalName}ByIdRepository("00000000-0000-4000-8000-000000000000"),
+    ).rejects.toEqual(mappedError);
+
+    expect(mockMapPrismaError).toHaveBeenCalledWith(originalError);
+  });
+});
+`,
+    },
+  ];
+
   console.info("[generators] domain generator");
   console.info({
     name: kebabName,
@@ -274,7 +662,12 @@ export async function delete${pascalName}Repository(
     constantName,
   });
 
-  for (const file of [...domainFiles, ...databaseFiles]) {
+  for (const file of [
+    ...domainFiles,
+    ...domainTestFiles,
+    ...databaseFiles,
+    ...databaseTestFiles,
+  ]) {
     await writeFileSafe(file);
   }
 
