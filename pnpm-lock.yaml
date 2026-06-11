@@ -42,9 +42,15 @@ importers:
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@repo/storybook-config':
+        specifier: workspace:*
+        version: link:../../packages/storybook-config
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
+      '@repo/vitest-config':
+        specifier: workspace:*
+        version: link:../../packages/vitest-config
       '@types/node':
         specifier: ^22.15.3
         version: 22.15.3
@@ -79,9 +85,15 @@ importers:
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@repo/storybook-config':
+        specifier: workspace:*
+        version: link:../../packages/storybook-config
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
+      '@repo/vitest-config':
+        specifier: workspace:*
+        version: link:../../packages/vitest-config
       '@types/node':
         specifier: ^22.15.3
         version: 22.15.3
