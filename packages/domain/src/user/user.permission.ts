@@ -24,3 +24,12 @@ export function canUpdateUser(
 export function canManageUsers(actor: UserPermissionActor) {
   return actor.role === "ADMIN" && actor.status === "ACTIVE";
 }
+
+export interface UserAuthenticationTarget {
+  status: UserStatus;
+  deletedAt?: Date | null;
+}
+
+export function canAuthenticateUser(target: UserAuthenticationTarget) {
+  return target.status === "ACTIVE" && !target.deletedAt;
+}

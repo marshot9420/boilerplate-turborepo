@@ -1,17 +1,33 @@
+import { createHash } from "node:crypto";
+
 import type { AppError } from "@repo/core/errors";
 import { logger } from "@repo/core/logger";
 import { failure, success, type Result } from "@repo/core/result";
 import {
+  createUserRepository,
+  findUserByEmailRepository,
   findUserByIdRepository,
   findUserByNicknameRepository,
   softDeleteUserRepository,
   updateUserRepository,
 } from "@repo/database/user";
+import {
+  createUserOAuthAccountRepository,
+  findUserOAuthAccountWithUserRepository,
+} from "@repo/database/user-oauth-account";
 
-import type { UserDetailResponse } from "./user.dto";
-import { USER_ERROR_CODE } from "./user.error";
-import { toUserDetailResponse } from "./user.mapper";
-import type { UpdateUserProfileRequestInput } from "./user.schema";
+import type { UserDetailResponse, UserResponse } from "./user.dto";
+import {
+  createOAuthLoginFailedError,
+  createOAuthUserBlockedError,
+  USER_ERROR_CODE,
+} from "./user.error";
+import { toUserDetailResponse, toUserResponse } from "./user.mapper";
+import { canAuthenticateUser } from "./user.permission";
+import type {
+  FindOrCreateOAuthUserRequestInput,
+  UpdateUserProfileRequestInput,
+} from "./user.schema";
 
 export async function getUserByIdService(
   userId: string,
@@ -127,5 +143,99 @@ export async function softDeleteUserService(
     });
 
     return failure(error as AppError);
+  }
+}
+
+export async function findOrCreateOAuthUserService(
+  input: FindOrCreateOAuthUserRequestInput,
+): Promise<Result<UserResponse, AppError>> {
+  try {
+    const oauthAccount = await findUserOAuthAccountWithUserRepository({
+      provider: input.provider,
+      providerUserId: input.providerUserId,
+    });
+
+    if (oauthAccount) {
+      if (!canAuthenticateUser(oauthAccount.user)) {
+        return failure(createOAuthUserBlockedError());
+      }
+
+      const updatedUser = await updateUserRepository(oauthAccount.user.id, {
+        name: input.name,
+        avatarUrl: input.avatarUrl,
+      });
+
+      logger.info("user.oauth_login.succeeded", {
+        userId: updatedUser.id,
+        provider: input.provider,
+      });
+
+      return success(toUserResponse(updatedUser));
+    }
+
+    const existingUser = await findUserByEmailRepository(input.email);
+
+    if (existingUser) {
+      if (!canAuthenticateUser(existingUser)) {
+        return failure(createOAuthUserBlockedError());
+      }
+
+      const updatedUser = await updateUserRepository(existingUser.id, {
+        name: input.name,
+        avatarUrl: input.avatarUrl,
+      });
+
+      await createUserOAuthAccountRepository({
+        email: input.email,
+        provider: input.provider,
+        providerUserId: input.providerUserId,
+        user: {
+          connect: {
+            id: updatedUser.id,
+          },
+        },
+      });
+
+      logger.info("user.oauth_account_linked.succeeded", {
+        userId: updatedUser.id,
+        provider: input.provider,
+      });
+
+      return success(toUserResponse(updatedUser));
+    }
+
+    const nicknameHash = createHash("sha256")
+      .update(`${input.provider}:${input.providerUserId}`)
+      .digest("hex")
+      .slice(0, 16);
+
+    const createdUser = await createUserRepository({
+      email: input.email,
+      name: input.name,
+      avatarUrl: input.avatarUrl,
+      nickname: `${input.provider.toLowerCase()}_${nicknameHash}`,
+      oauthAccounts: {
+        create: {
+          email: input.email,
+          provider: input.provider,
+          providerUserId: input.providerUserId,
+        },
+      },
+    });
+
+    logger.info("user.oauth_user_created.succeeded", {
+      userId: createdUser.id,
+      provider: input.provider,
+    });
+
+    return success(toUserResponse(createdUser));
+  } catch (error) {
+    logger.error("user.oauth_login.failed", {
+      provider: input.provider,
+      providerUserId: input.providerUserId,
+      error,
+    });
+
+    return failure(createOAuthLoginFailedError(error));
   }
 }

@@ -1,3 +1,4 @@
+import { AuthProvider } from "@prisma/client";
 import { z } from "zod";
 
 import type { ListQuery } from "@repo/core/types";
@@ -51,4 +52,28 @@ export const UpdateUserProfileRequest = z.object({
 
 export type UpdateUserProfileRequestInput = z.infer<
   typeof UpdateUserProfileRequest
+>;
+
+export const OAuthProviderSchema = z.enum(AuthProvider);
+
+export const FindOrCreateOAuthUserRequest = z.object({
+  provider: OAuthProviderSchema,
+
+  providerUserId: z.string().trim().min(1),
+
+  email: z
+    .email(USER.EMAIL.INVALID_MESSAGE)
+    .max(USER.EMAIL.MAX_LENGTH, USER.EMAIL.INVALID_MESSAGE),
+
+  name: z
+    .string()
+    .trim()
+    .max(USER.NAME.MAX_LENGTH, USER.NAME.MAX_MESSAGE)
+    .nullable(),
+
+  avatarUrl: z.url(USER.AVATAR_URL.INVALID_MESSAGE).nullable(),
+});
+
+export type FindOrCreateOAuthUserRequestInput = z.infer<
+  typeof FindOrCreateOAuthUserRequest
 >;
