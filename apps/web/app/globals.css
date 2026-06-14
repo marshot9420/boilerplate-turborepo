@@ -19,3 +19,8 @@ body {
     "Segoe UI",
     sans-serif;
 }
+
+button,
+a {
+  cursor: pointer;
+}

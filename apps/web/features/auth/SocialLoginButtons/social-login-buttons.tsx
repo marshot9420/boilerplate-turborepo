@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { URLS } from "@/constants";
 
 const OAuthLoginProviders = [
