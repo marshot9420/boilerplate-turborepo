@@ -2,12 +2,28 @@
   "name": "@repo/design-system",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
+    ".": "./src/index.ts",
+    "./theme.css": "./src/styles/theme.css",
     "./utils": "./src/utils/index.ts",
     "./button": "./src/primitives/button/index.ts",
     "./input": "./src/primitives/input/index.ts",
     "./textarea": "./src/primitives/textarea/index.ts",
-    "./label": "./src/primitives/label/index.ts"
+    "./label": "./src/primitives/label/index.ts",
+    "./primitives/button": "./src/primitives/button/index.ts",
+    "./primitives/input": "./src/primitives/input/index.ts",
+    "./primitives/textarea": "./src/primitives/textarea/index.ts",
+    "./primitives/label": "./src/primitives/label/index.ts",
+    "./components/button": "./src/components/button/index.ts",
+    "./components/text-field": "./src/components/text-field/index.ts",
+    "./components/textarea-field": "./src/components/textarea-field/index.ts",
+    "./components/card": "./src/components/card/index.ts",
+    "./components/badge": "./src/components/badge/index.ts",
+    "./components/alert": "./src/components/alert/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -43,6 +59,7 @@
     "@types/react-dom": "19.2.2",
     "eslint": "^9.39.1",
     "storybook": "^10.4.2",
+    "tailwindcss": "^4",
     "typescript": "5.9.2"
   }
 }
