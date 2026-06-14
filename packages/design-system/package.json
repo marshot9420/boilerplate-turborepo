@@ -10,6 +10,7 @@
     ".": "./src/index.ts",
     "./utils": "./src/utils/index.ts",
     "./primitives": "./src/primitives/index.ts",
+    "./form": "./src/form/index.ts",
     "./web": "./src/web/index.ts",
     "./web/styles.css": "./src/web/styles.css",
     "./admin": "./src/admin/index.ts",
@@ -26,8 +27,10 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@repo/core": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0"
   },
   "peerDependencies": {
