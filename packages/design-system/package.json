@@ -9,22 +9,11 @@
   "exports": {
     ".": "./src/index.ts",
     "./utils": "./src/utils/index.ts",
-    "./primitives/button": "./src/primitives/button/index.ts",
-    "./primitives/input": "./src/primitives/input/index.ts",
-    "./primitives/textarea": "./src/primitives/textarea/index.ts",
-    "./primitives/label": "./src/primitives/label/index.ts",
+    "./primitives": "./src/primitives/index.ts",
     "./web": "./src/web/index.ts",
     "./web/styles.css": "./src/web/styles.css",
-    "./web/button": "./src/web/button/index.ts",
-    "./web/text-field": "./src/web/text-field/index.ts",
-    "./web/card": "./src/web/card/index.ts",
-    "./web/alert": "./src/web/alert/index.ts",
     "./admin": "./src/admin/index.ts",
-    "./admin/styles.css": "./src/admin/styles.css",
-    "./admin/button": "./src/admin/button/index.ts",
-    "./admin/text-field": "./src/admin/text-field/index.ts",
-    "./admin/card": "./src/admin/card/index.ts",
-    "./admin/alert": "./src/admin/alert/index.ts"
+    "./admin/styles.css": "./src/admin/styles.css"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
