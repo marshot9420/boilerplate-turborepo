@@ -2,7 +2,7 @@
 
 TODO:
 
-- `apps/admin`, `apps/web`에 디자인 패턴(완화된 FSD) 적용 및 샘플 기능 구현 (GOOGLE, NAVER, KAKAO 세션 기반 인증 포함)
+- `apps/web` & `apps/admin`에 `src` 디렉토리 추가
 - 디자인 시스템에 애플리케이션 별 CSS 토큰, 색상 팔레트, UI 컴포넌트 추가
 - 디자인 시스템에 form 에러 처리 유틸 함수 추가
 - 디자인 시스템에 sooner 공통 함수 추가
@@ -77,20 +77,3 @@ TODO:
 - 워크스페이스 설정 점검 및 `.vscode/` 설정 검토
 - 그 외 필요한 것은 없는지 검토
 - 루트 `README.md` 작성
-
-```
-1. OAuth authorize URL 생성 유틸 추가
-2. Google provider 구현
-3. Naver provider 구현
-4. Kakao provider 구현
-5. OAuth callback 공통 처리 함수 구현
-6. domain/user에 OAuth 사용자 생성·연결 서비스 추가
-7. apps/web OAuth route 연결
-8. apps/admin OAuth route 연결
-9. 로그인 페이지와 소셜 로그인 버튼 구현
-10. 로그아웃 route 구현
-11. requireUser / requireAdmin을 앱 페이지에 적용
-12. 내 프로필 샘플 페이지 구현
-13. 관리자 보호 페이지 샘플 구현
-14. auth 관련 단위 테스트 추가
-```
