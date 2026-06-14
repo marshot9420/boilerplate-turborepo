@@ -18,6 +18,7 @@
   "dependencies": {
     "@repo/core": "workspace:*",
     "@repo/database": "workspace:*",
+    "@repo/domain": "workspace:*",
     "@repo/env": "workspace:*",
     "server-only": "^0.0.1"
   },

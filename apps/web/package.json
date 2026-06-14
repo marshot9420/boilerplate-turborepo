@@ -17,6 +17,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@repo/auth": "workspace:*",
     "@repo/design-system": "workspace:*",
     "next": "16.2.0",
     "react": "^19.2.0",
