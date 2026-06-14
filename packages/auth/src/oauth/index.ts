@@ -1,5 +1,6 @@
 export * from "./google.provider";
 export * from "./naver.provider";
+export * from "./kakao.provider";
 export * from "./oauth-profile";
 export * from "./oauth-provider";
 export * from "./oauth-state";
