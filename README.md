@@ -77,3 +77,20 @@ TODO:
 - 워크스페이스 설정 점검 및 `.vscode/` 설정 검토
 - 그 외 필요한 것은 없는지 검토
 - 루트 `README.md` 작성
+
+```
+1. OAuth authorize URL 생성 유틸 추가
+2. Google provider 구현
+3. Naver provider 구현
+4. Kakao provider 구현
+5. OAuth callback 공통 처리 함수 구현
+6. domain/user에 OAuth 사용자 생성·연결 서비스 추가
+7. apps/web OAuth route 연결
+8. apps/admin OAuth route 연결
+9. 로그인 페이지와 소셜 로그인 버튼 구현
+10. 로그아웃 route 구현
+11. requireUser / requireAdmin을 앱 페이지에 적용
+12. 내 프로필 샘플 페이지 구현
+13. 관리자 보호 페이지 샘플 구현
+14. auth 관련 단위 테스트 추가
+```

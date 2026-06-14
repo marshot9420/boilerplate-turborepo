@@ -3,6 +3,8 @@ import { type NextRequest, NextResponse } from "next/server";
 import { handleOAuthCallback, parseOAuthProviderId } from "@repo/auth/server";
 import { serverEnv } from "@repo/env/server";
 
+import { URLS } from "@/constants";
+
 export const runtime = "nodejs";
 
 interface OAuthCallbackRouteContext {
@@ -52,7 +54,7 @@ export async function GET(
       userAgent: request.headers.get("user-agent"),
     });
 
-    return NextResponse.redirect(createAdminUrl("/"));
+    return NextResponse.redirect(createAdminUrl(URLS.CLIENT.HOME));
   } catch {
     return NextResponse.redirect(createAdminUrl("/login?error=oauth_failed"));
   }
