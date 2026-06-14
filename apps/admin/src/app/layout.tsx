@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 
 import type { ReactNode } from "react";
 
+import { ToastProvider } from "@repo/design-system/toast";
 import { clientEnv } from "@repo/env/client";
 import { serverEnv } from "@repo/env/server";
 
@@ -34,6 +35,7 @@ export default function RootLayout({
           <LogoutButton /> <Link href={URLS.CLIENT.LOGIN}>로그인</Link>
         </header>
         {children}
+        <ToastProvider />
       </body>
     </html>
   );

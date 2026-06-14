@@ -11,6 +11,7 @@
     "./utils": "./src/utils/index.ts",
     "./primitives": "./src/primitives/index.ts",
     "./form": "./src/form/index.ts",
+    "./toast": "./src/toast/index.ts",
     "./web": "./src/web/index.ts",
     "./web/styles.css": "./src/web/styles.css",
     "./admin": "./src/admin/index.ts",
