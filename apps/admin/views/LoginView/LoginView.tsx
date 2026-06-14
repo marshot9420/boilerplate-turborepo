@@ -10,7 +10,13 @@ function getLoginErrorMessage(error: string | undefined): string | null {
       return "지원하지 않는 로그인 방식입니다.";
 
     case "oauth_failed":
-      return "소셜 로그인 처리 중 오류가 발생했습니다.";
+      return "관리자 로그인 처리 중 오류가 발생했습니다.";
+
+    case "unauthorized":
+      return "관리자 로그인이 필요합니다.";
+
+    case "forbidden":
+      return "관리자 권한이 없는 계정입니다.";
 
     default:
       return null;

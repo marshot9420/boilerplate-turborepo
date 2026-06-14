@@ -1,18 +1,31 @@
 import { redirect } from "next/navigation";
 
-import { requireAdmin } from "@repo/auth/server";
+import { AUTH_ERROR_CODE, requireAdmin } from "@repo/auth/server";
 
 import { URLS } from "@/constants";
+
+function isAuthError(error: unknown): error is { code: string } {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    typeof error.code === "string"
+  );
+}
 
 async function getRequiredAdminSession() {
   try {
     return await requireAdmin();
-  } catch {
-    redirect(URLS.CLIENT.LOGIN);
+  } catch (error) {
+    if (isAuthError(error) && error.code === AUTH_ERROR_CODE.FORBIDDEN) {
+      redirect(`${URLS.CLIENT.LOGIN}?error=forbidden`);
+    }
+
+    redirect(`${URLS.CLIENT.LOGIN}?error=unauthorized`);
   }
 }
 
-export default async function HomePage() {
+export default async function AdminHomePage() {
   const session = await getRequiredAdminSession();
 
   return (

@@ -8,7 +8,7 @@ async function getRequiredUserSession() {
   try {
     return await requireUser();
   } catch {
-    redirect(URLS.CLIENT.LOGIN);
+    redirect(`${URLS.CLIENT.LOGIN}?error=unauthorized`);
   }
 }
 
@@ -52,7 +52,7 @@ export default async function MyPage() {
           </div>
         </dl>
 
-        <form action="/api/auth/logout" method="post" className="mt-8">
+        <form action={URLS.API.AUTH.LOGOUT} method="post" className="mt-8">
           <button
             type="submit"
             className="h-10 rounded-md bg-zinc-950 px-4 text-sm font-medium text-white transition hover:bg-zinc-800"

@@ -12,6 +12,9 @@ function getLoginErrorMessage(error: string | undefined): string | null {
     case "oauth_failed":
       return "소셜 로그인 처리 중 오류가 발생했습니다.";
 
+    case "unauthorized":
+      return "로그인이 필요합니다.";
+
     default:
       return null;
   }
