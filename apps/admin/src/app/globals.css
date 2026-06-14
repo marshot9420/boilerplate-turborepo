@@ -1,7 +1,8 @@
 @import "tailwindcss";
-@import "@repo/design-system/theme.css";
+@import "@repo/design-system/admin/styles.css";
 
-@source "../../../../packages/design-system/src";
+@source "../../../../packages/design-system/src/primitives";
+@source "../../../../packages/design-system/src/admin";
 
 @theme {
   --color-background: oklch(1 0 0);
