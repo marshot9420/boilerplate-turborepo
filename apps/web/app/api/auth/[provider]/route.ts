@@ -34,7 +34,7 @@ export async function GET(
   const authorizeUrl = await createOAuthAuthorizeUrl({
     providerId,
     appBaseUrl: serverEnv.WEB_APP_URL,
-    callbackPath: `/auth/callback/${providerId}`,
+    callbackPath: `/api/auth/${providerId}/callback`,
   });
 
   return NextResponse.redirect(authorizeUrl);

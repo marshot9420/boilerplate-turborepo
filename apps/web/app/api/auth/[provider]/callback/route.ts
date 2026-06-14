@@ -47,7 +47,7 @@ export async function GET(
       code,
       state,
       appBaseUrl: serverEnv.WEB_APP_URL,
-      callbackPath: `/auth/callback/${providerId}`,
+      callbackPath: `/api/auth/${providerId}/callback`,
       ipAddress: getRequestIpAddress(request),
       userAgent: request.headers.get("user-agent"),
     });
