@@ -50,7 +50,7 @@ export interface ButtonProps
   className?: string;
 }
 
-export function Button({
+export default function Button({
   className,
   variant,
   size,

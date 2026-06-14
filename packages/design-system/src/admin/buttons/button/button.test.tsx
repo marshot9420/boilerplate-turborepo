@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { Button } from "./button";
+import Button from "./button";
 
 describe("Admin Button", () => {
   it("버튼 텍스트를 렌더링한다", () => {
