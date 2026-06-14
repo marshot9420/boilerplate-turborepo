@@ -1,19 +1,27 @@
-import type { User } from "@prisma/client";
+import type { User, UserOAuthAccount } from "@prisma/client";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { AppError } from "@repo/core/errors";
 
 import {
+  findOrCreateOAuthUserService,
   getUserByIdService,
   softDeleteUserService,
   updateUserProfileService,
 } from "../user.service";
 
 const repositoryMock = vi.hoisted(() => ({
+  createUserRepository: vi.fn(),
+  findUserByEmailRepository: vi.fn(),
   findUserByIdRepository: vi.fn(),
   findUserByNicknameRepository: vi.fn(),
   softDeleteUserRepository: vi.fn(),
   updateUserRepository: vi.fn(),
+}));
+
+const oauthAccountRepositoryMock = vi.hoisted(() => ({
+  createUserOAuthAccountRepository: vi.fn(),
+  findUserOAuthAccountWithUserRepository: vi.fn(),
 }));
 
 const loggerMock = vi.hoisted(() => ({
@@ -23,6 +31,7 @@ const loggerMock = vi.hoisted(() => ({
 }));
 
 vi.mock("@repo/database/user", () => repositoryMock);
+vi.mock("@repo/database/user-oauth-account", () => oauthAccountRepositoryMock);
 
 vi.mock("@repo/core/logger", () => ({
   logger: loggerMock,
@@ -42,6 +51,24 @@ function createMockUser(overrides: Partial<User> = {}): User {
     lastLoginAt: null,
     deletedAt: null,
     ...overrides,
+  };
+}
+
+function createMockUserOAuthAccountWithUser(
+  overrides: Partial<UserOAuthAccount & { user: User }> = {},
+): UserOAuthAccount & { user: User } {
+  const user = overrides.user ?? createMockUser();
+
+  return {
+    id: "oauth-account-id",
+    email: user.email,
+    provider: "GOOGLE",
+    providerUserId: "google-user-id",
+    createdAt: new Date("2026-01-01T00:00:00.000Z"),
+    updatedAt: new Date("2026-01-02T00:00:00.000Z"),
+    userId: user.id,
+    ...overrides,
+    user,
   };
 }
 
@@ -473,6 +500,316 @@ describe("user.service", () => {
 
       expect(loggerMock.error).toHaveBeenCalledWith("user.soft_delete.failed", {
         userId: "user-id",
+        error,
+      });
+    });
+  });
+
+  describe("findOrCreateOAuthUserService", () => {
+    it("기존 OAuth 계정이 있으면 사용자 정보를 갱신하고 UserResponse를 반환한다", async () => {
+      const oauthUser = createMockUser({
+        id: "user-id",
+        email: "user@example.com",
+        name: "기존 이름",
+        avatarUrl: null,
+      });
+
+      const updatedUser = createMockUser({
+        id: "user-id",
+        email: "user@example.com",
+        name: "Google User",
+        avatarUrl: "https://example.com/avatar.png",
+      });
+
+      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockResolvedValue(
+        createMockUserOAuthAccountWithUser({
+          user: oauthUser,
+        }),
+      );
+
+      repositoryMock.updateUserRepository.mockResolvedValue(updatedUser);
+
+      const result = await findOrCreateOAuthUserService({
+        provider: "GOOGLE",
+        providerUserId: "google-user-id",
+        email: "user@example.com",
+        name: "Google User",
+        avatarUrl: "https://example.com/avatar.png",
+      });
+
+      expect(
+        oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository,
+      ).toHaveBeenCalledWith({
+        provider: "GOOGLE",
+        providerUserId: "google-user-id",
+      });
+
+      expect(repositoryMock.updateUserRepository).toHaveBeenCalledWith(
+        "user-id",
+        {
+          name: "Google User",
+          avatarUrl: "https://example.com/avatar.png",
+        },
+      );
+
+      expect(repositoryMock.findUserByEmailRepository).not.toHaveBeenCalled();
+      expect(
+        oauthAccountRepositoryMock.createUserOAuthAccountRepository,
+      ).not.toHaveBeenCalled();
+      expect(repositoryMock.createUserRepository).not.toHaveBeenCalled();
+
+      expect(result).toEqual({
+        ok: true,
+        data: {
+          id: "user-id",
+          email: "user@example.com",
+          name: "Google User",
+          avatarUrl: "https://example.com/avatar.png",
+          nickname: "gildong",
+          role: "USER",
+          status: "ACTIVE",
+          createdAt: "2026-01-01T00:00:00.000Z",
+          lastLoginAt: null,
+        },
+      });
+
+      expect(loggerMock.info).toHaveBeenCalledWith(
+        "user.oauth_login.succeeded",
+        {
+          userId: "user-id",
+          provider: "GOOGLE",
+        },
+      );
+    });
+
+    it("기존 OAuth 계정 사용자가 인증 불가능한 상태면 USER_OAUTH_USER_BLOCKED 실패 Result를 반환한다", async () => {
+      const blockedUser = createMockUser({
+        status: "BANNED",
+      });
+
+      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockResolvedValue(
+        createMockUserOAuthAccountWithUser({
+          user: blockedUser,
+        }),
+      );
+
+      const result = await findOrCreateOAuthUserService({
+        provider: "GOOGLE",
+        providerUserId: "google-user-id",
+        email: "user@example.com",
+        name: "Google User",
+        avatarUrl: null,
+      });
+
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          code: "USER_OAUTH_USER_BLOCKED",
+          message: "사용할 수 없는 계정입니다.",
+        },
+      });
+
+      expect(repositoryMock.updateUserRepository).not.toHaveBeenCalled();
+      expect(repositoryMock.findUserByEmailRepository).not.toHaveBeenCalled();
+    });
+
+    it("OAuth 계정은 없지만 같은 이메일 사용자가 있으면 OAuth 계정을 연결한다", async () => {
+      const existingUser = createMockUser({
+        id: "existing-user-id",
+        email: "user@example.com",
+        name: "기존 사용자",
+        avatarUrl: null,
+      });
+
+      const updatedUser = createMockUser({
+        id: "existing-user-id",
+        email: "user@example.com",
+        name: "Naver User",
+        avatarUrl: "https://example.com/naver.png",
+      });
+
+      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockResolvedValue(
+        null,
+      );
+      repositoryMock.findUserByEmailRepository.mockResolvedValue(existingUser);
+      repositoryMock.updateUserRepository.mockResolvedValue(updatedUser);
+      oauthAccountRepositoryMock.createUserOAuthAccountRepository.mockResolvedValue(
+        {
+          id: "oauth-account-id",
+          email: "user@example.com",
+          provider: "NAVER",
+          providerUserId: "naver-user-id",
+          createdAt: new Date("2026-01-01T00:00:00.000Z"),
+          updatedAt: new Date("2026-01-02T00:00:00.000Z"),
+          userId: "existing-user-id",
+        },
+      );
+
+      const result = await findOrCreateOAuthUserService({
+        provider: "NAVER",
+        providerUserId: "naver-user-id",
+        email: "user@example.com",
+        name: "Naver User",
+        avatarUrl: "https://example.com/naver.png",
+      });
+
+      expect(repositoryMock.findUserByEmailRepository).toHaveBeenCalledWith(
+        "user@example.com",
+      );
+
+      expect(repositoryMock.updateUserRepository).toHaveBeenCalledWith(
+        "existing-user-id",
+        {
+          name: "Naver User",
+          avatarUrl: "https://example.com/naver.png",
+        },
+      );
+
+      expect(
+        oauthAccountRepositoryMock.createUserOAuthAccountRepository,
+      ).toHaveBeenCalledWith({
+        email: "user@example.com",
+        provider: "NAVER",
+        providerUserId: "naver-user-id",
+        user: {
+          connect: {
+            id: "existing-user-id",
+          },
+        },
+      });
+
+      expect(repositoryMock.createUserRepository).not.toHaveBeenCalled();
+
+      expect(result.ok).toBe(true);
+
+      if (result.ok) {
+        expect(result.data.id).toBe("existing-user-id");
+        expect(result.data.name).toBe("Naver User");
+        expect(result.data.avatarUrl).toBe("https://example.com/naver.png");
+      }
+
+      expect(loggerMock.info).toHaveBeenCalledWith(
+        "user.oauth_account_linked.succeeded",
+        {
+          userId: "existing-user-id",
+          provider: "NAVER",
+        },
+      );
+    });
+
+    it("같은 이메일 사용자가 인증 불가능한 상태면 OAuth 계정을 연결하지 않는다", async () => {
+      const suspendedUser = createMockUser({
+        status: "SUSPENDED",
+      });
+
+      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockResolvedValue(
+        null,
+      );
+      repositoryMock.findUserByEmailRepository.mockResolvedValue(suspendedUser);
+
+      const result = await findOrCreateOAuthUserService({
+        provider: "NAVER",
+        providerUserId: "naver-user-id",
+        email: "user@example.com",
+        name: "Naver User",
+        avatarUrl: null,
+      });
+
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          code: "USER_OAUTH_USER_BLOCKED",
+          message: "사용할 수 없는 계정입니다.",
+        },
+      });
+
+      expect(repositoryMock.updateUserRepository).not.toHaveBeenCalled();
+      expect(
+        oauthAccountRepositoryMock.createUserOAuthAccountRepository,
+      ).not.toHaveBeenCalled();
+      expect(repositoryMock.createUserRepository).not.toHaveBeenCalled();
+    });
+
+    it("OAuth 계정과 같은 이메일 사용자가 없으면 신규 사용자를 생성한다", async () => {
+      const createdUser = createMockUser({
+        id: "new-user-id",
+        email: "new-user@example.com",
+        name: "Kakao User",
+        avatarUrl: "https://example.com/kakao.png",
+        nickname: "kakao_generated_hash",
+      });
+
+      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockResolvedValue(
+        null,
+      );
+      repositoryMock.findUserByEmailRepository.mockResolvedValue(null);
+      repositoryMock.createUserRepository.mockResolvedValue(createdUser);
+
+      const result = await findOrCreateOAuthUserService({
+        provider: "KAKAO",
+        providerUserId: "kakao-user-id",
+        email: "new-user@example.com",
+        name: "Kakao User",
+        avatarUrl: "https://example.com/kakao.png",
+      });
+
+      expect(repositoryMock.createUserRepository).toHaveBeenCalledWith({
+        email: "new-user@example.com",
+        name: "Kakao User",
+        avatarUrl: "https://example.com/kakao.png",
+        nickname: expect.stringMatching(/^kakao_[a-f0-9]{16}$/),
+        oauthAccounts: {
+          create: {
+            email: "new-user@example.com",
+            provider: "KAKAO",
+            providerUserId: "kakao-user-id",
+          },
+        },
+      });
+
+      expect(result.ok).toBe(true);
+
+      if (result.ok) {
+        expect(result.data.id).toBe("new-user-id");
+        expect(result.data.email).toBe("new-user@example.com");
+      }
+
+      expect(loggerMock.info).toHaveBeenCalledWith(
+        "user.oauth_user_created.succeeded",
+        {
+          userId: "new-user-id",
+          provider: "KAKAO",
+        },
+      );
+    });
+
+    it("repository 에러가 발생하면 USER_OAUTH_LOGIN_FAILED 실패 Result를 반환하고 로그를 남긴다", async () => {
+      const error = createDatabaseError();
+
+      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockRejectedValue(
+        error,
+      );
+
+      const result = await findOrCreateOAuthUserService({
+        provider: "GOOGLE",
+        providerUserId: "google-user-id",
+        email: "user@example.com",
+        name: "Google User",
+        avatarUrl: null,
+      });
+
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          code: "USER_OAUTH_LOGIN_FAILED",
+          message: "소셜 로그인 처리 중 오류가 발생했습니다.",
+          cause: error,
+        },
+      });
+
+      expect(loggerMock.error).toHaveBeenCalledWith("user.oauth_login.failed", {
+        provider: "GOOGLE",
+        providerUserId: "google-user-id",
         error,
       });
     });
