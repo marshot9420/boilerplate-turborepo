@@ -4,7 +4,10 @@ import { CONTENT } from "../content.constant";
 import {
   ContentIdParam,
   CreateContentRequest,
+  UpdateContentByIdRequest,
   UpdateContentRequest,
+  UpdateContentStatusByIdRequest,
+  UpdateContentStatusRequest,
 } from "../content.schema";
 
 describe("content.schema", () => {
@@ -37,7 +40,6 @@ describe("content.schema", () => {
       const result = CreateContentRequest.safeParse({
         title: "테스트 제목",
         content: "테스트 본문",
-        authorId: "550e8400-e29b-41d4-a716-446655440000",
       });
 
       expect(result.success).toBe(true);
@@ -47,7 +49,6 @@ describe("content.schema", () => {
       const result = CreateContentRequest.safeParse({
         title: "  테스트 제목  ",
         content: "  테스트 본문  ",
-        authorId: "550e8400-e29b-41d4-a716-446655440000",
       });
 
       expect(result.success).toBe(true);
@@ -62,7 +63,6 @@ describe("content.schema", () => {
       const result = CreateContentRequest.safeParse({
         title: "",
         content: "테스트 본문",
-        authorId: "550e8400-e29b-41d4-a716-446655440000",
       });
 
       expect(result.success).toBe(false);
@@ -78,7 +78,6 @@ describe("content.schema", () => {
       const result = CreateContentRequest.safeParse({
         title: "가".repeat(CONTENT.TITLE.MAX_LENGTH + 1),
         content: "테스트 본문",
-        authorId: "550e8400-e29b-41d4-a716-446655440000",
       });
 
       expect(result.success).toBe(false);
@@ -92,7 +91,6 @@ describe("content.schema", () => {
       const result = CreateContentRequest.safeParse({
         title: "테스트 제목",
         content: "",
-        authorId: "550e8400-e29b-41d4-a716-446655440000",
       });
 
       expect(result.success).toBe(false);
@@ -103,29 +101,13 @@ describe("content.schema", () => {
         );
       }
     });
-
-    it("authorId가 UUID가 아니면 실패한다", () => {
-      const result = CreateContentRequest.safeParse({
-        title: "테스트 제목",
-        content: "테스트 본문",
-        authorId: "invalid-author-id",
-      });
-
-      expect(result.success).toBe(false);
-
-      if (!result.success) {
-        expect(result.error.issues[0]?.message).toBe(
-          "작성자 식별자가 올바르지 않습니다.",
-        );
-      }
-    });
   });
 
   describe("UpdateContentRequest", () => {
-    it("빈 객체를 허용한다", () => {
+    it("빈 객체를 거부한다", () => {
       const result = UpdateContentRequest.safeParse({});
 
-      expect(result.success).toBe(true);
+      expect(result.success).toBe(false);
     });
 
     it("부분 수정 입력값을 허용한다", () => {
@@ -150,33 +132,9 @@ describe("content.schema", () => {
       }
     });
 
-    it("status로 PUBLISHED를 허용한다", () => {
-      const result = UpdateContentRequest.safeParse({
-        status: "PUBLISHED",
-      });
-
-      expect(result.success).toBe(true);
-    });
-
-    it("status로 HIDDEN을 허용한다", () => {
+    it("status는 수정 입력값으로 허용하지 않는다", () => {
       const result = UpdateContentRequest.safeParse({
         status: "HIDDEN",
-      });
-
-      expect(result.success).toBe(true);
-    });
-
-    it("status로 DELETED를 허용한다", () => {
-      const result = UpdateContentRequest.safeParse({
-        status: "DELETED",
-      });
-
-      expect(result.success).toBe(true);
-    });
-
-    it("허용되지 않는 status를 거부한다", () => {
-      const result = UpdateContentRequest.safeParse({
-        status: "INVALID_STATUS",
       });
 
       expect(result.success).toBe(false);
@@ -203,6 +161,92 @@ describe("content.schema", () => {
 
       if (!result.success) {
         expect(result.error.issues[0]?.message).toBe(CONTENT.BODY.MIN_MESSAGE);
+      }
+    });
+  });
+
+  describe("UpdateContentByIdRequest", () => {
+    it("id와 수정 입력값을 함께 허용한다", () => {
+      const result = UpdateContentByIdRequest.safeParse({
+        id: "550e8400-e29b-41d4-a716-446655440000",
+        title: "수정된 제목",
+      });
+
+      expect(result.success).toBe(true);
+    });
+
+    it("id가 UUID가 아니면 실패한다", () => {
+      const result = UpdateContentByIdRequest.safeParse({
+        id: "invalid-id",
+        title: "수정된 제목",
+      });
+
+      expect(result.success).toBe(false);
+
+      if (!result.success) {
+        expect(result.error.issues[0]?.message).toBe(
+          CONTENT.ID.INVALID_MESSAGE,
+        );
+      }
+    });
+  });
+
+  describe("UpdateContentStatusRequest", () => {
+    it("PUBLISHED 상태를 허용한다", () => {
+      const result = UpdateContentStatusRequest.safeParse({
+        status: "PUBLISHED",
+      });
+
+      expect(result.success).toBe(true);
+    });
+
+    it("HIDDEN 상태를 허용한다", () => {
+      const result = UpdateContentStatusRequest.safeParse({
+        status: "HIDDEN",
+      });
+
+      expect(result.success).toBe(true);
+    });
+
+    it("DELETED 상태는 상태 변경 요청에서 허용하지 않는다", () => {
+      const result = UpdateContentStatusRequest.safeParse({
+        status: "DELETED",
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("허용되지 않는 status를 거부한다", () => {
+      const result = UpdateContentStatusRequest.safeParse({
+        status: "INVALID_STATUS",
+      });
+
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe("UpdateContentStatusByIdRequest", () => {
+    it("id와 status를 함께 허용한다", () => {
+      const result = UpdateContentStatusByIdRequest.safeParse({
+        id: "550e8400-e29b-41d4-a716-446655440000",
+        status: "HIDDEN",
+      });
+
+      expect(result.success).toBe(true);
+    });
+
+    it("id가 UUID가 아니면 실패한다", () => {
+      const result = UpdateContentStatusByIdRequest.safeParse({
+        id: "invalid-id",
+        status: "HIDDEN",
+      });
+
+      expect(result.success).toBe(false);
+
+      if (!result.success) {
+        expect(result.error.issues[0]?.message).toBe(
+          CONTENT.ID.INVALID_MESSAGE,
+        );
       }
     });
   });

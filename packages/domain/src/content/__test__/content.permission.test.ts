@@ -5,6 +5,7 @@ import {
   canDeleteContent,
   canReadContent,
   canUpdateContent,
+  canUpdateContentStatus,
   type ContentPermissionActor,
 } from "../content.permission";
 
@@ -98,7 +99,7 @@ describe("content.permission", () => {
       ).toBe(false);
     });
 
-    it("현재 구현상 ADMIN은 DELETED 콘텐츠도 조회할 수 있다", () => {
+    it("ADMIN은 DELETED 콘텐츠를 조회할 수 있다", () => {
       const actor = createActor({
         role: "ADMIN",
       });
@@ -111,7 +112,7 @@ describe("content.permission", () => {
       ).toBe(true);
     });
 
-    it("현재 구현상 작성자는 본인의 DELETED 콘텐츠도 조회할 수 있다", () => {
+    it("작성자도 본인의 DELETED 콘텐츠는 조회할 수 없다", () => {
       const actor = createActor({
         id: "author-id",
         role: "USER",
@@ -122,7 +123,7 @@ describe("content.permission", () => {
           authorId: "author-id",
           status: "DELETED",
         }),
-      ).toBe(true);
+      ).toBe(false);
     });
   });
 
@@ -235,6 +236,35 @@ describe("content.permission", () => {
           authorId: "author-id",
         }),
       ).toBe(false);
+    });
+  });
+
+  describe("canUpdateContentStatus", () => {
+    it("ACTIVE ADMIN은 콘텐츠 상태를 변경할 수 있다", () => {
+      const actor = createActor({
+        role: "ADMIN",
+        status: "ACTIVE",
+      });
+
+      expect(canUpdateContentStatus(actor)).toBe(true);
+    });
+
+    it("USER는 ACTIVE 상태여도 콘텐츠 상태를 변경할 수 없다", () => {
+      const actor = createActor({
+        role: "USER",
+        status: "ACTIVE",
+      });
+
+      expect(canUpdateContentStatus(actor)).toBe(false);
+    });
+
+    it("ADMIN이어도 ACTIVE 상태가 아니면 콘텐츠 상태를 변경할 수 없다", () => {
+      const actor = createActor({
+        role: "ADMIN",
+        status: "SUSPENDED",
+      });
+
+      expect(canUpdateContentStatus(actor)).toBe(false);
     });
   });
 });

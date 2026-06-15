@@ -6,25 +6,26 @@ import { requireUser } from "@repo/auth/server";
 import type { ActionResult } from "@repo/core/action";
 import { createAction } from "@repo/core/action";
 import {
-  CreateContentRequest,
+  UpdateContentByIdRequest,
   type ContentDetailResponse,
 } from "@repo/domain/content/client";
-import { createContentService } from "@repo/domain/content/server";
+import { updateContentService } from "@repo/domain/content/server";
 
 import { URLS } from "@/constants";
 
-export async function createContentAction(
+export async function updateMyContentAction(
   _prevState: ActionResult<ContentDetailResponse> | null,
   formData: FormData,
 ) {
   const session = await requireUser();
 
   const result = await createAction({
-    actionName: "content.create",
-    schema: CreateContentRequest,
+    actionName: "content.update_my_content",
+    schema: UpdateContentByIdRequest,
     formData,
-    handler: (input) =>
-      createContentService(
+    handler: ({ id, ...input }) =>
+      updateContentService(
+        id,
         {
           id: session.user.id,
           role: session.user.role,
@@ -32,7 +33,7 @@ export async function createContentAction(
         },
         input,
       ),
-    successMessage: "콘텐츠가 생성되었습니다.",
+    successMessage: "콘텐츠가 수정되었습니다.",
   });
 
   if (result.ok) {

@@ -6,33 +6,30 @@ import { requireUser } from "@repo/auth/server";
 import type { ActionResult } from "@repo/core/action";
 import { createAction } from "@repo/core/action";
 import {
-  CreateContentRequest,
+  ContentIdParam,
   type ContentDetailResponse,
 } from "@repo/domain/content/client";
-import { createContentService } from "@repo/domain/content/server";
+import { softDeleteContentService } from "@repo/domain/content/server";
 
 import { URLS } from "@/constants";
 
-export async function createContentAction(
+export async function deleteMyContentAction(
   _prevState: ActionResult<ContentDetailResponse> | null,
   formData: FormData,
 ) {
   const session = await requireUser();
 
   const result = await createAction({
-    actionName: "content.create",
-    schema: CreateContentRequest,
+    actionName: "content.delete_my_content",
+    schema: ContentIdParam,
     formData,
-    handler: (input) =>
-      createContentService(
-        {
-          id: session.user.id,
-          role: session.user.role,
-          status: session.user.status,
-        },
-        input,
-      ),
-    successMessage: "콘텐츠가 생성되었습니다.",
+    handler: ({ id }) =>
+      softDeleteContentService(id, {
+        id: session.user.id,
+        role: session.user.role,
+        status: session.user.status,
+      }),
+    successMessage: "콘텐츠가 삭제되었습니다.",
   });
 
   if (result.ok) {

@@ -21,8 +21,12 @@ export function canReadContent(
     return true;
   }
 
-  if (!actor) {
+  if (!actor || actor.status !== "ACTIVE") {
     return false;
+  }
+
+  if (content.status === "DELETED") {
+    return actor.role === "ADMIN";
   }
 
   return actor.role === "ADMIN" || actor.id === content.authorId;
@@ -52,4 +56,8 @@ export function canDeleteContent(
   }
 
   return actor.role === "ADMIN" || actor.id === content.authorId;
+}
+
+export function canUpdateContentStatus(actor: ContentPermissionActor) {
+  return actor.status === "ACTIVE" && actor.role === "ADMIN";
 }
