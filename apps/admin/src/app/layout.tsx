@@ -27,7 +27,7 @@ export default function RootLayout({
   const isDev = serverEnv.NODE_ENV !== "production";
 
   return (
-    <html lang="ko">
+    <html lang="ko" data-ds-theme="admin" data-ds-mode="light">
       <body
         {...(isDev ? { suppressHydrationWarning: true } : {})} // Brave 브라우저에서 발생하는 개발 환경 문제 (`cz-shortcut-listen="true"` 주입 문제)
       >

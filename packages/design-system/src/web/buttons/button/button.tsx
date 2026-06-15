@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { type ComponentPropsWithoutRef } from "react";
 
-import { Button as ButtonPrimitive } from "../../../primitives/button";
+import { Button as ButtonPrimitive } from "../../../primitives/button/button";
 import { cn } from "../../../utils";
 
 const buttonVariants = cva(
@@ -16,10 +16,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: "bg-primary text-primary-foreground hover:bg-primary/90",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        outline: "border border-border bg-background hover:bg-muted",
-        ghost: "hover:bg-muted",
+        secondary: "bg-muted text-foreground hover:bg-muted/80",
+        outline:
+          "border border-border bg-background text-foreground hover:bg-muted",
+        ghost: "bg-transparent text-foreground hover:bg-muted",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
       },
@@ -45,7 +45,7 @@ export interface ButtonProps
   extends
     Omit<
       ComponentPropsWithoutRef<typeof ButtonPrimitive>,
-      "className" | "variant" | "size"
+      "className" | "variant" | "size" | "fullWidth"
     >,
     VariantProps<typeof buttonVariants> {
   className?: string;
@@ -60,6 +60,9 @@ export default function Button({
 }: ButtonProps) {
   return (
     <ButtonPrimitive
+      data-variant={variant ?? "primary"}
+      data-size={size ?? "md"}
+      data-full-width={fullWidth ? "true" : "false"}
       className={cn(buttonVariants({ variant, size, fullWidth }), className)}
       {...props}
     />

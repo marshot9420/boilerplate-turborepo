@@ -1,35 +1,105 @@
-@theme {
-  --color-background: oklch(1 0 0);
-  --color-foreground: oklch(0.145 0 0);
+:root {
+  --ds-web-light-background: oklch(1 0 0);
+  --ds-web-light-foreground: oklch(0.145 0 0);
+  --ds-web-light-card: oklch(1 0 0);
+  --ds-web-light-card-foreground: oklch(0.145 0 0);
+  --ds-web-light-popover: oklch(1 0 0);
+  --ds-web-light-popover-foreground: oklch(0.145 0 0);
+  --ds-web-light-primary: oklch(0.205 0 0);
+  --ds-web-light-primary-foreground: oklch(0.985 0 0);
+  --ds-web-light-secondary: oklch(0.97 0 0);
+  --ds-web-light-secondary-foreground: oklch(0.205 0 0);
+  --ds-web-light-muted: oklch(0.97 0 0);
+  --ds-web-light-muted-foreground: oklch(0.556 0 0);
+  --ds-web-light-accent: oklch(0.97 0 0);
+  --ds-web-light-accent-foreground: oklch(0.205 0 0);
+  --ds-web-light-destructive: oklch(0.577 0.245 27.325);
+  --ds-web-light-destructive-foreground: oklch(0.985 0 0);
+  --ds-web-light-success: oklch(0.62 0.15 145);
+  --ds-web-light-success-foreground: oklch(0.985 0 0);
+  --ds-web-light-warning: oklch(0.75 0.17 75);
+  --ds-web-light-warning-foreground: oklch(0.145 0 0);
+  --ds-web-light-info: oklch(0.62 0.13 250);
+  --ds-web-light-info-foreground: oklch(0.985 0 0);
+  --ds-web-light-border: oklch(0.922 0 0);
+  --ds-web-light-input: oklch(0.922 0 0);
+  --ds-web-light-ring: oklch(0.708 0 0);
 
-  --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.145 0 0);
+  --ds-web-dark-background: oklch(0.145 0 0);
+  --ds-web-dark-foreground: oklch(0.985 0 0);
+  --ds-web-dark-card: oklch(0.205 0 0);
+  --ds-web-dark-card-foreground: oklch(0.985 0 0);
+  --ds-web-dark-popover: oklch(0.205 0 0);
+  --ds-web-dark-popover-foreground: oklch(0.985 0 0);
+  --ds-web-dark-primary: oklch(0.922 0 0);
+  --ds-web-dark-primary-foreground: oklch(0.205 0 0);
+  --ds-web-dark-secondary: oklch(0.269 0 0);
+  --ds-web-dark-secondary-foreground: oklch(0.985 0 0);
+  --ds-web-dark-muted: oklch(0.269 0 0);
+  --ds-web-dark-muted-foreground: oklch(0.708 0 0);
+  --ds-web-dark-accent: oklch(0.269 0 0);
+  --ds-web-dark-accent-foreground: oklch(0.985 0 0);
+  --ds-web-dark-destructive: oklch(0.704 0.191 22.216);
+  --ds-web-dark-destructive-foreground: oklch(0.985 0 0);
+  --ds-web-dark-success: oklch(0.7 0.14 145);
+  --ds-web-dark-success-foreground: oklch(0.145 0 0);
+  --ds-web-dark-warning: oklch(0.82 0.15 75);
+  --ds-web-dark-warning-foreground: oklch(0.145 0 0);
+  --ds-web-dark-info: oklch(0.75 0.12 250);
+  --ds-web-dark-info-foreground: oklch(0.145 0 0);
+  --ds-web-dark-border: oklch(0.269 0 0);
+  --ds-web-dark-input: oklch(0.269 0 0);
+  --ds-web-dark-ring: oklch(0.556 0 0);
 
-  --color-popover: oklch(1 0 0);
-  --color-popover-foreground: oklch(0.145 0 0);
+  --ds-admin-light-background: oklch(0.985 0 0);
+  --ds-admin-light-foreground: oklch(0.145 0 0);
+  --ds-admin-light-card: oklch(1 0 0);
+  --ds-admin-light-card-foreground: oklch(0.145 0 0);
+  --ds-admin-light-popover: oklch(1 0 0);
+  --ds-admin-light-popover-foreground: oklch(0.145 0 0);
+  --ds-admin-light-primary: oklch(0.35 0.12 260);
+  --ds-admin-light-primary-foreground: oklch(0.985 0 0);
+  --ds-admin-light-secondary: oklch(0.94 0.01 260);
+  --ds-admin-light-secondary-foreground: oklch(0.2 0.03 260);
+  --ds-admin-light-muted: oklch(0.94 0.01 260);
+  --ds-admin-light-muted-foreground: oklch(0.45 0.02 260);
+  --ds-admin-light-accent: oklch(0.94 0.01 260);
+  --ds-admin-light-accent-foreground: oklch(0.2 0.03 260);
+  --ds-admin-light-destructive: oklch(0.577 0.245 27.325);
+  --ds-admin-light-destructive-foreground: oklch(0.985 0 0);
+  --ds-admin-light-success: oklch(0.6 0.15 145);
+  --ds-admin-light-success-foreground: oklch(0.985 0 0);
+  --ds-admin-light-warning: oklch(0.74 0.17 75);
+  --ds-admin-light-warning-foreground: oklch(0.145 0 0);
+  --ds-admin-light-info: oklch(0.58 0.13 250);
+  --ds-admin-light-info-foreground: oklch(0.985 0 0);
+  --ds-admin-light-border: oklch(0.88 0.01 260);
+  --ds-admin-light-input: oklch(0.88 0.01 260);
+  --ds-admin-light-ring: oklch(0.35 0.12 260);
 
-  --color-primary: oklch(0.205 0 0);
-  --color-primary-foreground: oklch(0.985 0 0);
-
-  --color-secondary: oklch(0.97 0 0);
-  --color-secondary-foreground: oklch(0.205 0 0);
-
-  --color-muted: oklch(0.97 0 0);
-  --color-muted-foreground: oklch(0.556 0 0);
-
-  --color-accent: oklch(0.97 0 0);
-  --color-accent-foreground: oklch(0.205 0 0);
-
-  --color-destructive: oklch(0.577 0.245 27.325);
-  --color-destructive-foreground: oklch(0.985 0 0);
-
-  --color-border: oklch(0.922 0 0);
-  --color-input: oklch(0.922 0 0);
-  --color-ring: oklch(0.708 0 0);
-
-  --radius-xs: 0.25rem;
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  --ds-admin-dark-background: oklch(0.13 0.025 260);
+  --ds-admin-dark-foreground: oklch(0.985 0 0);
+  --ds-admin-dark-card: oklch(0.18 0.03 260);
+  --ds-admin-dark-card-foreground: oklch(0.985 0 0);
+  --ds-admin-dark-popover: oklch(0.18 0.03 260);
+  --ds-admin-dark-popover-foreground: oklch(0.985 0 0);
+  --ds-admin-dark-primary: oklch(0.72 0.13 260);
+  --ds-admin-dark-primary-foreground: oklch(0.12 0.03 260);
+  --ds-admin-dark-secondary: oklch(0.24 0.035 260);
+  --ds-admin-dark-secondary-foreground: oklch(0.985 0 0);
+  --ds-admin-dark-muted: oklch(0.24 0.035 260);
+  --ds-admin-dark-muted-foreground: oklch(0.75 0.025 260);
+  --ds-admin-dark-accent: oklch(0.24 0.035 260);
+  --ds-admin-dark-accent-foreground: oklch(0.985 0 0);
+  --ds-admin-dark-destructive: oklch(0.704 0.191 22.216);
+  --ds-admin-dark-destructive-foreground: oklch(0.985 0 0);
+  --ds-admin-dark-success: oklch(0.7 0.14 145);
+  --ds-admin-dark-success-foreground: oklch(0.145 0 0);
+  --ds-admin-dark-warning: oklch(0.82 0.15 75);
+  --ds-admin-dark-warning-foreground: oklch(0.145 0 0);
+  --ds-admin-dark-info: oklch(0.75 0.12 250);
+  --ds-admin-dark-info-foreground: oklch(0.145 0 0);
+  --ds-admin-dark-border: oklch(0.28 0.035 260);
+  --ds-admin-dark-input: oklch(0.28 0.035 260);
+  --ds-admin-dark-ring: oklch(0.72 0.13 260);
 }

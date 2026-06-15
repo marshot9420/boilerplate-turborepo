@@ -1,12 +1,17 @@
-@theme {
+@import "../styles/tokens.css";
+
+:root,
+[data-ds-theme="admin"] {
+  color-scheme: light;
+
   --color-background: oklch(0.985 0 0);
   --color-foreground: oklch(0.145 0 0);
 
+  --color-surface: oklch(1 0 0);
+  --color-surface-foreground: oklch(0.145 0 0);
+
   --color-primary: oklch(0.35 0.12 260);
   --color-primary-foreground: oklch(0.985 0 0);
-
-  --color-secondary: oklch(0.94 0.01 260);
-  --color-secondary-foreground: oklch(0.2 0.03 260);
 
   --color-muted: oklch(0.94 0.01 260);
   --color-muted-foreground: oklch(0.45 0.02 260);
@@ -17,4 +22,29 @@
   --color-border: oklch(0.88 0.01 260);
   --color-input: oklch(0.88 0.01 260);
   --color-ring: oklch(0.35 0.12 260);
+}
+
+:root[data-ds-mode="dark"],
+[data-ds-theme="admin"][data-ds-mode="dark"],
+[data-ds-mode="dark"] [data-ds-theme="admin"] {
+  color-scheme: dark;
+
+  --color-background: oklch(0.13 0.025 260);
+  --color-foreground: oklch(0.985 0 0);
+
+  --color-surface: oklch(0.18 0.03 260);
+  --color-surface-foreground: oklch(0.985 0 0);
+
+  --color-primary: oklch(0.72 0.13 260);
+  --color-primary-foreground: oklch(0.12 0.03 260);
+
+  --color-muted: oklch(0.24 0.035 260);
+  --color-muted-foreground: oklch(0.75 0.025 260);
+
+  --color-destructive: oklch(0.704 0.191 22.216);
+  --color-destructive-foreground: oklch(0.985 0 0);
+
+  --color-border: oklch(0.28 0.035 260);
+  --color-input: oklch(0.28 0.035 260);
+  --color-ring: oklch(0.72 0.13 260);
 }

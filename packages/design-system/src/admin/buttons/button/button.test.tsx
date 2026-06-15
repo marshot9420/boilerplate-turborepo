@@ -62,8 +62,8 @@ describe("Admin Button", () => {
     const button = screen.getByRole("button", { name: "저장" });
 
     expect(button).toHaveClass("border-border");
-    expect(button).toHaveClass("bg-secondary");
-    expect(button).toHaveClass("text-secondary-foreground");
+    expect(button).toHaveClass("bg-muted");
+    expect(button).toHaveClass("text-foreground");
   });
 
   it("outline variant 클래스를 적용한다", () => {

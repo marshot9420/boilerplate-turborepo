@@ -5,7 +5,9 @@ import Button from "./button";
 const meta = {
   title: "Admin/Buttons/Button",
   component: Button,
+  tags: ["autodocs"],
   parameters: {
+    layout: "centered",
     dsTheme: "admin",
   },
   args: {
@@ -64,6 +66,7 @@ export const Ghost: Story = {
 export const Destructive: Story = {
   args: {
     variant: "destructive",
+    children: "Delete",
   },
 };
 
@@ -137,6 +140,50 @@ export const States: Story = {
       <Button variant="outline" disabled>
         Outline disabled
       </Button>
+      <Button variant="destructive" disabled>
+        Destructive disabled
+      </Button>
+    </div>
+  ),
+};
+
+export const LightAndDark: Story = {
+  parameters: {
+    layout: "padded",
+  },
+  render: () => (
+    <div className="grid gap-4 md:grid-cols-2">
+      <div
+        data-ds-theme="admin"
+        data-ds-mode="light"
+        className="rounded-lg border border-border bg-background p-4 text-foreground"
+      >
+        <p className="mb-4 text-sm font-medium">Admin Light</p>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="primary">Primary</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="outline">Outline</Button>
+          <Button variant="ghost">Ghost</Button>
+          <Button variant="destructive">Destructive</Button>
+        </div>
+      </div>
+
+      <div
+        data-ds-theme="admin"
+        data-ds-mode="dark"
+        className="rounded-lg border border-border bg-background p-4 text-foreground"
+      >
+        <p className="mb-4 text-sm font-medium">Admin Dark</p>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="primary">Primary</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="outline">Outline</Button>
+          <Button variant="ghost">Ghost</Button>
+          <Button variant="destructive">Destructive</Button>
+        </div>
+      </div>
     </div>
   ),
 };

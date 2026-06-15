@@ -9,21 +9,29 @@ import { cn } from "../../utils";
 const buttonVariants = cva(
   [
     "inline-flex items-center justify-center gap-2",
-    "rounded-md transition-colors",
-    "font-medium whitespace-nowrap",
+    "rounded-md font-medium whitespace-nowrap",
+    "transition-colors",
     "outline-none",
+    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     "disabled:pointer-events-none disabled:opacity-50",
   ],
   {
     variants: {
       variant: {
-        default: ["bg-black text-white", "hover:bg-black/90"],
+        default: ["bg-primary text-primary-foreground", "hover:bg-primary/90"],
 
-        outline: ["border border-border", "bg-transparent", "hover:bg-muted"],
+        outline: [
+          "border border-border",
+          "bg-background text-foreground",
+          "hover:bg-muted",
+        ],
 
-        ghost: ["bg-transparent", "hover:bg-muted"],
+        ghost: ["bg-transparent text-foreground", "hover:bg-muted"],
 
-        destructive: ["bg-red-500 text-white", "hover:bg-red-500/90"],
+        destructive: [
+          "bg-destructive text-destructive-foreground",
+          "hover:bg-destructive/90",
+        ],
       },
 
       size: {
@@ -77,6 +85,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         type={type ?? "button"}
         disabled={isDisabled}
+        aria-busy={loading ? true : undefined}
+        data-variant={variant ?? "default"}
+        data-size={size ?? "md"}
+        data-disabled={isDisabled ? "true" : "false"}
+        data-loading={loading ? "true" : "false"}
+        data-full-width={fullWidth ? "true" : "false"}
         className={cn(
           buttonVariants({
             variant,
@@ -85,7 +99,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           }),
           className,
         )}
-        data-loading={loading ? "true" : "false"}
         {...props}
       >
         {leftSlot}
@@ -99,5 +112,3 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button";
-
-export default Button;

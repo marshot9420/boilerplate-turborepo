@@ -8,20 +8,21 @@ import { cn } from "../../utils";
 
 const inputVariants = cva(
   [
-    "flex w-full rounded-md border bg-transparent",
-    "px-3 py-2 text-sm",
+    "flex w-full rounded-md border border-input",
+    "bg-background text-foreground",
     "transition-colors",
-    "placeholder:text-muted-foreground",
     "outline-none",
+    "placeholder:text-muted-foreground",
+    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     "disabled:cursor-not-allowed disabled:opacity-50",
-    "aria-invalid:border-red-500",
+    "data-[invalid=true]:border-destructive",
   ],
   {
     variants: {
       size: {
-        sm: "h-8",
-        md: "h-10",
-        lg: "h-12 text-base",
+        sm: "h-8 px-3 text-sm",
+        md: "h-10 px-3 text-sm",
+        lg: "h-12 px-4 text-base",
       },
     },
 
@@ -38,7 +39,7 @@ export interface InputProps
   hasError?: boolean;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
+const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       className,
@@ -57,8 +58,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         disabled={disabled}
         aria-invalid={resolvedAriaInvalid}
-        data-error={hasError ? "true" : "false"}
+        data-size={size ?? "md"}
         data-disabled={disabled ? "true" : "false"}
+        data-invalid={hasError ? "true" : "false"}
         className={cn(inputVariants({ size }), className)}
         {...props}
       />

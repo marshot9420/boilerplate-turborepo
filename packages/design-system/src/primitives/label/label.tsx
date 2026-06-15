@@ -1,39 +1,48 @@
 "use client";
 
-import { cva, type VariantProps } from "class-variance-authority";
-
-import { forwardRef, type LabelHTMLAttributes } from "react";
+import { forwardRef, type LabelHTMLAttributes, type ReactNode } from "react";
 
 import { cn } from "../../utils";
 
-const labelVariants = cva(
-  [
-    "text-sm font-medium leading-none",
-    "peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-  ],
-  {
-    variants: {
-      required: {
-        true: "after:ml-1 after:text-red-500 after:content-['*']",
-      },
+export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+  required?: boolean;
+  disabled?: boolean;
+  requiredSlot?: ReactNode;
+}
+
+const Label = forwardRef<HTMLLabelElement, LabelProps>(
+  (
+    {
+      className,
+      required = false,
+      disabled = false,
+      requiredSlot,
+      children,
+      ...props
     },
-  },
-);
-
-export interface LabelProps
-  extends
-    LabelHTMLAttributes<HTMLLabelElement>,
-    VariantProps<typeof labelVariants> {}
-
-export const Label = forwardRef<HTMLLabelElement, LabelProps>(
-  ({ className, required, ...props }, ref) => {
+    ref,
+  ) => {
     return (
       <label
         ref={ref}
-        className={cn(labelVariants({ required }), className)}
         data-required={required ? "true" : "false"}
+        data-disabled={disabled ? "true" : "false"}
+        className={cn(
+          "inline-flex items-center gap-1",
+          "text-sm font-medium leading-none text-foreground",
+          "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50",
+          className,
+        )}
         {...props}
-      />
+      >
+        {children}
+
+        {required ? (
+          <span aria-hidden="true" className="text-destructive">
+            {requiredSlot ?? "*"}
+          </span>
+        ) : null}
+      </label>
     );
   },
 );
