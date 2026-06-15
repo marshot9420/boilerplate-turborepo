@@ -2,18 +2,23 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
+import {
+  forwardRef,
+  type AnchorHTMLAttributes,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
 
-import { cn } from "../../utils";
+import { cn } from "../../../utils";
 
-const buttonVariants = cva(
+const linkButtonVariants = cva(
   [
     "inline-flex items-center justify-center gap-2",
     "rounded-md font-medium whitespace-nowrap",
     "transition-colors",
     "outline-none",
     "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-    "disabled:pointer-events-none disabled:opacity-50",
+    "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
   ],
   {
     variants: {
@@ -52,53 +57,60 @@ const buttonVariants = cva(
   },
 );
 
-export interface ButtonProps
+export interface LinkButtonProps
   extends
-    ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  loading?: boolean;
+    AnchorHTMLAttributes<HTMLAnchorElement>,
+    VariantProps<typeof linkButtonVariants> {
+  disabled?: boolean;
   leftSlot?: ReactNode;
   rightSlot?: ReactNode;
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(
   (
     {
       className,
       variant,
       size,
       fullWidth,
-      loading = false,
-      disabled,
+      disabled = false,
       leftSlot,
       rightSlot,
       children,
-      type,
+      tabIndex,
+      onClick,
       ...props
     },
     ref,
   ) => {
-    const isDisabled = disabled || loading;
+    function handleClick(event: MouseEvent<HTMLAnchorElement>) {
+      if (disabled) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
+
+      onClick?.(event);
+    }
 
     return (
-      <button
+      <a
         ref={ref}
-        type={type ?? "button"}
-        disabled={isDisabled}
-        aria-busy={loading ? true : undefined}
+        aria-disabled={disabled ? true : undefined}
+        tabIndex={disabled ? -1 : tabIndex}
         data-variant={variant ?? "default"}
         data-size={size ?? "md"}
-        data-disabled={isDisabled ? "true" : "false"}
-        data-loading={loading ? "true" : "false"}
+        data-disabled={disabled ? "true" : "false"}
         data-full-width={fullWidth ? "true" : "false"}
         className={cn(
-          buttonVariants({
+          linkButtonVariants({
             variant,
             size,
             fullWidth,
           }),
           className,
         )}
+        onClick={handleClick}
         {...props}
       >
         {leftSlot}
@@ -106,9 +118,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
 
         {rightSlot}
-      </button>
+      </a>
     );
   },
 );
 
-Button.displayName = "Button";
+LinkButton.displayName = "LinkButton";
+
+export default LinkButton;
