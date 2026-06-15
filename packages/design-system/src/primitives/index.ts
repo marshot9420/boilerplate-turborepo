@@ -1,4 +1,4 @@
 export * from "./buttons";
-export * from "./input";
+export * from "./inputs";
 export * from "./label";
 export * from "./textarea";
