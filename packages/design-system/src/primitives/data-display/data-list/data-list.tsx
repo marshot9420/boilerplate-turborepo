@@ -22,7 +22,7 @@ const DataList = forwardRef<HTMLDListElement, DataListProps>(
           size === "sm" && "gap-2 text-xs",
           size === "md" && "gap-3 text-sm",
           size === "lg" && "gap-4 text-base",
-          divided && "divide-y divide-border",
+          divided && "divide-border divide-y",
           className,
         )}
         data-size={size}
@@ -47,8 +47,7 @@ export const DataListItem = forwardRef<HTMLDivElement, DataListItemProps>(
         className={cn(
           "grid gap-1",
           orientation === "vertical" && "grid-cols-1",
-          orientation === "horizontal" &&
-            "grid-cols-[minmax(8rem,14rem)_1fr] items-start gap-4",
+          orientation === "horizontal" && "grid-cols-[minmax(8rem,14rem)_1fr] items-start gap-4",
           orientation === "responsive" &&
             "grid-cols-1 sm:grid-cols-[minmax(8rem,14rem)_1fr] sm:items-start sm:gap-4",
           className,
@@ -67,11 +66,7 @@ export type DataListLabelProps = HTMLAttributes<HTMLElement>;
 export const DataListLabel = forwardRef<HTMLElement, DataListLabelProps>(
   ({ className, ...props }, ref) => {
     return (
-      <dt
-        ref={ref}
-        className={cn("font-medium text-muted-foreground", className)}
-        {...props}
-      />
+      <dt ref={ref} className={cn("text-muted-foreground font-medium", className)} {...props} />
     );
   },
 );
@@ -84,8 +79,7 @@ export interface DataListValueProps extends HTMLAttributes<HTMLElement> {
 
 export const DataListValue = forwardRef<HTMLElement, DataListValueProps>(
   ({ className, children, placeholder = "—", ...props }, ref) => {
-    const hasValue =
-      children !== null && children !== undefined && children !== "";
+    const hasValue = children !== null && children !== undefined && children !== "";
 
     return (
       <dd
