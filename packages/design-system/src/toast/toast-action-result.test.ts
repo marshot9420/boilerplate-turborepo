@@ -37,7 +37,7 @@ describe("toastActionResult", () => {
 
     toastActionResult(result);
 
-    expect(toast.success).toHaveBeenCalledWith("콘텐츠가 생성되었습니다.");
+    expect(toast.success).toHaveBeenCalledWith("콘텐츠가 생성되었습니다.", undefined);
   });
 
   it("성공 result에 message가 없으면 기본 성공 메시지를 사용한다", () => {
@@ -48,7 +48,7 @@ describe("toastActionResult", () => {
 
     toastActionResult(result);
 
-    expect(toast.success).toHaveBeenCalledWith(DEFAULT_TOAST_SUCCESS_MESSAGE);
+    expect(toast.success).toHaveBeenCalledWith(DEFAULT_TOAST_SUCCESS_MESSAGE, undefined);
   });
 
   it("성공 result에 message가 없고 successMessage option이 있으면 option을 사용한다", () => {
@@ -61,7 +61,7 @@ describe("toastActionResult", () => {
       successMessage: "완료되었습니다.",
     });
 
-    expect(toast.success).toHaveBeenCalledWith("완료되었습니다.");
+    expect(toast.success).toHaveBeenCalledWith("완료되었습니다.", undefined);
   });
 
   it("실패 result면 error toast를 호출한다", () => {
@@ -73,7 +73,7 @@ describe("toastActionResult", () => {
 
     toastActionResult(result);
 
-    expect(toast.error).toHaveBeenCalledWith("권한이 없습니다.");
+    expect(toast.error).toHaveBeenCalledWith("권한이 없습니다.", undefined);
   });
 
   it("실패 result에 message가 없을 수 없는 구조지만 fallback option을 유지한다", () => {
@@ -87,7 +87,7 @@ describe("toastActionResult", () => {
       errorMessage: "실패했습니다.",
     });
 
-    expect(toast.error).toHaveBeenCalledWith("실패했습니다.");
+    expect(toast.error).toHaveBeenCalledWith("실패했습니다.", undefined);
   });
 
   it("실패 result의 message와 option이 모두 비어 있으면 기본 실패 메시지를 사용한다", () => {
@@ -99,6 +99,74 @@ describe("toastActionResult", () => {
 
     toastActionResult(result);
 
-    expect(toast.error).toHaveBeenCalledWith(DEFAULT_TOAST_ERROR_MESSAGE);
+    expect(toast.error).toHaveBeenCalledWith(DEFAULT_TOAST_ERROR_MESSAGE, undefined);
+  });
+
+  it("성공 result의 message가 공백이면 option successMessage를 사용한다", () => {
+    const result = {
+      ok: true,
+      data: null,
+      message: "   ",
+    } satisfies ActionResult;
+
+    toastActionResult(result, {
+      successMessage: "완료되었습니다.",
+    });
+
+    expect(toast.success).toHaveBeenCalledWith("완료되었습니다.", undefined);
+  });
+
+  it("실패 result의 message가 공백이면 option errorMessage를 사용한다", () => {
+    const result = {
+      ok: false,
+      code: "UNKNOWN",
+      message: "   ",
+    } satisfies ActionResult;
+
+    toastActionResult(result, {
+      errorMessage: "실패했습니다.",
+    });
+
+    expect(toast.error).toHaveBeenCalledWith("실패했습니다.", undefined);
+  });
+
+  it("성공 toast options를 전달한다", () => {
+    const result = {
+      ok: true,
+      data: null,
+      message: "저장되었습니다.",
+    } satisfies ActionResult;
+
+    toastActionResult(result, {
+      successToastOptions: {
+        duration: 1000,
+        description: "성공 설명입니다.",
+      },
+    });
+
+    expect(toast.success).toHaveBeenCalledWith("저장되었습니다.", {
+      duration: 1000,
+      description: "성공 설명입니다.",
+    });
+  });
+
+  it("실패 toast options를 전달한다", () => {
+    const result = {
+      ok: false,
+      code: "VALIDATION_ERROR",
+      message: "입력값을 확인해 주세요.",
+    } satisfies ActionResult;
+
+    toastActionResult(result, {
+      errorToastOptions: {
+        duration: 2000,
+        description: "제목을 입력해 주세요.",
+      },
+    });
+
+    expect(toast.error).toHaveBeenCalledWith("입력값을 확인해 주세요.", {
+      duration: 2000,
+      description: "제목을 입력해 주세요.",
+    });
   });
 });

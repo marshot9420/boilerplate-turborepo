@@ -5,6 +5,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ActionResult } from "@repo/core/action";
 
 import { toastActionResult } from "./toast-action-result";
+import ToastProvider from "./toast-provider";
 
 function ToastActionResultDemo() {
   const successResult = {
@@ -28,44 +29,62 @@ function ToastActionResultDemo() {
   } satisfies ActionResult;
 
   return (
-    <div className="flex flex-wrap gap-3">
-      <button
-        type="button"
-        className="rounded-md border px-4 py-2 text-sm"
-        onClick={() => toastActionResult(successResult)}
-      >
-        성공 Toast
-      </button>
+    <>
+      <ToastProvider />
 
-      <button
-        type="button"
-        className="rounded-md border px-4 py-2 text-sm"
-        onClick={() => toastActionResult(defaultSuccessResult)}
-      >
-        기본 성공 Toast
-      </button>
+      <div className="flex flex-wrap gap-3">
+        <button
+          type="button"
+          className="rounded-md border px-4 py-2 text-sm"
+          onClick={() => toastActionResult(successResult)}
+        >
+          성공 Toast
+        </button>
 
-      <button
-        type="button"
-        className="rounded-md border px-4 py-2 text-sm"
-        onClick={() => toastActionResult(errorResult)}
-      >
-        에러 Toast
-      </button>
+        <button
+          type="button"
+          className="rounded-md border px-4 py-2 text-sm"
+          onClick={() => toastActionResult(defaultSuccessResult)}
+        >
+          기본 성공 Toast
+        </button>
 
-      <button
-        type="button"
-        className="rounded-md border px-4 py-2 text-sm"
-        onClick={() =>
-          toastActionResult(null, {
-            successMessage: "완료되었습니다.",
-            errorMessage: "다시 시도해 주세요.",
-          })
-        }
-      >
-        Null 결과
-      </button>
-    </div>
+        <button
+          type="button"
+          className="rounded-md border px-4 py-2 text-sm"
+          onClick={() => toastActionResult(errorResult)}
+        >
+          에러 Toast
+        </button>
+
+        <button
+          type="button"
+          className="rounded-md border px-4 py-2 text-sm"
+          onClick={() =>
+            toastActionResult(errorResult, {
+              errorToastOptions: {
+                description: "필드 에러는 form field에서 함께 표시합니다.",
+              },
+            })
+          }
+        >
+          설명 포함 에러 Toast
+        </button>
+
+        <button
+          type="button"
+          className="rounded-md border px-4 py-2 text-sm"
+          onClick={() =>
+            toastActionResult(null, {
+              successMessage: "완료되었습니다.",
+              errorMessage: "다시 시도해 주세요.",
+            })
+          }
+        >
+          Null 결과
+        </button>
+      </div>
+    </>
   );
 }
 
