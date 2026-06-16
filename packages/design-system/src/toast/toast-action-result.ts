@@ -22,13 +22,13 @@ export function toastActionResult<TData>(
 
   if (result.ok) {
     toast.success(
-      result.message ?? options.successMessage ?? DEFAULT_TOAST_SUCCESS_MESSAGE,
+      result.message || options.successMessage || DEFAULT_TOAST_SUCCESS_MESSAGE,
     );
 
     return;
   }
 
   toast.error(
-    result.message ?? options.errorMessage ?? DEFAULT_TOAST_ERROR_MESSAGE,
+    result.message || options.errorMessage || DEFAULT_TOAST_ERROR_MESSAGE,
   );
 }

@@ -6,7 +6,7 @@ import type { ComponentProps } from "react";
 
 export type ToastProviderProps = ComponentProps<typeof Toaster>;
 
-export function ToastProvider({
+export default function ToastProvider({
   richColors = true,
   closeButton = true,
   position = "top-right",
