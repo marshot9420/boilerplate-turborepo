@@ -2,17 +2,16 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { forwardRef, type TextareaHTMLAttributes } from "react";
+import { forwardRef, type SelectHTMLAttributes } from "react";
 
-import { cn } from "../../utils";
+import { cn } from "../../../utils";
 
-const textareaVariants = cva(
+const selectVariants = cva(
   [
-    "flex min-h-24 w-full rounded-md border border-input",
+    "flex w-full rounded-md border border-input",
     "bg-background text-foreground",
     "transition-colors",
     "outline-none",
-    "placeholder:text-muted-foreground",
     "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     "disabled:cursor-not-allowed disabled:opacity-50",
     "data-[invalid=true]:border-destructive",
@@ -20,42 +19,34 @@ const textareaVariants = cva(
   {
     variants: {
       size: {
-        sm: "px-3 py-2 text-sm",
-        md: "px-3 py-2 text-sm",
-        lg: "px-4 py-3 text-base",
-      },
-
-      resize: {
-        none: "resize-none",
-        vertical: "resize-y",
-        horizontal: "resize-x",
-        both: "resize",
+        sm: "h-8 px-3 text-sm",
+        md: "h-10 px-3 text-sm",
+        lg: "h-12 px-4 text-base",
       },
     },
 
     defaultVariants: {
       size: "md",
-      resize: "vertical",
     },
   },
 );
 
-export interface TextareaProps
+export interface SelectProps
   extends
-    TextareaHTMLAttributes<HTMLTextAreaElement>,
-    VariantProps<typeof textareaVariants> {
+    Omit<SelectHTMLAttributes<HTMLSelectElement>, "size">,
+    VariantProps<typeof selectVariants> {
   hasError?: boolean;
 }
 
-const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+const Select = forwardRef<HTMLSelectElement, SelectProps>(
   (
     {
       className,
       size,
-      resize,
       hasError = false,
       disabled,
       "aria-invalid": ariaInvalid,
+      children,
       ...props
     },
     ref,
@@ -63,21 +54,22 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const resolvedAriaInvalid = ariaInvalid ?? (hasError ? true : undefined);
 
     return (
-      <textarea
+      <select
         ref={ref}
         disabled={disabled}
         aria-invalid={resolvedAriaInvalid}
         data-size={size ?? "md"}
-        data-resize={resize ?? "vertical"}
         data-disabled={disabled ? "true" : "false"}
         data-invalid={hasError ? "true" : "false"}
-        className={cn(textareaVariants({ size, resize }), className)}
+        className={cn(selectVariants({ size }), className)}
         {...props}
-      />
+      >
+        {children}
+      </select>
     );
   },
 );
 
-Textarea.displayName = "Textarea";
+Select.displayName = "Select";
 
-export default Textarea;
+export default Select;
