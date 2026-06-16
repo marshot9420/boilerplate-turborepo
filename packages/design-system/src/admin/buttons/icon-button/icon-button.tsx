@@ -5,18 +5,18 @@ import { cva } from "class-variance-authority";
 import { forwardRef } from "react";
 
 import {
-  Button as PrimitiveButton,
-  type ButtonProps as PrimitiveButtonProps,
-} from "../../../primitives/buttons/button";
+  IconButton as PrimitiveIconButton,
+  type IconButtonProps as PrimitiveIconButtonProps,
+} from "../../../primitives/buttons/icon-button";
 import { cn } from "../../../utils";
 
-const buttonClasses = cva(
+const iconButtonClasses = cva(
   [
-    "rounded-md",
-    "font-semibold",
     "shadow-none",
+    "leading-none",
     "active:translate-y-px",
     "motion-reduce:transition-none",
+    "[&>svg]:shrink-0",
   ],
   {
     variants: {
@@ -28,9 +28,9 @@ const buttonClasses = cva(
       },
 
       size: {
-        sm: "h-8 px-3 text-xs",
-        md: "h-9 px-3.5 text-sm",
-        lg: "h-10 px-4 text-sm",
+        sm: ["h-8 min-h-8 w-8 min-w-8 text-base", "[&>svg]:size-4"],
+        md: ["h-9 min-h-9 w-9 min-w-9 text-lg", "[&>svg]:size-5"],
+        lg: ["h-10 min-h-10 w-10 min-w-10 text-xl", "[&>svg]:size-6"],
       },
     },
 
@@ -41,23 +41,23 @@ const buttonClasses = cva(
   },
 );
 
-export type ButtonProps = PrimitiveButtonProps;
+export type IconButtonProps = PrimitiveIconButtonProps;
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
   ({ className, variant, size, ...props }, ref) => {
     return (
-      <PrimitiveButton
+      <PrimitiveIconButton
         ref={ref}
         variant={variant}
         size={size}
-        className={cn(buttonClasses({ variant, size }), className)}
-        data-ds-component="button"
+        className={cn(iconButtonClasses({ variant, size }), className)}
+        data-ds-component="icon-button"
         {...props}
       />
     );
   },
 );
 
-Button.displayName = "Button";
+IconButton.displayName = "IconButton";
 
-export default Button;
+export default IconButton;

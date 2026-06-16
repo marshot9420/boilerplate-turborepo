@@ -5,12 +5,12 @@ import { cva } from "class-variance-authority";
 import { forwardRef } from "react";
 
 import {
-  Button as PrimitiveButton,
-  type ButtonProps as PrimitiveButtonProps,
-} from "../../../primitives/buttons/button";
+  LinkButton as PrimitiveLinkButton,
+  type LinkButtonProps as PrimitiveLinkButtonProps,
+} from "../../../primitives/buttons/link-button";
 import { cn } from "../../../utils";
 
-const buttonClasses = cva(
+const linkButtonClasses = cva(
   [
     "rounded-md",
     "font-semibold",
@@ -41,23 +41,23 @@ const buttonClasses = cva(
   },
 );
 
-export type ButtonProps = PrimitiveButtonProps;
+export type LinkButtonProps = PrimitiveLinkButtonProps;
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(
   ({ className, variant, size, ...props }, ref) => {
     return (
-      <PrimitiveButton
+      <PrimitiveLinkButton
         ref={ref}
         variant={variant}
         size={size}
-        className={cn(buttonClasses({ variant, size }), className)}
-        data-ds-component="button"
+        className={cn(linkButtonClasses({ variant, size }), className)}
+        data-ds-component="link-button"
         {...props}
       />
     );
   },
 );
 
-Button.displayName = "Button";
+LinkButton.displayName = "LinkButton";
 
-export default Button;
+export default LinkButton;

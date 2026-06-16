@@ -1,125 +1,125 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import { createRef } from "react";
+
 import Button from "./button";
 
 describe("Admin Button", () => {
-  it("버튼 텍스트를 렌더링한다", () => {
+  it("button을 렌더링한다", () => {
     render(<Button>저장</Button>);
 
-    expect(screen.getByRole("button", { name: "저장" })).toBeInTheDocument();
+    const button = screen.getByRole("button", {
+      name: "저장",
+    });
+
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveAttribute("type", "button");
+    expect(button).toHaveAttribute("data-ds-component", "button");
   });
 
-  it("기본 type은 button이다", () => {
+  it("admin button 스타일을 적용한다", () => {
     render(<Button>저장</Button>);
 
-    expect(screen.getByRole("button", { name: "저장" })).toHaveAttribute("type", "button");
+    const button = screen.getByRole("button", {
+      name: "저장",
+    });
+
+    expect(button).toHaveClass("rounded-md");
+    expect(button).toHaveClass("font-semibold");
+    expect(button).toHaveClass("shadow-none");
   });
 
-  it("클릭 이벤트를 실행한다", async () => {
-    const user = userEvent.setup();
-    const handleClick = vi.fn();
+  it("admin 기본 size는 md 스타일을 적용한다", () => {
+    render(<Button>저장</Button>);
 
-    render(<Button onClick={handleClick}>저장</Button>);
+    const button = screen.getByRole("button", {
+      name: "저장",
+    });
 
-    await user.click(screen.getByRole("button", { name: "저장" }));
-
-    expect(handleClick).toHaveBeenCalledTimes(1);
+    expect(button).toHaveClass("h-9");
+    expect(button).toHaveClass("px-3.5");
   });
 
-  it("disabled 상태에서는 클릭 이벤트를 실행하지 않는다", async () => {
-    const user = userEvent.setup();
-    const handleClick = vi.fn();
-
+  it("variant, size, fullWidth 상태를 전달한다", () => {
     render(
-      <Button disabled onClick={handleClick}>
-        저장
+      <Button fullWidth size="lg" variant="outline">
+        수정
       </Button>,
     );
 
-    await user.click(screen.getByRole("button", { name: "저장" }));
+    const button = screen.getByRole("button", {
+      name: "수정",
+    });
 
-    expect(handleClick).not.toHaveBeenCalled();
+    expect(button).toHaveAttribute("data-variant", "outline");
+    expect(button).toHaveAttribute("data-size", "lg");
+    expect(button).toHaveAttribute("data-full-width", "true");
   });
 
-  it("기본 variant와 size 클래스를 적용한다", () => {
-    render(<Button>저장</Button>);
+  it("loading 상태면 disabled와 aria-busy를 적용한다", () => {
+    render(<Button loading>처리 중</Button>);
 
-    const button = screen.getByRole("button", { name: "저장" });
+    const button = screen.getByRole("button", {
+      name: "처리 중",
+    });
 
-    expect(button).toHaveClass("border-primary");
-    expect(button).toHaveClass("bg-primary");
-    expect(button).toHaveClass("text-primary-foreground");
-    expect(button).toHaveClass("h-9");
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute("aria-busy", "true");
+    expect(button).toHaveAttribute("data-loading", "true");
+    expect(button).toHaveAttribute("data-disabled", "true");
   });
 
-  it("secondary variant 클래스를 적용한다", () => {
-    render(<Button variant="secondary">저장</Button>);
+  it("leftSlot과 rightSlot을 렌더링한다", () => {
+    render(
+      <Button
+        leftSlot={<span data-testid="left-slot">+</span>}
+        rightSlot={<span data-testid="right-slot">⌘</span>}
+      >
+        생성
+      </Button>,
+    );
 
-    const button = screen.getByRole("button", { name: "저장" });
-
-    expect(button).toHaveClass("border-border");
-    expect(button).toHaveClass("bg-muted");
-    expect(button).toHaveClass("text-foreground");
-  });
-
-  it("outline variant 클래스를 적용한다", () => {
-    render(<Button variant="outline">저장</Button>);
-
-    const button = screen.getByRole("button", { name: "저장" });
-
-    expect(button).toHaveClass("border-border");
-    expect(button).toHaveClass("bg-background");
-  });
-
-  it("ghost variant 클래스를 적용한다", () => {
-    render(<Button variant="ghost">저장</Button>);
-
-    const button = screen.getByRole("button", { name: "저장" });
-
-    expect(button).toHaveClass("border-transparent");
-    expect(button).toHaveClass("bg-transparent");
-  });
-
-  it("destructive variant 클래스를 적용한다", () => {
-    render(<Button variant="destructive">삭제</Button>);
-
-    const button = screen.getByRole("button", { name: "삭제" });
-
-    expect(button).toHaveClass("border-destructive");
-    expect(button).toHaveClass("bg-destructive");
-    expect(button).toHaveClass("text-destructive-foreground");
-  });
-
-  it("small size 클래스를 적용한다", () => {
-    render(<Button size="sm">저장</Button>);
-
-    const button = screen.getByRole("button", { name: "저장" });
-
-    expect(button).toHaveClass("h-8");
-    expect(button).toHaveClass("px-3");
-    expect(button).toHaveClass("text-xs");
-  });
-
-  it("large size 클래스를 적용한다", () => {
-    render(<Button size="lg">저장</Button>);
-
-    const button = screen.getByRole("button", { name: "저장" });
-
-    expect(button).toHaveClass("h-10");
-    expect(button).toHaveClass("px-5");
-    expect(button).toHaveClass("text-sm");
-  });
-
-  it("fullWidth가 true면 w-full 클래스를 적용한다", () => {
-    render(<Button fullWidth>저장</Button>);
-
-    expect(screen.getByRole("button", { name: "저장" })).toHaveClass("w-full");
+    expect(screen.getByTestId("left-slot")).toBeInTheDocument();
+    expect(screen.getByText("생성")).toBeInTheDocument();
+    expect(screen.getByTestId("right-slot")).toBeInTheDocument();
   });
 
   it("className을 병합한다", () => {
     render(<Button className="custom-class">저장</Button>);
 
-    expect(screen.getByRole("button", { name: "저장" })).toHaveClass("custom-class");
+    const button = screen.getByRole("button", {
+      name: "저장",
+    });
+
+    expect(button).toHaveClass("custom-class");
+    expect(button).toHaveClass("rounded-md");
+  });
+
+  it("ref를 전달한다", () => {
+    const ref = createRef<HTMLButtonElement>();
+
+    render(<Button ref={ref}>저장</Button>);
+
+    const button = screen.getByRole("button", {
+      name: "저장",
+    });
+
+    expect(ref.current).toBe(button);
+  });
+
+  it("클릭 이벤트를 호출한다", async () => {
+    const user = userEvent.setup();
+    const handleClick = vi.fn();
+
+    render(<Button onClick={handleClick}>저장</Button>);
+
+    await user.click(
+      screen.getByRole("button", {
+        name: "저장",
+      }),
+    );
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });

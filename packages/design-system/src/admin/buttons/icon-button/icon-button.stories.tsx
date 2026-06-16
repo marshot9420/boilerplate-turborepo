@@ -1,15 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import Button from "./button";
+import IconButton from "./icon-button";
 
 const meta = {
-  title: "Web/Buttons/Button",
-  component: Button,
+  title: "Admin/Buttons/IconButton",
+  component: IconButton,
   parameters: {
     layout: "centered",
   },
   args: {
-    children: "Button",
+    "aria-label": "검색",
+    children: <span aria-hidden="true">⌕</span>,
   },
   argTypes: {
     variant: {
@@ -20,8 +21,9 @@ const meta = {
       control: "select",
       options: ["sm", "md", "lg"],
     },
-    fullWidth: {
-      control: "boolean",
+    shape: {
+      control: "select",
+      options: ["square", "circle"],
     },
     loading: {
       control: "boolean",
@@ -30,7 +32,7 @@ const meta = {
       control: "boolean",
     },
   },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof IconButton>;
 
 export default meta;
 
@@ -41,50 +43,49 @@ export const Default = {} satisfies Story;
 export const Outline = {
   args: {
     variant: "outline",
-    children: "Outline",
   },
 } satisfies Story;
 
 export const Ghost = {
   args: {
     variant: "ghost",
-    children: "Ghost",
   },
 } satisfies Story;
 
 export const Destructive = {
   args: {
+    "aria-label": "삭제",
     variant: "destructive",
-    children: "Delete",
+    children: <span aria-hidden="true">×</span>,
+  },
+} satisfies Story;
+
+export const Circle = {
+  args: {
+    shape: "circle",
   },
 } satisfies Story;
 
 export const Loading = {
   args: {
+    "aria-label": "불러오는 중",
     loading: true,
-    children: "Loading",
-  },
-} satisfies Story;
-
-export const WithSlots = {
-  args: {
-    leftSlot: <span aria-hidden="true">←</span>,
-    rightSlot: <span aria-hidden="true">→</span>,
-    children: "Next",
+    children: <span aria-hidden="true">…</span>,
   },
 } satisfies Story;
 
 const variants = ["default", "outline", "ghost", "destructive"] as const;
 const sizes = ["sm", "md", "lg"] as const;
+const shapes = ["square", "circle"] as const;
 
 export const Variants = {
   render: () => {
     return (
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex items-center gap-3">
         {variants.map((variant) => (
-          <Button key={variant} variant={variant}>
-            {variant}
-          </Button>
+          <IconButton key={variant} aria-label={variant} variant={variant}>
+            <span aria-hidden="true">⌕</span>
+          </IconButton>
         ))}
       </div>
     );
@@ -96,21 +97,25 @@ export const Sizes = {
     return (
       <div className="flex items-center gap-3">
         {sizes.map((size) => (
-          <Button key={size} size={size}>
-            {size}
-          </Button>
+          <IconButton key={size} aria-label={size} size={size}>
+            <span aria-hidden="true">⌕</span>
+          </IconButton>
         ))}
       </div>
     );
   },
 } satisfies Story;
 
-export const FullWidth = {
-  parameters: {
-    layout: "padded",
-  },
-  args: {
-    fullWidth: true,
-    children: "Full Width Button",
+export const Shapes = {
+  render: () => {
+    return (
+      <div className="flex items-center gap-3">
+        {shapes.map((shape) => (
+          <IconButton key={shape} aria-label={shape} shape={shape}>
+            <span aria-hidden="true">⌕</span>
+          </IconButton>
+        ))}
+      </div>
+    );
   },
 } satisfies Story;

@@ -1,15 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import Button from "./button";
+import LinkButton from "./link-button";
 
 const meta = {
-  title: "Web/Buttons/Button",
-  component: Button,
+  title: "Admin/Buttons/LinkButton",
+  component: LinkButton,
   parameters: {
     layout: "centered",
   },
   args: {
-    children: "Button",
+    href: "#",
+    children: "Link Button",
   },
   argTypes: {
     variant: {
@@ -23,14 +24,11 @@ const meta = {
     fullWidth: {
       control: "boolean",
     },
-    loading: {
-      control: "boolean",
-    },
     disabled: {
       control: "boolean",
     },
   },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof LinkButton>;
 
 export default meta;
 
@@ -59,18 +57,18 @@ export const Destructive = {
   },
 } satisfies Story;
 
-export const Loading = {
+export const Disabled = {
   args: {
-    loading: true,
-    children: "Loading",
+    disabled: true,
+    children: "Disabled",
   },
 } satisfies Story;
 
 export const WithSlots = {
   args: {
-    leftSlot: <span aria-hidden="true">←</span>,
-    rightSlot: <span aria-hidden="true">→</span>,
-    children: "Next",
+    leftSlot: <span aria-hidden="true">+</span>,
+    rightSlot: <span aria-hidden="true">⌘S</span>,
+    children: "Save",
   },
 } satisfies Story;
 
@@ -82,9 +80,9 @@ export const Variants = {
     return (
       <div className="flex flex-wrap items-center gap-3">
         {variants.map((variant) => (
-          <Button key={variant} variant={variant}>
+          <LinkButton key={variant} href="#" variant={variant}>
             {variant}
-          </Button>
+          </LinkButton>
         ))}
       </div>
     );
@@ -96,9 +94,9 @@ export const Sizes = {
     return (
       <div className="flex items-center gap-3">
         {sizes.map((size) => (
-          <Button key={size} size={size}>
+          <LinkButton key={size} href="#" size={size}>
             {size}
-          </Button>
+          </LinkButton>
         ))}
       </div>
     );
@@ -111,6 +109,6 @@ export const FullWidth = {
   },
   args: {
     fullWidth: true,
-    children: "Full Width Button",
+    children: "Full Width Link Button",
   },
 } satisfies Story;

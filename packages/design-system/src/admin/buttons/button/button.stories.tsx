@@ -5,28 +5,25 @@ import Button from "./button";
 const meta = {
   title: "Admin/Buttons/Button",
   component: Button,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
-    dsTheme: "admin",
   },
   args: {
     children: "Button",
-    variant: "primary",
-    size: "md",
-    fullWidth: false,
-    disabled: false,
   },
   argTypes: {
     variant: {
       control: "select",
-      options: ["primary", "secondary", "outline", "ghost", "destructive"],
+      options: ["default", "outline", "ghost", "destructive"],
     },
     size: {
       control: "select",
       options: ["sm", "md", "lg"],
     },
     fullWidth: {
+      control: "boolean",
+    },
+    loading: {
       control: "boolean",
     },
     disabled: {
@@ -39,151 +36,81 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
-  args: {
-    variant: "primary",
-  },
-};
+export const Default = {} satisfies Story;
 
-export const Secondary: Story = {
-  args: {
-    variant: "secondary",
-  },
-};
-
-export const Outline: Story = {
+export const Outline = {
   args: {
     variant: "outline",
+    children: "Outline",
   },
-};
+} satisfies Story;
 
-export const Ghost: Story = {
+export const Ghost = {
   args: {
     variant: "ghost",
+    children: "Ghost",
   },
-};
+} satisfies Story;
 
-export const Destructive: Story = {
+export const Destructive = {
   args: {
     variant: "destructive",
     children: "Delete",
   },
-};
+} satisfies Story;
 
-export const Small: Story = {
+export const Loading = {
   args: {
-    size: "sm",
+    loading: true,
+    children: "Loading",
   },
-};
+} satisfies Story;
 
-export const Medium: Story = {
+export const WithSlots = {
   args: {
-    size: "md",
+    leftSlot: <span aria-hidden="true">+</span>,
+    rightSlot: <span aria-hidden="true">⌘S</span>,
+    children: "Save",
   },
-};
+} satisfies Story;
 
-export const Large: Story = {
-  args: {
-    size: "lg",
-  },
-};
+const variants = ["default", "outline", "ghost", "destructive"] as const;
+const sizes = ["sm", "md", "lg"] as const;
 
-export const FullWidth: Story = {
-  args: {
-    fullWidth: true,
-    children: "Full width button",
-  },
-  decorators: [
-    (Story) => (
-      <div className="w-80">
-        <Story />
+export const Variants = {
+  render: () => {
+    return (
+      <div className="flex flex-wrap items-center gap-3">
+        {variants.map((variant) => (
+          <Button key={variant} variant={variant}>
+            {variant}
+          </Button>
+        ))}
       </div>
-    ),
-  ],
-};
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-    children: "Disabled",
+    );
   },
-};
+} satisfies Story;
 
-export const Variants: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="destructive">Destructive</Button>
-    </div>
-  ),
-};
+export const Sizes = {
+  render: () => {
+    return (
+      <div className="flex items-center gap-3">
+        {sizes.map((size) => (
+          <Button key={size} size={size}>
+            {size}
+          </Button>
+        ))}
+      </div>
+    );
+  },
+} satisfies Story;
 
-export const Sizes: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button size="sm">Small</Button>
-      <Button size="md">Medium</Button>
-      <Button size="lg">Large</Button>
-    </div>
-  ),
-};
-
-export const States: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button>Default</Button>
-      <Button disabled>Disabled</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="outline" disabled>
-        Outline disabled
-      </Button>
-      <Button variant="destructive" disabled>
-        Destructive disabled
-      </Button>
-    </div>
-  ),
-};
-
-export const LightAndDark: Story = {
+export const FullWidth = {
   parameters: {
     layout: "padded",
   },
-  render: () => (
-    <div className="grid gap-4 md:grid-cols-2">
-      <div
-        data-ds-theme="admin"
-        data-ds-mode="light"
-        className="border-border bg-background text-foreground rounded-lg border p-4"
-      >
-        <p className="mb-4 text-sm font-medium">Admin Light</p>
-
-        <div className="flex flex-wrap items-center gap-3">
-          <Button variant="primary">Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="destructive">Destructive</Button>
-        </div>
-      </div>
-
-      <div
-        data-ds-theme="admin"
-        data-ds-mode="dark"
-        className="border-border bg-background text-foreground rounded-lg border p-4"
-      >
-        <p className="mb-4 text-sm font-medium">Admin Dark</p>
-
-        <div className="flex flex-wrap items-center gap-3">
-          <Button variant="primary">Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="destructive">Destructive</Button>
-        </div>
-      </div>
-    </div>
-  ),
-};
+  args: {
+    fullWidth: true,
+    children: "Full Width Button",
+  },
+} satisfies Story;
