@@ -16,6 +16,15 @@
   --color-destructive: oklch(0.577 0.245 27.325);
   --color-destructive-foreground: oklch(0.985 0 0);
 
+  --color-success: oklch(0.62 0.15 145);
+  --color-success-foreground: oklch(0.985 0 0);
+
+  --color-warning: oklch(0.75 0.17 75);
+  --color-warning-foreground: oklch(0.145 0 0);
+
+  --color-info: oklch(0.62 0.13 250);
+  --color-info-foreground: oklch(0.985 0 0);
+
   --color-border: oklch(0.922 0 0);
   --color-input: oklch(0.922 0 0);
   --color-ring: oklch(0.708 0 0);
