@@ -51,6 +51,11 @@ const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
     const [hasImageError, setHasImageError] = useState(false);
     const shouldRenderImage = !!src && !hasImageError;
 
+    const handleImageError: ImgHTMLAttributes<HTMLImageElement>["onError"] = (event) => {
+      setHasImageError(true);
+      imageProps?.onError?.(event);
+    };
+
     return (
       <span
         ref={ref}
@@ -62,13 +67,11 @@ const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
       >
         {shouldRenderImage ? (
           <img
+            {...imageProps}
             src={src}
             alt={alt ?? ""}
             className={cn("size-full object-cover", imageClassName)}
-            onError={() => {
-              setHasImageError(true);
-            }}
-            {...imageProps}
+            onError={handleImageError}
           />
         ) : (
           fallback

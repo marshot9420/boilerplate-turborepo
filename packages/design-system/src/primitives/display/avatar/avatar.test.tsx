@@ -30,6 +30,27 @@ describe("Avatar", () => {
     expect(screen.queryByRole("img", { name: "Broken" })).not.toBeInTheDocument();
   });
 
+  it("이미지 로딩 실패 시 fallback을 렌더링하고 imageProps.onError를 호출한다", () => {
+    const handleError = vi.fn();
+
+    render(
+      <Avatar
+        src="/broken.png"
+        alt="Broken"
+        fallback="MS"
+        imageProps={{
+          onError: handleError,
+        }}
+      />,
+    );
+
+    fireEvent.error(screen.getByRole("img", { name: "Broken" }));
+
+    expect(handleError).toHaveBeenCalledTimes(1);
+    expect(screen.getByText("MS")).toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: "Broken" })).not.toBeInTheDocument();
+  });
+
   it("기본 size와 shape을 data attribute로 노출한다", () => {
     render(<Avatar data-testid="avatar" fallback="MS" />);
 
