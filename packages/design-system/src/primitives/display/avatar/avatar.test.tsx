@@ -27,9 +27,7 @@ describe("Avatar", () => {
     fireEvent.error(screen.getByRole("img", { name: "Broken" }));
 
     expect(screen.getByText("MS")).toBeInTheDocument();
-    expect(
-      screen.queryByRole("img", { name: "Broken" }),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: "Broken" })).not.toBeInTheDocument();
   });
 
   it("기본 size와 shape을 data attribute로 노출한다", () => {
@@ -42,9 +40,7 @@ describe("Avatar", () => {
   });
 
   it("전달한 size와 shape을 data attribute로 노출한다", () => {
-    render(
-      <Avatar data-testid="avatar" size="lg" shape="square" fallback="MS" />,
-    );
+    render(<Avatar data-testid="avatar" size="lg" shape="square" fallback="MS" />);
 
     const avatar = screen.getByTestId("avatar");
 
@@ -55,10 +51,7 @@ describe("Avatar", () => {
   it("이미지 존재 여부를 data-has-image로 노출한다", () => {
     render(<Avatar data-testid="avatar" src="/avatar.png" alt="Avatar" />);
 
-    expect(screen.getByTestId("avatar")).toHaveAttribute(
-      "data-has-image",
-      "true",
-    );
+    expect(screen.getByTestId("avatar")).toHaveAttribute("data-has-image", "true");
   });
 
   it("className과 imageClassName을 병합한다", () => {
@@ -73,9 +66,7 @@ describe("Avatar", () => {
     );
 
     expect(screen.getByTestId("avatar")).toHaveClass("custom-avatar");
-    expect(screen.getByRole("img", { name: "Avatar" })).toHaveClass(
-      "custom-image",
-    );
+    expect(screen.getByRole("img", { name: "Avatar" })).toHaveClass("custom-image");
   });
 
   it("imageProps를 img element에 전달한다", () => {

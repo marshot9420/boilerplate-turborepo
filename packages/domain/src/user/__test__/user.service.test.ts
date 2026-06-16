@@ -92,9 +92,7 @@ describe("user.service", () => {
 
       const result = await getUserByIdService("user-id");
 
-      expect(repositoryMock.findUserByIdRepository).toHaveBeenCalledWith(
-        "user-id",
-      );
+      expect(repositoryMock.findUserByIdRepository).toHaveBeenCalledWith("user-id");
 
       expect(result).toEqual({
         ok: true,
@@ -278,18 +276,13 @@ describe("user.service", () => {
         nickname: "gildong",
       });
 
-      expect(
-        repositoryMock.findUserByNicknameRepository,
-      ).not.toHaveBeenCalled();
+      expect(repositoryMock.findUserByNicknameRepository).not.toHaveBeenCalled();
 
-      expect(repositoryMock.updateUserRepository).toHaveBeenCalledWith(
-        "user-id",
-        {
-          name: "수정된 이름",
-          avatarUrl: "https://example.com/avatar.png",
-          nickname: "gildong",
-        },
-      );
+      expect(repositoryMock.updateUserRepository).toHaveBeenCalledWith("user-id", {
+        name: "수정된 이름",
+        avatarUrl: "https://example.com/avatar.png",
+        nickname: "gildong",
+      });
 
       expect(result.ok).toBe(true);
 
@@ -299,12 +292,9 @@ describe("user.service", () => {
         expect(result.data.nickname).toBe("gildong");
       }
 
-      expect(loggerMock.info).toHaveBeenCalledWith(
-        "user.update_profile.succeeded",
-        {
-          userId: "user-id",
-        },
-      );
+      expect(loggerMock.info).toHaveBeenCalledWith("user.update_profile.succeeded", {
+        userId: "user-id",
+      });
     });
 
     it("변경할 닉네임이 이미 사용 중이면 USER_NICKNAME_DUPLICATED 실패 Result를 반환한다", async () => {
@@ -318,9 +308,7 @@ describe("user.service", () => {
       });
 
       repositoryMock.findUserByIdRepository.mockResolvedValue(user);
-      repositoryMock.findUserByNicknameRepository.mockResolvedValue(
-        duplicatedUser,
-      );
+      repositoryMock.findUserByNicknameRepository.mockResolvedValue(duplicatedUser);
 
       const result = await updateUserProfileService("user-id", {
         name: "홍길동",
@@ -328,9 +316,7 @@ describe("user.service", () => {
         nickname: "new_nickname",
       });
 
-      expect(repositoryMock.findUserByNicknameRepository).toHaveBeenCalledWith(
-        "new_nickname",
-      );
+      expect(repositoryMock.findUserByNicknameRepository).toHaveBeenCalledWith("new_nickname");
 
       expect(result).toEqual({
         ok: false,
@@ -367,18 +353,13 @@ describe("user.service", () => {
         nickname: "new_nickname",
       });
 
-      expect(repositoryMock.findUserByNicknameRepository).toHaveBeenCalledWith(
-        "new_nickname",
-      );
+      expect(repositoryMock.findUserByNicknameRepository).toHaveBeenCalledWith("new_nickname");
 
-      expect(repositoryMock.updateUserRepository).toHaveBeenCalledWith(
-        "user-id",
-        {
-          name: null,
-          avatarUrl: null,
-          nickname: "new_nickname",
-        },
-      );
+      expect(repositoryMock.updateUserRepository).toHaveBeenCalledWith("user-id", {
+        name: null,
+        avatarUrl: null,
+        nickname: "new_nickname",
+      });
 
       expect(result.ok).toBe(true);
 
@@ -405,13 +386,10 @@ describe("user.service", () => {
         error,
       });
 
-      expect(loggerMock.error).toHaveBeenCalledWith(
-        "user.update_profile.failed",
-        {
-          userId: "user-id",
-          error,
-        },
-      );
+      expect(loggerMock.error).toHaveBeenCalledWith("user.update_profile.failed", {
+        userId: "user-id",
+        error,
+      });
     });
   });
 
@@ -465,9 +443,7 @@ describe("user.service", () => {
 
       const result = await softDeleteUserService("user-id");
 
-      expect(repositoryMock.softDeleteUserRepository).toHaveBeenCalledWith(
-        "user-id",
-      );
+      expect(repositoryMock.softDeleteUserRepository).toHaveBeenCalledWith("user-id");
 
       expect(result.ok).toBe(true);
 
@@ -476,12 +452,9 @@ describe("user.service", () => {
         expect(result.data.deletedAt).toBe("2026-01-03T00:00:00.000Z");
       }
 
-      expect(loggerMock.info).toHaveBeenCalledWith(
-        "user.soft_delete.succeeded",
-        {
-          userId: "user-id",
-        },
-      );
+      expect(loggerMock.info).toHaveBeenCalledWith("user.soft_delete.succeeded", {
+        userId: "user-id",
+      });
     });
 
     it("repository 에러가 발생하면 실패 Result를 반환하고 로그를 남긴다", async () => {
@@ -544,18 +517,13 @@ describe("user.service", () => {
         providerUserId: "google-user-id",
       });
 
-      expect(repositoryMock.updateUserRepository).toHaveBeenCalledWith(
-        "user-id",
-        {
-          name: "Google User",
-          avatarUrl: "https://example.com/avatar.png",
-        },
-      );
+      expect(repositoryMock.updateUserRepository).toHaveBeenCalledWith("user-id", {
+        name: "Google User",
+        avatarUrl: "https://example.com/avatar.png",
+      });
 
       expect(repositoryMock.findUserByEmailRepository).not.toHaveBeenCalled();
-      expect(
-        oauthAccountRepositoryMock.createUserOAuthAccountRepository,
-      ).not.toHaveBeenCalled();
+      expect(oauthAccountRepositoryMock.createUserOAuthAccountRepository).not.toHaveBeenCalled();
       expect(repositoryMock.createUserRepository).not.toHaveBeenCalled();
 
       expect(result).toEqual({
@@ -573,13 +541,10 @@ describe("user.service", () => {
         },
       });
 
-      expect(loggerMock.info).toHaveBeenCalledWith(
-        "user.oauth_login.succeeded",
-        {
-          userId: "user-id",
-          provider: "GOOGLE",
-        },
-      );
+      expect(loggerMock.info).toHaveBeenCalledWith("user.oauth_login.succeeded", {
+        userId: "user-id",
+        provider: "GOOGLE",
+      });
     });
 
     it("기존 OAuth 계정 사용자가 인증 불가능한 상태면 USER_OAUTH_USER_BLOCKED 실패 Result를 반환한다", async () => {
@@ -628,22 +593,18 @@ describe("user.service", () => {
         avatarUrl: "https://example.com/naver.png",
       });
 
-      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockResolvedValue(
-        null,
-      );
+      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockResolvedValue(null);
       repositoryMock.findUserByEmailRepository.mockResolvedValue(existingUser);
       repositoryMock.updateUserRepository.mockResolvedValue(updatedUser);
-      oauthAccountRepositoryMock.createUserOAuthAccountRepository.mockResolvedValue(
-        {
-          id: "oauth-account-id",
-          email: "user@example.com",
-          provider: "NAVER",
-          providerUserId: "naver-user-id",
-          createdAt: new Date("2026-01-01T00:00:00.000Z"),
-          updatedAt: new Date("2026-01-02T00:00:00.000Z"),
-          userId: "existing-user-id",
-        },
-      );
+      oauthAccountRepositoryMock.createUserOAuthAccountRepository.mockResolvedValue({
+        id: "oauth-account-id",
+        email: "user@example.com",
+        provider: "NAVER",
+        providerUserId: "naver-user-id",
+        createdAt: new Date("2026-01-01T00:00:00.000Z"),
+        updatedAt: new Date("2026-01-02T00:00:00.000Z"),
+        userId: "existing-user-id",
+      });
 
       const result = await findOrCreateOAuthUserService({
         provider: "NAVER",
@@ -653,21 +614,14 @@ describe("user.service", () => {
         avatarUrl: "https://example.com/naver.png",
       });
 
-      expect(repositoryMock.findUserByEmailRepository).toHaveBeenCalledWith(
-        "user@example.com",
-      );
+      expect(repositoryMock.findUserByEmailRepository).toHaveBeenCalledWith("user@example.com");
 
-      expect(repositoryMock.updateUserRepository).toHaveBeenCalledWith(
-        "existing-user-id",
-        {
-          name: "Naver User",
-          avatarUrl: "https://example.com/naver.png",
-        },
-      );
+      expect(repositoryMock.updateUserRepository).toHaveBeenCalledWith("existing-user-id", {
+        name: "Naver User",
+        avatarUrl: "https://example.com/naver.png",
+      });
 
-      expect(
-        oauthAccountRepositoryMock.createUserOAuthAccountRepository,
-      ).toHaveBeenCalledWith({
+      expect(oauthAccountRepositoryMock.createUserOAuthAccountRepository).toHaveBeenCalledWith({
         email: "user@example.com",
         provider: "NAVER",
         providerUserId: "naver-user-id",
@@ -688,13 +642,10 @@ describe("user.service", () => {
         expect(result.data.avatarUrl).toBe("https://example.com/naver.png");
       }
 
-      expect(loggerMock.info).toHaveBeenCalledWith(
-        "user.oauth_account_linked.succeeded",
-        {
-          userId: "existing-user-id",
-          provider: "NAVER",
-        },
-      );
+      expect(loggerMock.info).toHaveBeenCalledWith("user.oauth_account_linked.succeeded", {
+        userId: "existing-user-id",
+        provider: "NAVER",
+      });
     });
 
     it("같은 이메일 사용자가 인증 불가능한 상태면 OAuth 계정을 연결하지 않는다", async () => {
@@ -702,9 +653,7 @@ describe("user.service", () => {
         status: "SUSPENDED",
       });
 
-      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockResolvedValue(
-        null,
-      );
+      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockResolvedValue(null);
       repositoryMock.findUserByEmailRepository.mockResolvedValue(suspendedUser);
 
       const result = await findOrCreateOAuthUserService({
@@ -724,9 +673,7 @@ describe("user.service", () => {
       });
 
       expect(repositoryMock.updateUserRepository).not.toHaveBeenCalled();
-      expect(
-        oauthAccountRepositoryMock.createUserOAuthAccountRepository,
-      ).not.toHaveBeenCalled();
+      expect(oauthAccountRepositoryMock.createUserOAuthAccountRepository).not.toHaveBeenCalled();
       expect(repositoryMock.createUserRepository).not.toHaveBeenCalled();
     });
 
@@ -739,9 +686,7 @@ describe("user.service", () => {
         nickname: "kakao_generated_hash",
       });
 
-      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockResolvedValue(
-        null,
-      );
+      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockResolvedValue(null);
       repositoryMock.findUserByEmailRepository.mockResolvedValue(null);
       repositoryMock.createUserRepository.mockResolvedValue(createdUser);
 
@@ -774,21 +719,16 @@ describe("user.service", () => {
         expect(result.data.email).toBe("new-user@example.com");
       }
 
-      expect(loggerMock.info).toHaveBeenCalledWith(
-        "user.oauth_user_created.succeeded",
-        {
-          userId: "new-user-id",
-          provider: "KAKAO",
-        },
-      );
+      expect(loggerMock.info).toHaveBeenCalledWith("user.oauth_user_created.succeeded", {
+        userId: "new-user-id",
+        provider: "KAKAO",
+      });
     });
 
     it("repository 에러가 발생하면 USER_OAUTH_LOGIN_FAILED 실패 Result를 반환하고 로그를 남긴다", async () => {
       const error = createDatabaseError();
 
-      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockRejectedValue(
-        error,
-      );
+      oauthAccountRepositoryMock.findUserOAuthAccountWithUserRepository.mockRejectedValue(error);
 
       const result = await findOrCreateOAuthUserService({
         provider: "GOOGLE",

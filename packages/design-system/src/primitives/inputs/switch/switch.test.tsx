@@ -10,36 +10,25 @@ describe("Switch", () => {
   it("switch를 렌더링한다", () => {
     render(<Switch aria-label="알림 받기" />);
 
-    expect(
-      screen.getByRole("switch", { name: "알림 받기" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("switch", { name: "알림 받기" })).toBeInTheDocument();
   });
 
   it("type은 checkbox다", () => {
     render(<Switch aria-label="알림 받기" />);
 
-    expect(screen.getByRole("switch", { name: "알림 받기" })).toHaveAttribute(
-      "type",
-      "checkbox",
-    );
+    expect(screen.getByRole("switch", { name: "알림 받기" })).toHaveAttribute("type", "checkbox");
   });
 
   it("기본 size를 data attribute로 노출한다", () => {
     render(<Switch aria-label="알림 받기" />);
 
-    expect(screen.getByRole("switch", { name: "알림 받기" })).toHaveAttribute(
-      "data-size",
-      "md",
-    );
+    expect(screen.getByRole("switch", { name: "알림 받기" })).toHaveAttribute("data-size", "md");
   });
 
   it("전달한 size를 data attribute로 노출한다", () => {
     render(<Switch aria-label="알림 받기" size="lg" />);
 
-    expect(screen.getByRole("switch", { name: "알림 받기" })).toHaveAttribute(
-      "data-size",
-      "lg",
-    );
+    expect(screen.getByRole("switch", { name: "알림 받기" })).toHaveAttribute("data-size", "lg");
   });
 
   it("className을 root에 병합한다", () => {

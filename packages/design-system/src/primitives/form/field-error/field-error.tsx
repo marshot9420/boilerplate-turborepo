@@ -9,10 +9,7 @@ export interface FieldErrorProps extends HTMLAttributes<HTMLParagraphElement> {
 }
 
 const FieldError = forwardRef<HTMLParagraphElement, FieldErrorProps>(
-  (
-    { className, message, children, role, "aria-live": ariaLive, ...props },
-    ref,
-  ) => {
+  ({ className, message, children, role, "aria-live": ariaLive, ...props }, ref) => {
     const content = children ?? message;
 
     if (!content) {
@@ -24,7 +21,7 @@ const FieldError = forwardRef<HTMLParagraphElement, FieldErrorProps>(
         ref={ref}
         role={role ?? "alert"}
         aria-live={ariaLive ?? "polite"}
-        className={cn("text-sm text-destructive", className)}
+        className={cn("text-destructive text-sm", className)}
         {...props}
       >
         {content}

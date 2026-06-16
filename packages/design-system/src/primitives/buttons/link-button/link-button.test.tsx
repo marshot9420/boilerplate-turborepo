@@ -23,9 +23,7 @@ describe("LinkButton", () => {
       </LinkButton>,
     );
 
-    expect(screen.getByRole("link", { name: "로그인" })).toHaveClass(
-      "custom-link-button",
-    );
+    expect(screen.getByRole("link", { name: "로그인" })).toHaveClass("custom-link-button");
   });
 
   it("variant, size, fullWidth 상태를 data attribute로 노출한다", () => {

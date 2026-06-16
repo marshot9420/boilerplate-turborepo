@@ -6,7 +6,7 @@ import { forwardRef, type HTMLAttributes } from "react";
 
 import { cn } from "../../../utils";
 
-const textCounterVariants = cva("text-xs text-muted-foreground", {
+const textCounterVariants = cva("text-muted-foreground text-xs", {
   variants: {
     align: {
       start: "text-left",
@@ -47,24 +47,13 @@ function getTextLength(value: string | number | null | undefined) {
 
 const TextCounter = forwardRef<HTMLSpanElement, TextCounterProps>(
   (
-    {
-      className,
-      value,
-      count,
-      maxLength,
-      align,
-      fullWidth,
-      "aria-live": ariaLive,
-      ...props
-    },
+    { className, value, count, maxLength, align, fullWidth, "aria-live": ariaLive, ...props },
     ref,
   ) => {
     const currentLength = count ?? getTextLength(value);
     const hasMaxLength = typeof maxLength === "number";
     const overLimit = hasMaxLength && currentLength > maxLength;
-    const content = hasMaxLength
-      ? `${currentLength} / ${maxLength}`
-      : `${currentLength}`;
+    const content = hasMaxLength ? `${currentLength} / ${maxLength}` : `${currentLength}`;
 
     return (
       <span

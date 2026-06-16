@@ -21,13 +21,7 @@ export default defineConfig({
 
       reporter: ["text", "html"],
 
-      exclude: [
-        ...coverageConfigDefaults.exclude,
-
-        "**/*.d.ts",
-        "**/*.config.*",
-        "**/index.ts",
-      ],
+      exclude: [...coverageConfigDefaults.exclude, "**/*.d.ts", "**/*.config.*", "**/index.ts"],
     },
   },
 });

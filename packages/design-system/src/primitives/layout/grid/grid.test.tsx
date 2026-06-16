@@ -58,13 +58,7 @@ describe("Grid", () => {
 
   it("선택한 column class를 렌더링한다", () => {
     render(
-      <Grid
-        data-testid="grid"
-        columns={3}
-        smColumns={4}
-        mdColumns={6}
-        lgColumns={12}
-      >
+      <Grid data-testid="grid" columns={3} smColumns={4} mdColumns={6} lgColumns={12}>
         콘텐츠
       </Grid>,
     );

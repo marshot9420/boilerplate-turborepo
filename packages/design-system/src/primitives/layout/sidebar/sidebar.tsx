@@ -36,7 +36,7 @@ export const SidebarLayout = forwardRef<HTMLDivElement, SidebarLayoutProps>(
       <div
         ref={ref}
         className={cn(
-          "min-h-screen w-full bg-background text-foreground lg:grid",
+          "bg-background text-foreground min-h-screen w-full lg:grid",
           "lg:grid-cols-[var(--ds-sidebar-width)_minmax(0,1fr)]",
           className,
         )}
@@ -57,21 +57,12 @@ export interface SidebarProps extends HTMLAttributes<HTMLElement> {
 }
 
 const Sidebar = forwardRef<HTMLElement, SidebarProps>(
-  (
-    {
-      className,
-      variant = "default",
-      sticky = true,
-      hiddenOnMobile = true,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ className, variant = "default", sticky = true, hiddenOnMobile = true, ...props }, ref) => {
     return (
       <aside
         ref={ref}
         className={cn(
-          "min-h-screen w-full border-r border-border bg-surface text-surface-foreground",
+          "border-border bg-surface text-surface-foreground min-h-screen w-full border-r",
           "flex-col",
           hiddenOnMobile ? "hidden lg:flex" : "flex",
           sticky && "lg:sticky lg:top-0 lg:h-screen",
@@ -93,13 +84,7 @@ export type SidebarInsetProps = ComponentPropsWithoutRef<"main">;
 
 export const SidebarInset = forwardRef<HTMLElement, SidebarInsetProps>(
   ({ className, ...props }, ref) => {
-    return (
-      <main
-        ref={ref}
-        className={cn("min-w-0 flex-1 bg-background", className)}
-        {...props}
-      />
-    );
+    return <main ref={ref} className={cn("bg-background min-w-0 flex-1", className)} {...props} />;
   },
 );
 
@@ -112,10 +97,7 @@ export const SidebarHeader = forwardRef<HTMLDivElement, SidebarHeaderProps>(
     return (
       <div
         ref={ref}
-        className={cn(
-          "flex min-h-16 items-center gap-3 border-b border-border px-4",
-          className,
-        )}
+        className={cn("border-border flex min-h-16 items-center gap-3 border-b px-4", className)}
         {...props}
       />
     );
@@ -128,13 +110,7 @@ export type SidebarContentProps = HTMLAttributes<HTMLDivElement>;
 
 export const SidebarContent = forwardRef<HTMLDivElement, SidebarContentProps>(
   ({ className, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn("flex-1 overflow-y-auto p-3", className)}
-        {...props}
-      />
-    );
+    return <div ref={ref} className={cn("flex-1 overflow-y-auto p-3", className)} {...props} />;
   },
 );
 
@@ -144,13 +120,7 @@ export type SidebarFooterProps = HTMLAttributes<HTMLDivElement>;
 
 export const SidebarFooter = forwardRef<HTMLDivElement, SidebarFooterProps>(
   ({ className, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn("border-t border-border p-3", className)}
-        {...props}
-      />
-    );
+    return <div ref={ref} className={cn("border-border border-t p-3", className)} {...props} />;
   },
 );
 
@@ -168,21 +138,17 @@ SidebarGroup.displayName = "SidebarGroup";
 
 export type SidebarGroupLabelProps = HTMLAttributes<HTMLDivElement>;
 
-export const SidebarGroupLabel = forwardRef<
-  HTMLDivElement,
-  SidebarGroupLabelProps
->(({ className, ...props }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        "px-2 py-1.5 text-xs font-medium text-muted-foreground",
-        className,
-      )}
-      {...props}
-    />
-  );
-});
+export const SidebarGroupLabel = forwardRef<HTMLDivElement, SidebarGroupLabelProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn("text-muted-foreground px-2 py-1.5 text-xs font-medium", className)}
+        {...props}
+      />
+    );
+  },
+);
 
 SidebarGroupLabel.displayName = "SidebarGroupLabel";
 
@@ -192,14 +158,7 @@ export interface SidebarNavProps extends ComponentPropsWithoutRef<"nav"> {
 
 export const SidebarNav = forwardRef<HTMLElement, SidebarNavProps>(
   ({ className, label = "Sidebar navigation", ...props }, ref) => {
-    return (
-      <nav
-        ref={ref}
-        className={cn("space-y-4", className)}
-        aria-label={label}
-        {...props}
-      />
-    );
+    return <nav ref={ref} className={cn("space-y-4", className)} aria-label={label} {...props} />;
   },
 );
 
@@ -230,30 +189,16 @@ export interface SidebarNavLinkProps extends AnchorHTMLAttributes<HTMLAnchorElem
   tone?: SidebarNavLinkTone;
 }
 
-export const SidebarNavLink = forwardRef<
-  HTMLAnchorElement,
-  SidebarNavLinkProps
->(
-  (
-    {
-      className,
-      active = false,
-      tone = "default",
-      "aria-current": ariaCurrent,
-      ...props
-    },
-    ref,
-  ) => {
+export const SidebarNavLink = forwardRef<HTMLAnchorElement, SidebarNavLinkProps>(
+  ({ className, active = false, tone = "default", "aria-current": ariaCurrent, ...props }, ref) => {
     return (
       <a
         ref={ref}
         className={cn(
           "flex min-h-10 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-          tone === "default" &&
-            "text-muted-foreground hover:bg-muted hover:text-foreground",
-          tone === "danger" &&
-            "text-destructive hover:bg-destructive/10 hover:text-destructive",
+          "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+          tone === "default" && "text-muted-foreground hover:bg-muted hover:text-foreground",
+          tone === "danger" && "text-destructive hover:bg-destructive/10 hover:text-destructive",
           active && tone === "default" && "bg-muted text-foreground",
           active && tone === "danger" && "bg-destructive/10 text-destructive",
           className,
@@ -271,19 +216,13 @@ SidebarNavLink.displayName = "SidebarNavLink";
 
 export type SidebarSeparatorProps = HTMLAttributes<HTMLDivElement>;
 
-export const SidebarSeparator = forwardRef<
-  HTMLDivElement,
-  SidebarSeparatorProps
->(({ className, ...props }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className={cn("my-3 h-px bg-border", className)}
-      role="separator"
-      {...props}
-    />
-  );
-});
+export const SidebarSeparator = forwardRef<HTMLDivElement, SidebarSeparatorProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <div ref={ref} className={cn("bg-border my-3 h-px", className)} role="separator" {...props} />
+    );
+  },
+);
 
 SidebarSeparator.displayName = "SidebarSeparator";
 

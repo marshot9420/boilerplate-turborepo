@@ -1,11 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import DataList, {
-  DataListItem,
-  DataListLabel,
-  DataListValue,
-} from "./data-list";
+import DataList, { DataListItem, DataListLabel, DataListValue } from "./data-list";
 
 describe("DataList", () => {
   it("description list를 렌더링한다", () => {

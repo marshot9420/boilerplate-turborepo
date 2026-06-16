@@ -8,10 +8,10 @@ import { cn } from "../../../utils";
 
 const phoneInputRootVariants = cva(
   [
-    "flex w-full items-center rounded-md border border-input",
+    "border-input flex w-full items-center rounded-md border",
     "bg-background text-foreground",
     "transition-colors",
-    "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
+    "focus-within:ring-ring focus-within:ring-offset-background focus-within:ring-2 focus-within:ring-offset-2",
     "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50",
     "data-[invalid=true]:border-destructive",
   ],
@@ -32,7 +32,7 @@ const phoneInputRootVariants = cva(
 
 const phoneInputVariants = cva(
   [
-    "min-w-0 flex-1 bg-transparent text-foreground",
+    "text-foreground min-w-0 flex-1 bg-transparent",
     "outline-none",
     "placeholder:text-muted-foreground",
     "disabled:cursor-not-allowed",
@@ -89,9 +89,7 @@ const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         className={cn(phoneInputRootVariants({ size }), className)}
       >
         {prefixSlot ? (
-          <span className="mr-2 shrink-0 text-muted-foreground">
-            {prefixSlot}
-          </span>
+          <span className="text-muted-foreground mr-2 shrink-0">{prefixSlot}</span>
         ) : null}
 
         <input
@@ -109,9 +107,7 @@ const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         />
 
         {suffixSlot ? (
-          <span className="ml-2 shrink-0 text-muted-foreground">
-            {suffixSlot}
-          </span>
+          <span className="text-muted-foreground ml-2 shrink-0">{suffixSlot}</span>
         ) : null}
       </div>
     );

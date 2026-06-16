@@ -34,9 +34,7 @@ vi.mock("@repo/core/logger", () => ({
   logger: loggerMock,
 }));
 
-function createActor(
-  overrides: Partial<ContentPermissionActor> = {},
-): ContentPermissionActor {
+function createActor(overrides: Partial<ContentPermissionActor> = {}): ContentPermissionActor {
   return {
     id: "user-id",
     role: "USER",
@@ -163,9 +161,7 @@ describe("content.service", () => {
 
       const result = await getContentByIdService("content-id");
 
-      expect(repositoryMock.findContentByIdRepository).toHaveBeenCalledWith(
-        "content-id",
-      );
+      expect(repositoryMock.findContentByIdRepository).toHaveBeenCalledWith("content-id");
 
       expect(result).toEqual({
         ok: true,
@@ -225,15 +221,12 @@ describe("content.service", () => {
         error,
       });
 
-      expect(loggerMock.error).toHaveBeenCalledWith(
-        "content.get_by_id.failed",
-        {
-          contentId: "content-id",
-          actorId: undefined,
-          actorRole: undefined,
-          error,
-        },
-      );
+      expect(loggerMock.error).toHaveBeenCalledWith("content.get_by_id.failed", {
+        contentId: "content-id",
+        actorId: undefined,
+        actorRole: undefined,
+        error,
+      });
     });
 
     it("HIDDEN 콘텐츠를 비로그인 사용자가 조회하면 CONTENT_FORBIDDEN 실패 Result를 반환한다", async () => {
@@ -493,13 +486,10 @@ describe("content.service", () => {
         content: "수정된 본문",
       });
 
-      expect(repositoryMock.updateContentRepository).toHaveBeenCalledWith(
-        "content-id",
-        {
-          title: "수정된 제목",
-          content: "수정된 본문",
-        },
-      );
+      expect(repositoryMock.updateContentRepository).toHaveBeenCalledWith("content-id", {
+        title: "수정된 제목",
+        content: "수정된 본문",
+      });
 
       expect(result).toEqual({
         ok: true,
@@ -545,13 +535,10 @@ describe("content.service", () => {
 
       expect(result.ok).toBe(true);
 
-      expect(repositoryMock.updateContentRepository).toHaveBeenCalledWith(
-        "content-id",
-        {
-          title: "관리자가 수정한 제목",
-          content: undefined,
-        },
-      );
+      expect(repositoryMock.updateContentRepository).toHaveBeenCalledWith("content-id", {
+        title: "관리자가 수정한 제목",
+        content: undefined,
+      });
     });
 
     it("repository 에러가 발생하면 실패 Result를 반환하고 로그를 남긴다", async () => {
@@ -588,13 +575,9 @@ describe("content.service", () => {
 
       repositoryMock.findContentByIdRepository.mockResolvedValue(null);
 
-      const result = await updateContentStatusService(
-        "missing-content-id",
-        actor,
-        {
-          status: "HIDDEN",
-        },
-      );
+      const result = await updateContentStatusService("missing-content-id", actor, {
+        status: "HIDDEN",
+      });
 
       expect(result).toEqual({
         ok: false,
@@ -676,12 +659,9 @@ describe("content.service", () => {
         status: "HIDDEN",
       });
 
-      expect(repositoryMock.updateContentRepository).toHaveBeenCalledWith(
-        "content-id",
-        {
-          status: "HIDDEN",
-        },
-      );
+      expect(repositoryMock.updateContentRepository).toHaveBeenCalledWith("content-id", {
+        status: "HIDDEN",
+      });
 
       expect(result.ok).toBe(true);
 
@@ -689,15 +669,12 @@ describe("content.service", () => {
         expect(result.data.status).toBe("HIDDEN");
       }
 
-      expect(loggerMock.info).toHaveBeenCalledWith(
-        "content.update_status.succeeded",
-        {
-          contentId: "content-id",
-          status: "HIDDEN",
-          actorId: "admin-id",
-          actorRole: "ADMIN",
-        },
-      );
+      expect(loggerMock.info).toHaveBeenCalledWith("content.update_status.succeeded", {
+        contentId: "content-id",
+        status: "HIDDEN",
+        actorId: "admin-id",
+        actorRole: "ADMIN",
+      });
     });
 
     it("repository 에러가 발생하면 실패 Result를 반환하고 로그를 남긴다", async () => {
@@ -721,15 +698,12 @@ describe("content.service", () => {
         error,
       });
 
-      expect(loggerMock.error).toHaveBeenCalledWith(
-        "content.update_status.failed",
-        {
-          contentId: "content-id",
-          actorId: "admin-id",
-          actorRole: "ADMIN",
-          error,
-        },
-      );
+      expect(loggerMock.error).toHaveBeenCalledWith("content.update_status.failed", {
+        contentId: "content-id",
+        actorId: "admin-id",
+        actorRole: "ADMIN",
+        error,
+      });
     });
   });
 
@@ -739,10 +713,7 @@ describe("content.service", () => {
 
       repositoryMock.findContentByIdRepository.mockResolvedValue(null);
 
-      const result = await softDeleteContentService(
-        "missing-content-id",
-        actor,
-      );
+      const result = await softDeleteContentService("missing-content-id", actor);
 
       expect(result).toEqual({
         ok: false,
@@ -812,15 +783,11 @@ describe("content.service", () => {
       });
 
       repositoryMock.findContentByIdRepository.mockResolvedValue(content);
-      repositoryMock.softDeleteContentRepository.mockResolvedValue(
-        deletedContent,
-      );
+      repositoryMock.softDeleteContentRepository.mockResolvedValue(deletedContent);
 
       const result = await softDeleteContentService("content-id", actor);
 
-      expect(repositoryMock.softDeleteContentRepository).toHaveBeenCalledWith(
-        "content-id",
-      );
+      expect(repositoryMock.softDeleteContentRepository).toHaveBeenCalledWith("content-id");
 
       expect(result.ok).toBe(true);
 
@@ -828,14 +795,11 @@ describe("content.service", () => {
         expect(result.data.status).toBe("DELETED");
       }
 
-      expect(loggerMock.info).toHaveBeenCalledWith(
-        "content.soft_delete.succeeded",
-        {
-          contentId: "content-id",
-          actorId: "user-id",
-          actorRole: "USER",
-        },
-      );
+      expect(loggerMock.info).toHaveBeenCalledWith("content.soft_delete.succeeded", {
+        contentId: "content-id",
+        actorId: "user-id",
+        actorRole: "USER",
+      });
     });
 
     it("repository 에러가 발생하면 실패 Result를 반환하고 로그를 남긴다", async () => {
@@ -853,15 +817,12 @@ describe("content.service", () => {
         error,
       });
 
-      expect(loggerMock.error).toHaveBeenCalledWith(
-        "content.soft_delete.failed",
-        {
-          contentId: "content-id",
-          actorId: "user-id",
-          actorRole: "USER",
-          error,
-        },
-      );
+      expect(loggerMock.error).toHaveBeenCalledWith("content.soft_delete.failed", {
+        contentId: "content-id",
+        actorId: "user-id",
+        actorRole: "USER",
+        error,
+      });
     });
   });
 });

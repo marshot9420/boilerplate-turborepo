@@ -14,10 +14,7 @@ export interface SectionProps extends HTMLAttributes<HTMLElement> {
 }
 
 const Section = forwardRef<HTMLElement, SectionProps>(
-  (
-    { className, spacing = "lg", surface = "none", border = false, ...props },
-    ref,
-  ) => {
+  ({ className, spacing = "lg", surface = "none", border = false, ...props }, ref) => {
     return (
       <section
         ref={ref}
@@ -30,7 +27,7 @@ const Section = forwardRef<HTMLElement, SectionProps>(
           surface === "background" && "bg-background text-foreground",
           surface === "surface" && "bg-surface text-surface-foreground",
           surface === "muted" && "bg-muted text-foreground",
-          border && "border-y border-border",
+          border && "border-border border-y",
           className,
         )}
         data-spacing={spacing}

@@ -8,16 +8,8 @@ import {
 } from "@repo/database/user-session";
 import { serverEnv } from "@repo/env/server";
 
-import {
-  deleteSessionCookie,
-  getSessionCookieValue,
-  setSessionCookie,
-} from "./session-cookie";
-import {
-  createSessionExpiresAt,
-  createSessionToken,
-  hashSessionToken,
-} from "./session-token";
+import { deleteSessionCookie, getSessionCookieValue, setSessionCookie } from "./session-cookie";
+import { createSessionExpiresAt, createSessionToken, hashSessionToken } from "./session-token";
 
 type DatabaseSessionWithUser = NonNullable<
   Awaited<ReturnType<typeof findUserSessionWithUserByTokenHashRepository>>
@@ -94,9 +86,7 @@ export async function createAuthSession(
 ): Promise<CreateAuthSessionResult> {
   const token = createSessionToken();
   const tokenHash = hashSessionToken(token);
-  const expiresAt = createSessionExpiresAt(
-    serverEnv.AUTH_SESSION_MAX_AGE_SECONDS,
-  );
+  const expiresAt = createSessionExpiresAt(serverEnv.AUTH_SESSION_MAX_AGE_SECONDS);
 
   const session = await createUserSessionRepository({
     tokenHash,
@@ -123,9 +113,7 @@ export async function createAuthSession(
   };
 }
 
-export async function getAuthSessionByToken(
-  token: string,
-): Promise<AuthSession | null> {
+export async function getAuthSessionByToken(token: string): Promise<AuthSession | null> {
   const tokenHash = hashSessionToken(token);
 
   const session = await findUserSessionWithUserByTokenHashRepository(tokenHash);

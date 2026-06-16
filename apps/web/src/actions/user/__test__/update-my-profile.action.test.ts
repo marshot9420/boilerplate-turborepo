@@ -110,14 +110,11 @@ describe("updateMyProfileAction", () => {
       }),
     );
 
-    expect(userServiceMock.updateUserProfileService).toHaveBeenCalledWith(
-      "user-id",
-      {
-        name: "테스트 사용자",
-        avatarUrl: null,
-        nickname: "tester",
-      },
-    );
+    expect(userServiceMock.updateUserProfileService).toHaveBeenCalledWith("user-id", {
+      name: "테스트 사용자",
+      avatarUrl: null,
+      nickname: "tester",
+    });
 
     expect(nextCacheMock.revalidatePath).toHaveBeenCalledWith("/me");
     expect(result).toEqual(actionResult);
@@ -190,14 +187,11 @@ describe("updateMyProfileAction", () => {
 
     const result = await updateMyProfileAction(null, formData);
 
-    expect(userServiceMock.updateUserProfileService).toHaveBeenCalledWith(
-      "user-id",
-      {
-        name: "테스트 사용자",
-        avatarUrl: null,
-        nickname: "duplicated",
-      },
-    );
+    expect(userServiceMock.updateUserProfileService).toHaveBeenCalledWith("user-id", {
+      name: "테스트 사용자",
+      avatarUrl: null,
+      nickname: "duplicated",
+    });
 
     expect(nextCacheMock.revalidatePath).not.toHaveBeenCalled();
     expect(result).toEqual(actionResult);

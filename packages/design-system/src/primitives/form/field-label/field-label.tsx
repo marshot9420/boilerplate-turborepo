@@ -3,10 +3,7 @@
 import { forwardRef } from "react";
 
 import { cn } from "../../../utils";
-import {
-  Label as LabelPrimitive,
-  type LabelProps as LabelPrimitiveProps,
-} from "../../label";
+import { Label as LabelPrimitive, type LabelProps as LabelPrimitiveProps } from "../../label";
 
 export interface FieldLabelProps extends LabelPrimitiveProps {
   hasError?: boolean;

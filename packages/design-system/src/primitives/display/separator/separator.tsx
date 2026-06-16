@@ -6,7 +6,7 @@ import { forwardRef, type HTMLAttributes } from "react";
 
 import { cn } from "../../../utils";
 
-const separatorVariants = cva("shrink-0 bg-border", {
+const separatorVariants = cva("bg-border shrink-0", {
   variants: {
     orientation: {
       horizontal: "h-px w-full",
@@ -21,9 +21,7 @@ const separatorVariants = cva("shrink-0 bg-border", {
 type SeparatorOrientation = "horizontal" | "vertical";
 
 export interface SeparatorProps
-  extends
-    HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof separatorVariants> {
+  extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof separatorVariants> {
   decorative?: boolean;
 }
 
@@ -39,22 +37,16 @@ const Separator = forwardRef<HTMLDivElement, SeparatorProps>(
     },
     ref,
   ) => {
-    const resolvedOrientation: SeparatorOrientation =
-      orientation ?? "horizontal";
+    const resolvedOrientation: SeparatorOrientation = orientation ?? "horizontal";
 
     return (
       <div
         ref={ref}
         role={decorative ? "none" : (role ?? "separator")}
-        aria-orientation={
-          decorative ? undefined : (ariaOrientation ?? resolvedOrientation)
-        }
+        aria-orientation={decorative ? undefined : (ariaOrientation ?? resolvedOrientation)}
         data-orientation={resolvedOrientation}
         data-decorative={decorative ? "true" : "false"}
-        className={cn(
-          separatorVariants({ orientation: resolvedOrientation }),
-          className,
-        )}
+        className={cn(separatorVariants({ orientation: resolvedOrientation }), className)}
         {...props}
       />
     );

@@ -8,11 +8,11 @@ import { cn } from "../../../utils";
 
 const selectVariants = cva(
   [
-    "flex w-full rounded-md border border-input",
+    "border-input flex w-full rounded-md border",
     "bg-background text-foreground",
     "transition-colors",
     "outline-none",
-    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
     "disabled:cursor-not-allowed disabled:opacity-50",
     "data-[invalid=true]:border-destructive",
   ],

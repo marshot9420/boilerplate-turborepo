@@ -3,9 +3,7 @@ import type { Prisma, User } from "@prisma/client";
 import { prisma } from "../client";
 import { mapPrismaError } from "../errors";
 
-export async function createUserRepository(
-  data: Prisma.UserCreateInput,
-): Promise<User> {
+export async function createUserRepository(data: Prisma.UserCreateInput): Promise<User> {
   try {
     return await prisma.user.create({ data });
   } catch (error) {
@@ -13,9 +11,7 @@ export async function createUserRepository(
   }
 }
 
-export async function findUserByIdRepository(
-  userId: string,
-): Promise<User | null> {
+export async function findUserByIdRepository(userId: string): Promise<User | null> {
   try {
     return await prisma.user.findUnique({
       where: {
@@ -27,9 +23,7 @@ export async function findUserByIdRepository(
   }
 }
 
-export async function findUserByEmailRepository(
-  email: string,
-): Promise<User | null> {
+export async function findUserByEmailRepository(email: string): Promise<User | null> {
   try {
     return await prisma.user.findUnique({
       where: {
@@ -41,9 +35,7 @@ export async function findUserByEmailRepository(
   }
 }
 
-export async function findUserByNicknameRepository(
-  nickname: string,
-): Promise<User | null> {
+export async function findUserByNicknameRepository(nickname: string): Promise<User | null> {
   try {
     return await prisma.user.findUnique({
       where: {

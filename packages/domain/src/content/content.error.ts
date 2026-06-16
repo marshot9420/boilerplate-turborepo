@@ -4,5 +4,4 @@ export const CONTENT_ERROR_CODE = {
   DELETED: "CONTENT_DELETED",
 } as const;
 
-export type ContentErrorCode =
-  (typeof CONTENT_ERROR_CODE)[keyof typeof CONTENT_ERROR_CODE];
+export type ContentErrorCode = (typeof CONTENT_ERROR_CODE)[keyof typeof CONTENT_ERROR_CODE];

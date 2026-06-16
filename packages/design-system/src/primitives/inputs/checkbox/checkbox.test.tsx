@@ -10,44 +10,31 @@ describe("Checkbox", () => {
   it("checkbox를 렌더링한다", () => {
     render(<Checkbox aria-label="약관 동의" />);
 
-    expect(
-      screen.getByRole("checkbox", { name: "약관 동의" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("checkbox", { name: "약관 동의" })).toBeInTheDocument();
   });
 
   it("type은 checkbox다", () => {
     render(<Checkbox aria-label="약관 동의" />);
 
-    expect(screen.getByRole("checkbox", { name: "약관 동의" })).toHaveAttribute(
-      "type",
-      "checkbox",
-    );
+    expect(screen.getByRole("checkbox", { name: "약관 동의" })).toHaveAttribute("type", "checkbox");
   });
 
   it("className을 병합한다", () => {
     render(<Checkbox aria-label="약관 동의" className="custom-checkbox" />);
 
-    expect(screen.getByRole("checkbox", { name: "약관 동의" })).toHaveClass(
-      "custom-checkbox",
-    );
+    expect(screen.getByRole("checkbox", { name: "약관 동의" })).toHaveClass("custom-checkbox");
   });
 
   it("기본 size를 data attribute로 노출한다", () => {
     render(<Checkbox aria-label="약관 동의" />);
 
-    expect(screen.getByRole("checkbox", { name: "약관 동의" })).toHaveAttribute(
-      "data-size",
-      "md",
-    );
+    expect(screen.getByRole("checkbox", { name: "약관 동의" })).toHaveAttribute("data-size", "md");
   });
 
   it("전달한 size를 data attribute로 노출한다", () => {
     render(<Checkbox aria-label="약관 동의" size="lg" />);
 
-    expect(screen.getByRole("checkbox", { name: "약관 동의" })).toHaveAttribute(
-      "data-size",
-      "lg",
-    );
+    expect(screen.getByRole("checkbox", { name: "약관 동의" })).toHaveAttribute("data-size", "lg");
   });
 
   it("defaultChecked를 렌더링한다", () => {
@@ -83,9 +70,7 @@ describe("Checkbox", () => {
     const user = userEvent.setup();
     const handleChange = vi.fn();
 
-    render(
-      <Checkbox aria-label="약관 동의" disabled onChange={handleChange} />,
-    );
+    render(<Checkbox aria-label="약관 동의" disabled onChange={handleChange} />);
 
     const checkbox = screen.getByRole("checkbox", { name: "약관 동의" });
 

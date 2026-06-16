@@ -29,28 +29,28 @@ const switchTrackVariants = cva(
   [
     "pointer-events-none relative block rounded-full",
     "bg-muted transition-colors",
-    "after:absolute after:rounded-full after:bg-background after:transition-transform",
+    "after:bg-background after:absolute after:rounded-full after:transition-transform",
     "peer-checked:bg-primary",
-    "peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",
+    "peer-focus-visible:ring-ring peer-focus-visible:ring-offset-background peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2",
     "peer-disabled:cursor-not-allowed",
-    "peer-data-[invalid=true]:ring-2 peer-data-[invalid=true]:ring-destructive",
+    "peer-data-[invalid=true]:ring-destructive peer-data-[invalid=true]:ring-2",
   ],
   {
     variants: {
       size: {
         sm: [
           "h-5 w-9",
-          "after:left-0.5 after:top-0.5 after:size-4",
+          "after:top-0.5 after:left-0.5 after:size-4",
           "peer-checked:after:translate-x-4",
         ],
         md: [
           "h-6 w-11",
-          "after:left-0.5 after:top-0.5 after:size-5",
+          "after:top-0.5 after:left-0.5 after:size-5",
           "peer-checked:after:translate-x-5",
         ],
         lg: [
           "h-7 w-13",
-          "after:left-0.5 after:top-0.5 after:size-6",
+          "after:top-0.5 after:left-0.5 after:size-6",
           "peer-checked:after:translate-x-6",
         ],
       },
@@ -104,10 +104,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
           {...props}
         />
 
-        <span
-          aria-hidden="true"
-          className={cn(switchTrackVariants({ size }), trackClassName)}
-        />
+        <span aria-hidden="true" className={cn(switchTrackVariants({ size }), trackClassName)} />
       </label>
     );
   },

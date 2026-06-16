@@ -62,12 +62,7 @@ describe("Sidebar", () => {
 
   it("Sidebar variant, sticky, hiddenOnMobile 값을 data attribute로 렌더링한다", () => {
     render(
-      <Sidebar
-        data-testid="sidebar"
-        variant="floating"
-        sticky={false}
-        hiddenOnMobile={false}
-      >
+      <Sidebar data-testid="sidebar" variant="floating" sticky={false} hiddenOnMobile={false}>
         메뉴
       </Sidebar>,
     );
@@ -90,14 +85,9 @@ describe("Sidebar", () => {
       </SidebarNav>,
     );
 
-    expect(
-      screen.getByRole("navigation", { name: "관리자 메뉴" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "관리자 메뉴" })).toBeInTheDocument();
 
-    expect(screen.getByRole("link", { name: "대시보드" })).toHaveAttribute(
-      "href",
-      "/admin",
-    );
+    expect(screen.getByRole("link", { name: "대시보드" })).toHaveAttribute("href", "/admin");
   });
 
   it("active SidebarNavLink는 aria-current page를 렌더링한다", () => {
@@ -127,10 +117,7 @@ describe("Sidebar", () => {
       </SidebarNavLink>,
     );
 
-    expect(screen.getByRole("link", { name: "단계" })).toHaveAttribute(
-      "aria-current",
-      "step",
-    );
+    expect(screen.getByRole("link", { name: "단계" })).toHaveAttribute("aria-current", "step");
   });
 
   it("danger tone을 data attribute로 렌더링한다", () => {
@@ -140,10 +127,7 @@ describe("Sidebar", () => {
       </SidebarNavLink>,
     );
 
-    expect(screen.getByRole("link", { name: "로그아웃" })).toHaveAttribute(
-      "data-tone",
-      "danger",
-    );
+    expect(screen.getByRole("link", { name: "로그아웃" })).toHaveAttribute("data-tone", "danger");
   });
 
   it("SidebarSeparator를 separator role로 렌더링한다", () => {
@@ -169,9 +153,7 @@ describe("Sidebar", () => {
           <SidebarHeader className="custom-header">Header</SidebarHeader>
           <SidebarContent className="custom-content">
             <SidebarGroup className="custom-group">
-              <SidebarGroupLabel className="custom-group-label">
-                그룹
-              </SidebarGroupLabel>
+              <SidebarGroupLabel className="custom-group-label">그룹</SidebarGroupLabel>
               <SidebarNav className="custom-nav">
                 <SidebarNavList className="custom-list">
                   <SidebarNavItem className="custom-item">
@@ -190,9 +172,7 @@ describe("Sidebar", () => {
       </SidebarLayout>,
     );
 
-    expect(screen.getByText("Header").parentElement).toHaveClass(
-      "custom-sidebar",
-    );
+    expect(screen.getByText("Header").parentElement).toHaveClass("custom-sidebar");
     expect(screen.getByText("Header")).toHaveClass("custom-header");
     expect(screen.getByText("그룹").closest(".custom-content")).toBeTruthy();
     expect(screen.getByText("그룹").parentElement).toHaveClass("custom-group");

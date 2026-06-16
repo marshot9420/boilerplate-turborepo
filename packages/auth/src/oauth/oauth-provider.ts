@@ -32,9 +32,7 @@ export function isOAuthProviderId(value: string): value is OAuthProviderId {
   return OAuthProviderIds.some((providerId) => providerId === value);
 }
 
-export function parseOAuthProviderId(
-  value: string | string[] | undefined,
-): OAuthProviderId | null {
+export function parseOAuthProviderId(value: string | string[] | undefined): OAuthProviderId | null {
   if (!value) {
     return null;
   }
@@ -50,14 +48,10 @@ export function parseOAuthProviderId(
   return value;
 }
 
-export function getOAuthProviderConfig(
-  providerId: OAuthProviderId,
-): OAuthProviderConfig {
+export function getOAuthProviderConfig(providerId: OAuthProviderId): OAuthProviderConfig {
   return OAuthProviderConfigMap[providerId];
 }
 
-export function toOAuthAuthProvider(
-  providerId: OAuthProviderId,
-): OAuthAuthProvider {
+export function toOAuthAuthProvider(providerId: OAuthProviderId): OAuthAuthProvider {
   return getOAuthProviderConfig(providerId).authProvider;
 }

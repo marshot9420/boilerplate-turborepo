@@ -37,9 +37,7 @@ describe("Select", () => {
       </Select>,
     );
 
-    expect(screen.getByRole("combobox", { name: "상태" })).toHaveClass(
-      "custom-select",
-    );
+    expect(screen.getByRole("combobox", { name: "상태" })).toHaveClass("custom-select");
   });
 
   it("기본 size를 data attribute로 노출한다", () => {
@@ -49,10 +47,7 @@ describe("Select", () => {
       </Select>,
     );
 
-    expect(screen.getByRole("combobox", { name: "상태" })).toHaveAttribute(
-      "data-size",
-      "md",
-    );
+    expect(screen.getByRole("combobox", { name: "상태" })).toHaveAttribute("data-size", "md");
   });
 
   it("전달한 size를 data attribute로 노출한다", () => {
@@ -62,10 +57,7 @@ describe("Select", () => {
       </Select>,
     );
 
-    expect(screen.getByRole("combobox", { name: "상태" })).toHaveAttribute(
-      "data-size",
-      "lg",
-    );
+    expect(screen.getByRole("combobox", { name: "상태" })).toHaveAttribute("data-size", "lg");
   });
 
   it("defaultValue를 렌더링한다", () => {
@@ -76,9 +68,7 @@ describe("Select", () => {
       </Select>,
     );
 
-    expect(screen.getByRole("combobox", { name: "상태" })).toHaveValue(
-      "published",
-    );
+    expect(screen.getByRole("combobox", { name: "상태" })).toHaveValue("published");
   });
 
   it("값을 선택하면 value가 변경된다", async () => {
@@ -109,10 +99,7 @@ describe("Select", () => {
       </Select>,
     );
 
-    await user.selectOptions(
-      screen.getByRole("combobox", { name: "상태" }),
-      "published",
-    );
+    await user.selectOptions(screen.getByRole("combobox", { name: "상태" }), "published");
 
     expect(handleChange).toHaveBeenCalledTimes(1);
   });
@@ -122,12 +109,7 @@ describe("Select", () => {
     const handleChange = vi.fn();
 
     render(
-      <Select
-        aria-label="상태"
-        defaultValue="draft"
-        disabled
-        onChange={handleChange}
-      >
+      <Select aria-label="상태" defaultValue="draft" disabled onChange={handleChange}>
         <option value="draft">초안</option>
         <option value="published">게시</option>
       </Select>,

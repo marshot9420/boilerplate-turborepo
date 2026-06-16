@@ -18,15 +18,9 @@ export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
 }
 
 const Table = forwardRef<HTMLTableElement, TableProps>(
-  (
-    { className, containerClassName, fullWidth = true, children, ...props },
-    ref,
-  ) => {
+  ({ className, containerClassName, fullWidth = true, children, ...props }, ref) => {
     return (
-      <div
-        className={cn("w-full overflow-x-auto", containerClassName)}
-        data-slot="table-container"
-      >
+      <div className={cn("w-full overflow-x-auto", containerClassName)} data-slot="table-container">
         <table
           ref={ref}
           className={cn(
@@ -48,18 +42,11 @@ Table.displayName = "Table";
 
 export type TableHeaderProps = HTMLAttributes<HTMLTableSectionElement>;
 
-export const TableHeader = forwardRef<
-  HTMLTableSectionElement,
-  TableHeaderProps
->(({ className, ...props }, ref) => {
-  return (
-    <thead
-      ref={ref}
-      className={cn("border-b border-border", className)}
-      {...props}
-    />
-  );
-});
+export const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>(
+  ({ className, ...props }, ref) => {
+    return <thead ref={ref} className={cn("border-border border-b", className)} {...props} />;
+  },
+);
 
 TableHeader.displayName = "TableHeader";
 
@@ -67,13 +54,7 @@ export type TableBodyProps = HTMLAttributes<HTMLTableSectionElement>;
 
 export const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps>(
   ({ className, ...props }, ref) => {
-    return (
-      <tbody
-        ref={ref}
-        className={cn("[&_tr:last-child]:border-0", className)}
-        {...props}
-      />
-    );
+    return <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className)} {...props} />;
   },
 );
 
@@ -81,18 +62,17 @@ TableBody.displayName = "TableBody";
 
 export type TableFooterProps = HTMLAttributes<HTMLTableSectionElement>;
 
-export const TableFooter = forwardRef<
-  HTMLTableSectionElement,
-  TableFooterProps
->(({ className, ...props }, ref) => {
-  return (
-    <tfoot
-      ref={ref}
-      className={cn("border-t border-border bg-muted font-medium", className)}
-      {...props}
-    />
-  );
-});
+export const TableFooter = forwardRef<HTMLTableSectionElement, TableFooterProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <tfoot
+        ref={ref}
+        className={cn("border-border bg-muted border-t font-medium", className)}
+        {...props}
+      />
+    );
+  },
+);
 
 TableFooter.displayName = "TableFooter";
 
@@ -106,7 +86,7 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
       <tr
         ref={ref}
         className={cn(
-          "border-b border-border transition-colors",
+          "border-border border-b transition-colors",
           "hover:bg-muted/50",
           selected && "bg-muted",
           className,
@@ -130,7 +110,7 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
       <th
         ref={ref}
         className={cn(
-          "h-10 px-3 text-xs font-medium text-muted-foreground",
+          "text-muted-foreground h-10 px-3 text-xs font-medium",
           textAlign === "left" && "text-left",
           textAlign === "center" && "text-center",
           textAlign === "right" && "text-right",
@@ -173,18 +153,17 @@ TableCell.displayName = "TableCell";
 
 export type TableCaptionProps = HTMLAttributes<HTMLTableCaptionElement>;
 
-export const TableCaption = forwardRef<
-  HTMLTableCaptionElement,
-  TableCaptionProps
->(({ className, ...props }, ref) => {
-  return (
-    <caption
-      ref={ref}
-      className={cn("mt-4 text-sm text-muted-foreground", className)}
-      {...props}
-    />
-  );
-});
+export const TableCaption = forwardRef<HTMLTableCaptionElement, TableCaptionProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <caption
+        ref={ref}
+        className={cn("text-muted-foreground mt-4 text-sm", className)}
+        {...props}
+      />
+    );
+  },
+);
 
 TableCaption.displayName = "TableCaption";
 
@@ -193,18 +172,12 @@ export interface TableEmptyProps extends TdHTMLAttributes<HTMLTableCellElement> 
 }
 
 export const TableEmpty = forwardRef<HTMLTableCellElement, TableEmptyProps>(
-  (
-    { className, colSpan, children = "표시할 데이터가 없습니다.", ...props },
-    ref,
-  ) => {
+  ({ className, colSpan, children = "표시할 데이터가 없습니다.", ...props }, ref) => {
     return (
       <tr>
         <td
           ref={ref}
-          className={cn(
-            "h-24 p-3 text-center text-sm text-muted-foreground",
-            className,
-          )}
+          className={cn("text-muted-foreground h-24 p-3 text-center text-sm", className)}
           colSpan={colSpan}
           {...props}
         >

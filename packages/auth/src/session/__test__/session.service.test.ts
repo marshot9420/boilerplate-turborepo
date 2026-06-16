@@ -28,10 +28,8 @@ vi.mock("server-only", () => ({}));
 
 vi.mock("@repo/database/user-session", () => ({
   createUserSessionRepository: mocks.createUserSessionRepository,
-  findUserSessionWithUserByTokenHashRepository:
-    mocks.findUserSessionWithUserByTokenHashRepository,
-  revokeUserSessionByTokenHashRepository:
-    mocks.revokeUserSessionByTokenHashRepository,
+  findUserSessionWithUserByTokenHashRepository: mocks.findUserSessionWithUserByTokenHashRepository,
+  revokeUserSessionByTokenHashRepository: mocks.revokeUserSessionByTokenHashRepository,
 }));
 
 vi.mock("@repo/database/user", () => ({
@@ -118,9 +116,7 @@ describe("session.service", () => {
 
     mocks.setSessionCookie.mockResolvedValue(undefined);
     mocks.deleteSessionCookie.mockResolvedValue(undefined);
-    mocks.updateUserRepository.mockResolvedValue(
-      createDatabaseSessionWithUser().user,
-    );
+    mocks.updateUserRepository.mockResolvedValue(createDatabaseSessionWithUser().user);
     mocks.revokeUserSessionByTokenHashRepository.mockResolvedValue(1);
   });
 
@@ -184,9 +180,7 @@ describe("session.service", () => {
     const result = await getAuthSessionByToken("raw-session-token");
 
     expect(mocks.hashSessionToken).toHaveBeenCalledWith("raw-session-token");
-    expect(
-      mocks.findUserSessionWithUserByTokenHashRepository,
-    ).toHaveBeenCalledWith("hashed-token");
+    expect(mocks.findUserSessionWithUserByTokenHashRepository).toHaveBeenCalledWith("hashed-token");
 
     expect(result).toEqual({
       id: "session-id",
@@ -207,9 +201,7 @@ describe("session.service", () => {
   it("토큰에 해당하는 세션이 없으면 null을 반환한다", async () => {
     mocks.findUserSessionWithUserByTokenHashRepository.mockResolvedValue(null);
 
-    await expect(
-      getAuthSessionByToken("raw-session-token"),
-    ).resolves.toBeNull();
+    await expect(getAuthSessionByToken("raw-session-token")).resolves.toBeNull();
   });
 
   it("폐기된 세션이면 null을 반환한다", async () => {
@@ -219,9 +211,7 @@ describe("session.service", () => {
       }),
     );
 
-    await expect(
-      getAuthSessionByToken("raw-session-token"),
-    ).resolves.toBeNull();
+    await expect(getAuthSessionByToken("raw-session-token")).resolves.toBeNull();
   });
 
   it("만료된 세션이면 null을 반환한다", async () => {
@@ -231,9 +221,7 @@ describe("session.service", () => {
       }),
     );
 
-    await expect(
-      getAuthSessionByToken("raw-session-token"),
-    ).resolves.toBeNull();
+    await expect(getAuthSessionByToken("raw-session-token")).resolves.toBeNull();
   });
 
   it("사용자 상태가 ACTIVE가 아니면 null을 반환한다", async () => {
@@ -245,9 +233,7 @@ describe("session.service", () => {
       }),
     );
 
-    await expect(
-      getAuthSessionByToken("raw-session-token"),
-    ).resolves.toBeNull();
+    await expect(getAuthSessionByToken("raw-session-token")).resolves.toBeNull();
   });
 
   it("삭제된 사용자면 null을 반환한다", async () => {
@@ -259,9 +245,7 @@ describe("session.service", () => {
       }),
     );
 
-    await expect(
-      getAuthSessionByToken("raw-session-token"),
-    ).resolves.toBeNull();
+    await expect(getAuthSessionByToken("raw-session-token")).resolves.toBeNull();
   });
 
   it("현재 세션 쿠키가 없으면 현재 인증 세션은 null이다", async () => {
@@ -270,9 +254,7 @@ describe("session.service", () => {
     const result = await getCurrentAuthSession();
 
     expect(result).toBeNull();
-    expect(
-      mocks.findUserSessionWithUserByTokenHashRepository,
-    ).not.toHaveBeenCalled();
+    expect(mocks.findUserSessionWithUserByTokenHashRepository).not.toHaveBeenCalled();
   });
 
   it("현재 세션 쿠키가 있으면 현재 인증 세션을 조회한다", async () => {
@@ -292,9 +274,7 @@ describe("session.service", () => {
     const result = await revokeAuthSessionByToken("raw-session-token");
 
     expect(mocks.hashSessionToken).toHaveBeenCalledWith("raw-session-token");
-    expect(mocks.revokeUserSessionByTokenHashRepository).toHaveBeenCalledWith(
-      "hashed-token",
-    );
+    expect(mocks.revokeUserSessionByTokenHashRepository).toHaveBeenCalledWith("hashed-token");
     expect(result).toBe(1);
   });
 
@@ -303,9 +283,7 @@ describe("session.service", () => {
 
     await revokeCurrentAuthSession();
 
-    expect(mocks.revokeUserSessionByTokenHashRepository).toHaveBeenCalledWith(
-      "hashed-token",
-    );
+    expect(mocks.revokeUserSessionByTokenHashRepository).toHaveBeenCalledWith("hashed-token");
     expect(mocks.deleteSessionCookie).toHaveBeenCalledOnce();
   });
 

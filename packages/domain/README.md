@@ -177,10 +177,7 @@ export function toUserResponse(user: User): UserResponse {
 권한 정책 처리.
 
 ```ts
-export function canUpdateUser(
-  actor: UserPermissionActor,
-  targetUserId: string,
-) {
+export function canUpdateUser(actor: UserPermissionActor, targetUserId: string) {
   return actor.role === "ADMIN" || actor.id === targetUserId;
 }
 ```

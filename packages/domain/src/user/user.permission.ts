@@ -10,10 +10,7 @@ export function canReadUser(actor: UserPermissionActor, targetUserId: string) {
   return actor.role === "ADMIN" || actor.id === targetUserId;
 }
 
-export function canUpdateUser(
-  actor: UserPermissionActor,
-  targetUserId: string,
-) {
+export function canUpdateUser(actor: UserPermissionActor, targetUserId: string) {
   if (actor.status !== "ACTIVE") {
     return false;
   }

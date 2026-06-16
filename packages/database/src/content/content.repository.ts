@@ -3,9 +3,7 @@ import type { Content, ContentStatus, Prisma } from "@prisma/client";
 import { prisma } from "../client";
 import { mapPrismaError } from "../errors";
 
-export async function createContentRepository(
-  data: Prisma.ContentCreateInput,
-): Promise<Content> {
+export async function createContentRepository(data: Prisma.ContentCreateInput): Promise<Content> {
   try {
     return await prisma.content.create({ data });
   } catch (error) {
@@ -13,9 +11,7 @@ export async function createContentRepository(
   }
 }
 
-export async function findContentByIdRepository(
-  contentId: string,
-): Promise<Content | null> {
+export async function findContentByIdRepository(contentId: string): Promise<Content | null> {
   try {
     return await prisma.content.findUnique({
       where: {
@@ -82,9 +78,7 @@ export async function updateContentRepository(
   }
 }
 
-export async function softDeleteContentRepository(
-  contentId: string,
-): Promise<Content> {
+export async function softDeleteContentRepository(contentId: string): Promise<Content> {
   try {
     return await prisma.content.update({
       where: {

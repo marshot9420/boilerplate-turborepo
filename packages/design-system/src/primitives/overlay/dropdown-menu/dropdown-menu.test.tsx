@@ -167,9 +167,7 @@ describe("DropdownMenu", () => {
 
     await user.click(screen.getByRole("button", { name: "메뉴" }));
 
-    expect(
-      screen.getByRole("menuitemcheckbox", { name: "알림 받기" }),
-    ).toBeChecked();
+    expect(screen.getByRole("menuitemcheckbox", { name: "알림 받기" })).toBeChecked();
   });
 
   it("radio item을 렌더링한다", async () => {
@@ -189,12 +187,8 @@ describe("DropdownMenu", () => {
 
     await user.click(screen.getByRole("button", { name: "메뉴" }));
 
-    expect(
-      screen.getByRole("menuitemradio", { name: "오름차순" }),
-    ).toBeChecked();
-    expect(
-      screen.getByRole("menuitemradio", { name: "내림차순" }),
-    ).not.toBeChecked();
+    expect(screen.getByRole("menuitemradio", { name: "오름차순" })).toBeChecked();
+    expect(screen.getByRole("menuitemradio", { name: "내림차순" })).not.toBeChecked();
   });
 
   it("className을 병합한다", async () => {
@@ -212,9 +206,7 @@ describe("DropdownMenu", () => {
     await user.click(screen.getByRole("button", { name: "메뉴" }));
 
     expect(screen.getByRole("menu")).toHaveClass("custom-content");
-    expect(screen.getByRole("menuitem", { name: "수정" })).toHaveClass(
-      "custom-item",
-    );
+    expect(screen.getByRole("menuitem", { name: "수정" })).toHaveClass("custom-item");
   });
 
   it("DropdownMenuContent ref를 전달한다", async () => {

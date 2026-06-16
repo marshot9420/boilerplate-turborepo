@@ -94,11 +94,7 @@ const error: AppError = {
 ```ts
 import { z } from "zod";
 
-import {
-  zFormBoolean,
-  zOptionalNumber,
-  zRequiredString,
-} from "@repo/core/validation";
+import { zFormBoolean, zOptionalNumber, zRequiredString } from "@repo/core/validation";
 
 export const CreateProductRequest = z.object({
   title: zRequiredString(),
@@ -118,10 +114,7 @@ export const CreateProductRequest = z.object({
 
 import { createAction } from "@repo/core/action";
 
-export async function createContentAction(
-  _prevState: unknown,
-  formData: FormData,
-) {
+export async function createContentAction(_prevState: unknown, formData: FormData) {
   return createAction({
     actionName: "content.create",
     schema: CreateContentRequest,

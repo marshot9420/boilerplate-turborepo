@@ -4,12 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import { createRef } from "react";
 
-import {
-  Popover,
-  PopoverClose,
-  PopoverContent,
-  PopoverTrigger,
-} from "./popover";
+import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "./popover";
 
 describe("Popover", () => {
   it("trigger를 클릭하면 popover를 연다", async () => {

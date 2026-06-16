@@ -30,17 +30,7 @@ export interface FieldProps
 }
 
 const Field = forwardRef<HTMLDivElement, FieldProps>(
-  (
-    {
-      className,
-      direction,
-      fullWidth,
-      hasError = false,
-      disabled = false,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ className, direction, fullWidth, hasError = false, disabled = false, ...props }, ref) => {
     return (
       <div
         ref={ref}

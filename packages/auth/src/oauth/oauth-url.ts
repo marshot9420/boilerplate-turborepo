@@ -51,10 +51,7 @@ function getOAuthClientId(providerId: OAuthProviderId): string {
   }
 }
 
-function createOAuthRedirectUri(params: {
-  appBaseUrl: string;
-  callbackPath: string;
-}): string {
+function createOAuthRedirectUri(params: { appBaseUrl: string; callbackPath: string }): string {
   return new URL(params.callbackPath, params.appBaseUrl).toString();
 }
 
@@ -80,9 +77,7 @@ function appendOAuthScope(params: {
   );
 }
 
-export function buildOAuthAuthorizeUrl(
-  params: BuildOAuthAuthorizeUrlParams,
-): string {
+export function buildOAuthAuthorizeUrl(params: BuildOAuthAuthorizeUrlParams): string {
   const url = new URL(OAuthAuthorizeEndpointMap[params.providerId]);
 
   const redirectUri = createOAuthRedirectUri({

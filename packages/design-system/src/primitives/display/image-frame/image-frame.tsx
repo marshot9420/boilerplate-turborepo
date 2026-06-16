@@ -2,12 +2,7 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import {
-  forwardRef,
-  type HTMLAttributes,
-  type ImgHTMLAttributes,
-  type ReactNode,
-} from "react";
+import { forwardRef, type HTMLAttributes, type ImgHTMLAttributes, type ReactNode } from "react";
 
 import { cn } from "../../../utils";
 
@@ -37,17 +32,12 @@ const imageFrameVariants = cva(
 );
 
 export interface ImageFrameProps
-  extends
-    HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof imageFrameVariants> {
+  extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof imageFrameVariants> {
   src?: string;
   alt?: string;
   fallback?: ReactNode;
   imageClassName?: string;
-  imageProps?: Omit<
-    ImgHTMLAttributes<HTMLImageElement>,
-    "src" | "alt" | "className"
-  >;
+  imageProps?: Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt" | "className">;
 }
 
 const ImageFrame = forwardRef<HTMLDivElement, ImageFrameProps>(
@@ -67,8 +57,7 @@ const ImageFrame = forwardRef<HTMLDivElement, ImageFrameProps>(
     },
     ref,
   ) => {
-    const objectFitClassName =
-      fit === "contain" ? "object-contain" : "object-cover";
+    const objectFitClassName = fit === "contain" ? "object-contain" : "object-cover";
 
     return (
       <div

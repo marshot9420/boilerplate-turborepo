@@ -80,9 +80,7 @@ describe("deleteMyContentAction", () => {
     };
 
     authMock.requireUser.mockResolvedValue(createSession());
-    contentServiceMock.softDeleteContentService.mockResolvedValue(
-      serviceResult,
-    );
+    contentServiceMock.softDeleteContentService.mockResolvedValue(serviceResult);
 
     actionMock.createAction.mockImplementationOnce(
       async (
@@ -110,14 +108,11 @@ describe("deleteMyContentAction", () => {
       }),
     );
 
-    expect(contentServiceMock.softDeleteContentService).toHaveBeenCalledWith(
-      "content-id",
-      {
-        id: "user-id",
-        role: "USER",
-        status: "ACTIVE",
-      },
-    );
+    expect(contentServiceMock.softDeleteContentService).toHaveBeenCalledWith("content-id", {
+      id: "user-id",
+      role: "USER",
+      status: "ACTIVE",
+    });
 
     expect(nextCacheMock.revalidatePath).toHaveBeenCalledWith("/");
     expect(nextCacheMock.revalidatePath).toHaveBeenCalledWith("/me");
@@ -165,9 +160,7 @@ describe("deleteMyContentAction", () => {
     };
 
     authMock.requireUser.mockResolvedValue(createSession());
-    contentServiceMock.softDeleteContentService.mockResolvedValue(
-      serviceResult,
-    );
+    contentServiceMock.softDeleteContentService.mockResolvedValue(serviceResult);
 
     actionMock.createAction.mockImplementationOnce(
       async (
@@ -185,14 +178,11 @@ describe("deleteMyContentAction", () => {
 
     const result = await deleteMyContentAction(null, formData);
 
-    expect(contentServiceMock.softDeleteContentService).toHaveBeenCalledWith(
-      "content-id",
-      {
-        id: "user-id",
-        role: "USER",
-        status: "ACTIVE",
-      },
-    );
+    expect(contentServiceMock.softDeleteContentService).toHaveBeenCalledWith("content-id", {
+      id: "user-id",
+      role: "USER",
+      status: "ACTIVE",
+    });
 
     expect(nextCacheMock.revalidatePath).not.toHaveBeenCalled();
     expect(result).toEqual(actionResult);

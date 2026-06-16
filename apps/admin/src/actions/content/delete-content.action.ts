@@ -5,10 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@repo/auth/server";
 import type { ActionResult } from "@repo/core/action";
 import { createAction } from "@repo/core/action";
-import {
-  ContentIdParam,
-  type ContentDetailResponse,
-} from "@repo/domain/content/client";
+import { ContentIdParam, type ContentDetailResponse } from "@repo/domain/content/client";
 import { softDeleteContentService } from "@repo/domain/content/server";
 
 import { URLS } from "@/constants";

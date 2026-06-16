@@ -28,15 +28,7 @@ describe("Field", () => {
   });
 
   it("direction, fullWidth, hasError, disabled 상태를 data attribute로 노출한다", () => {
-    render(
-      <Field
-        data-testid="field"
-        direction="horizontal"
-        fullWidth
-        hasError
-        disabled
-      />,
-    );
+    render(<Field data-testid="field" direction="horizontal" fullWidth hasError disabled />);
 
     const field = screen.getByTestId("field");
 

@@ -1,9 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import {
-  handleOAuthCallback,
-  resolveOAuthCallbackProfile,
-} from "../oauth-callback";
+import { handleOAuthCallback, resolveOAuthCallbackProfile } from "../oauth-callback";
 
 const mocks = vi.hoisted(() => ({
   verifyOAuthStateCookie: vi.fn(),

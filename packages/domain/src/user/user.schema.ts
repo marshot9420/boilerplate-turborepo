@@ -31,16 +31,10 @@ export interface UserListQuery extends ListQuery<UserListSortKey> {
 
 export const UpdateUserProfileRequest = z.object({
   name: zNullableString().pipe(
-    z
-      .string()
-      .max(USER.NAME.MAX_LENGTH, USER.NAME.MAX_MESSAGE)
-      .nullable()
-      .optional(),
+    z.string().max(USER.NAME.MAX_LENGTH, USER.NAME.MAX_MESSAGE).nullable().optional(),
   ),
 
-  avatarUrl: zNullableString().pipe(
-    z.url(USER.AVATAR_URL.INVALID_MESSAGE).nullable().optional(),
-  ),
+  avatarUrl: zNullableString().pipe(z.url(USER.AVATAR_URL.INVALID_MESSAGE).nullable().optional()),
 
   nickname: z
     .string()
@@ -50,9 +44,7 @@ export const UpdateUserProfileRequest = z.object({
     .regex(USER.NICKNAME.PATTERN, USER.NICKNAME.INVALID_MESSAGE),
 });
 
-export type UpdateUserProfileRequestInput = z.infer<
-  typeof UpdateUserProfileRequest
->;
+export type UpdateUserProfileRequestInput = z.infer<typeof UpdateUserProfileRequest>;
 
 export const OAuthProviderSchema = z.enum(AuthProvider);
 
@@ -61,19 +53,11 @@ export const FindOrCreateOAuthUserRequest = z.object({
 
   providerUserId: z.string().trim().min(1),
 
-  email: z
-    .email(USER.EMAIL.INVALID_MESSAGE)
-    .max(USER.EMAIL.MAX_LENGTH, USER.EMAIL.INVALID_MESSAGE),
+  email: z.email(USER.EMAIL.INVALID_MESSAGE).max(USER.EMAIL.MAX_LENGTH, USER.EMAIL.INVALID_MESSAGE),
 
-  name: z
-    .string()
-    .trim()
-    .max(USER.NAME.MAX_LENGTH, USER.NAME.MAX_MESSAGE)
-    .nullable(),
+  name: z.string().trim().max(USER.NAME.MAX_LENGTH, USER.NAME.MAX_MESSAGE).nullable(),
 
   avatarUrl: z.url(USER.AVATAR_URL.INVALID_MESSAGE).nullable(),
 });
 
-export type FindOrCreateOAuthUserRequestInput = z.infer<
-  typeof FindOrCreateOAuthUserRequest
->;
+export type FindOrCreateOAuthUserRequestInput = z.infer<typeof FindOrCreateOAuthUserRequest>;

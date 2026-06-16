@@ -8,12 +8,12 @@ import { cn } from "../../../utils";
 
 const inputVariants = cva(
   [
-    "flex w-full rounded-md border border-input",
+    "border-input flex w-full rounded-md border",
     "bg-background text-foreground",
     "transition-colors",
     "outline-none",
     "placeholder:text-muted-foreground",
-    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
     "disabled:cursor-not-allowed disabled:opacity-50",
     "data-[invalid=true]:border-destructive",
   ],
@@ -33,24 +33,12 @@ const inputVariants = cva(
 );
 
 export interface InputProps
-  extends
-    Omit<InputHTMLAttributes<HTMLInputElement>, "size">,
-    VariantProps<typeof inputVariants> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size">, VariantProps<typeof inputVariants> {
   hasError?: boolean;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  (
-    {
-      className,
-      size,
-      hasError = false,
-      disabled,
-      "aria-invalid": ariaInvalid,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ className, size, hasError = false, disabled, "aria-invalid": ariaInvalid, ...props }, ref) => {
     const resolvedAriaInvalid = ariaInvalid ?? (hasError ? true : undefined);
 
     return (

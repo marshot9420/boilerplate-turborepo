@@ -69,19 +69,13 @@ describe("StatCard", () => {
           <StatCardTrend className="custom-trend">+12%</StatCardTrend>
         </StatCardHeader>
         <StatCardValue className="custom-value">1,240</StatCardValue>
-        <StatCardDescription className="custom-description">
-          설명
-        </StatCardDescription>
+        <StatCardDescription className="custom-description">설명</StatCardDescription>
         <StatCardFooter className="custom-footer">푸터</StatCardFooter>
       </StatCard>,
     );
 
-    expect(screen.getByText("총 사용자").closest("[data-size]")).toHaveClass(
-      "custom-card",
-    );
-    expect(screen.getByText("총 사용자").parentElement).toHaveClass(
-      "custom-header",
-    );
+    expect(screen.getByText("총 사용자").closest("[data-size]")).toHaveClass("custom-card");
+    expect(screen.getByText("총 사용자").parentElement).toHaveClass("custom-header");
     expect(screen.getByText("총 사용자")).toHaveClass("custom-title");
     expect(screen.getByText("+12%")).toHaveClass("custom-trend");
     expect(screen.getByText("1,240")).toHaveClass("custom-value");

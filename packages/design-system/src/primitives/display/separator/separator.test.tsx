@@ -9,19 +9,13 @@ describe("Separator", () => {
   it("기본 orientation은 horizontal이다", () => {
     render(<Separator data-testid="separator" />);
 
-    expect(screen.getByTestId("separator")).toHaveAttribute(
-      "data-orientation",
-      "horizontal",
-    );
+    expect(screen.getByTestId("separator")).toHaveAttribute("data-orientation", "horizontal");
   });
 
   it("전달한 orientation을 data attribute로 노출한다", () => {
     render(<Separator data-testid="separator" orientation="vertical" />);
 
-    expect(screen.getByTestId("separator")).toHaveAttribute(
-      "data-orientation",
-      "vertical",
-    );
+    expect(screen.getByTestId("separator")).toHaveAttribute("data-orientation", "vertical");
   });
 
   it("기본 decorative 상태는 true이고 role은 none이다", () => {
@@ -46,10 +40,7 @@ describe("Separator", () => {
   it("vertical separator의 aria-orientation을 노출한다", () => {
     render(<Separator decorative={false} orientation="vertical" />);
 
-    expect(screen.getByRole("separator")).toHaveAttribute(
-      "aria-orientation",
-      "vertical",
-    );
+    expect(screen.getByRole("separator")).toHaveAttribute("aria-orientation", "vertical");
   });
 
   it("orientation에 따라 class를 적용한다", () => {

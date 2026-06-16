@@ -7,10 +7,7 @@ import { forwardRef, type HTMLAttributes } from "react";
 import { cn } from "../../../utils";
 
 const spinnerVariants = cva(
-  [
-    "inline-block animate-spin rounded-full",
-    "border-2 border-muted border-t-primary",
-  ],
+  ["inline-block animate-spin rounded-full", "border-muted border-t-primary border-2"],
   {
     variants: {
       size: {
@@ -26,9 +23,7 @@ const spinnerVariants = cva(
 );
 
 export interface SpinnerProps
-  extends
-    HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof spinnerVariants> {
+  extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof spinnerVariants> {
   label?: string;
   decorative?: boolean;
 }

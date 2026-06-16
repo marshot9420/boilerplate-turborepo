@@ -15,35 +15,25 @@ describe("Spinner", () => {
   it("label을 직접 지정할 수 있다", () => {
     render(<Spinner label="불러오는 중" />);
 
-    expect(
-      screen.getByRole("status", { name: "불러오는 중" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("status", { name: "불러오는 중" })).toBeInTheDocument();
   });
 
   it("aria-label을 직접 지정하면 aria-label을 우선 사용한다", () => {
     render(<Spinner label="로딩 중" aria-label="데이터 불러오는 중" />);
 
-    expect(
-      screen.getByRole("status", { name: "데이터 불러오는 중" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("status", { name: "데이터 불러오는 중" })).toBeInTheDocument();
   });
 
   it("기본 size를 data attribute로 노출한다", () => {
     render(<Spinner />);
 
-    expect(screen.getByRole("status", { name: "로딩 중" })).toHaveAttribute(
-      "data-size",
-      "md",
-    );
+    expect(screen.getByRole("status", { name: "로딩 중" })).toHaveAttribute("data-size", "md");
   });
 
   it("전달한 size를 data attribute로 노출한다", () => {
     render(<Spinner size="lg" />);
 
-    expect(screen.getByRole("status", { name: "로딩 중" })).toHaveAttribute(
-      "data-size",
-      "lg",
-    );
+    expect(screen.getByRole("status", { name: "로딩 중" })).toHaveAttribute("data-size", "lg");
   });
 
   it("decorative가 true이면 role과 aria-label 없이 aria-hidden을 노출한다", () => {
@@ -60,9 +50,7 @@ describe("Spinner", () => {
   it("className을 병합한다", () => {
     render(<Spinner className="custom-spinner" />);
 
-    expect(screen.getByRole("status", { name: "로딩 중" })).toHaveClass(
-      "custom-spinner",
-    );
+    expect(screen.getByRole("status", { name: "로딩 중" })).toHaveClass("custom-spinner");
   });
 
   it("ref를 span element로 전달한다", () => {

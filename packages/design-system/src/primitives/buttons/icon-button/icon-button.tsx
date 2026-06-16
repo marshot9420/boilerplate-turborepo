@@ -12,7 +12,7 @@ const iconButtonVariants = cva(
     "rounded-md font-medium whitespace-nowrap",
     "transition-colors",
     "outline-none",
-    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
     "disabled:pointer-events-none disabled:opacity-50",
   ],
   {
@@ -20,18 +20,11 @@ const iconButtonVariants = cva(
       variant: {
         default: ["bg-primary text-primary-foreground", "hover:bg-primary/90"],
 
-        outline: [
-          "border border-border",
-          "bg-background text-foreground",
-          "hover:bg-muted",
-        ],
+        outline: ["border-border border", "bg-background text-foreground", "hover:bg-muted"],
 
-        ghost: ["bg-transparent text-foreground", "hover:bg-muted"],
+        ghost: ["text-foreground bg-transparent", "hover:bg-muted"],
 
-        destructive: [
-          "bg-destructive text-destructive-foreground",
-          "hover:bg-destructive/90",
-        ],
+        destructive: ["bg-destructive text-destructive-foreground", "hover:bg-destructive/90"],
       },
 
       size: {
@@ -64,10 +57,7 @@ type AccessibleIconButtonName =
       "aria-labelledby": string;
     };
 
-type NativeIconButtonProps = Omit<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  "children"
->;
+type NativeIconButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children">;
 
 export type IconButtonProps = NativeIconButtonProps &
   VariantProps<typeof iconButtonVariants> &
@@ -78,17 +68,7 @@ export type IconButtonProps = NativeIconButtonProps &
 
 const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
   (
-    {
-      className,
-      variant,
-      size,
-      shape,
-      loading = false,
-      disabled,
-      children,
-      type,
-      ...props
-    },
+    { className, variant, size, shape, loading = false, disabled, children, type, ...props },
     ref,
   ) => {
     const isDisabled = disabled || loading;

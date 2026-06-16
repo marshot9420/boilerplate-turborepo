@@ -37,9 +37,7 @@ function createMockUser(overrides: Partial<User> = {}): User {
   };
 }
 
-function createMockUserOAuthAccount(
-  overrides: Partial<UserOAuthAccount> = {},
-): UserOAuthAccount {
+function createMockUserOAuthAccount(overrides: Partial<UserOAuthAccount> = {}): UserOAuthAccount {
   return {
     id: "oauth-account-id",
     userId: "user-id",
@@ -261,9 +259,7 @@ describe("user-oauth-account.repository", () => {
 
       prismaMock.userOAuthAccount.findMany.mockRejectedValue(error);
 
-      await expect(
-        findUserOAuthAccountsByUserIdRepository("user-id"),
-      ).rejects.toMatchObject({
+      await expect(findUserOAuthAccountsByUserIdRepository("user-id")).rejects.toMatchObject({
         code: "DATABASE_UNKNOWN_ERROR",
         message: "데이터 처리 중 알 수 없는 오류가 발생했습니다.",
         cause: error,

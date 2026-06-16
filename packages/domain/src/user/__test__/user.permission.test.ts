@@ -7,9 +7,7 @@ import {
   type UserPermissionActor,
 } from "../user.permission";
 
-function createActor(
-  overrides: Partial<UserPermissionActor> = {},
-): UserPermissionActor {
+function createActor(overrides: Partial<UserPermissionActor> = {}): UserPermissionActor {
   return {
     id: "user-id",
     role: "USER",

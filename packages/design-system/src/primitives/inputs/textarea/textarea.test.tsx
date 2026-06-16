@@ -44,9 +44,7 @@ describe("Textarea", () => {
   it("placeholder를 렌더링한다", () => {
     render(<Textarea aria-label="내용" placeholder="내용을 입력해 주세요" />);
 
-    expect(
-      screen.getByPlaceholderText("내용을 입력해 주세요"),
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("내용을 입력해 주세요")).toBeInTheDocument();
   });
 
   it("defaultValue를 렌더링한다", () => {

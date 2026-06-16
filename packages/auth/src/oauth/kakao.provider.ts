@@ -34,10 +34,7 @@ interface KakaoOAuthTokenResponse {
   idToken: string | null;
 }
 
-function createOAuthRedirectUri(params: {
-  appBaseUrl: string;
-  callbackPath: string;
-}): string {
+function createOAuthRedirectUri(params: { appBaseUrl: string; callbackPath: string }): string {
   return new URL(params.callbackPath, params.appBaseUrl).toString();
 }
 
@@ -45,10 +42,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-function getStringProperty(
-  value: Record<string, unknown>,
-  key: string,
-): string | null {
+function getStringProperty(value: Record<string, unknown>, key: string): string | null {
   const property = value[key];
 
   if (typeof property !== "string") {
@@ -58,10 +52,7 @@ function getStringProperty(
   return property;
 }
 
-function getNumberProperty(
-  value: Record<string, unknown>,
-  key: string,
-): number | null {
+function getNumberProperty(value: Record<string, unknown>, key: string): number | null {
   const property = value[key];
 
   if (typeof property !== "number") {
@@ -71,10 +62,7 @@ function getNumberProperty(
   return property;
 }
 
-function getBooleanProperty(
-  value: Record<string, unknown>,
-  key: string,
-): boolean | null {
+function getBooleanProperty(value: Record<string, unknown>, key: string): boolean | null {
   const property = value[key];
 
   if (typeof property !== "boolean") {
@@ -142,13 +130,9 @@ function toKakaoOAuthProfile(value: unknown): OAuthProfile {
 
   const profile = kakaoAccount.profile;
 
-  const name = isRecord(profile)
-    ? getStringProperty(profile, "nickname")
-    : null;
+  const name = isRecord(profile) ? getStringProperty(profile, "nickname") : null;
 
-  const avatarUrl = isRecord(profile)
-    ? getStringProperty(profile, "profile_image_url")
-    : null;
+  const avatarUrl = isRecord(profile) ? getStringProperty(profile, "profile_image_url") : null;
 
   return {
     provider: "KAKAO",
@@ -192,9 +176,7 @@ export async function exchangeKakaoOAuthCode(
   return toKakaoOAuthTokenResponse(json);
 }
 
-export async function getKakaoOAuthProfile(
-  accessToken: string,
-): Promise<OAuthProfile> {
+export async function getKakaoOAuthProfile(accessToken: string): Promise<OAuthProfile> {
   const response = await fetch(KAKAO_USERINFO_ENDPOINT, {
     method: "GET",
     headers: {

@@ -11,17 +11,7 @@ export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
 }
 
 const Label = forwardRef<HTMLLabelElement, LabelProps>(
-  (
-    {
-      className,
-      required = false,
-      disabled = false,
-      requiredSlot,
-      children,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ className, required = false, disabled = false, requiredSlot, children, ...props }, ref) => {
     return (
       <label
         ref={ref}
@@ -29,7 +19,7 @@ const Label = forwardRef<HTMLLabelElement, LabelProps>(
         data-disabled={disabled ? "true" : "false"}
         className={cn(
           "inline-flex items-center gap-1",
-          "text-sm font-medium leading-none text-foreground",
+          "text-foreground text-sm leading-none font-medium",
           "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50",
           className,
         )}

@@ -18,10 +18,7 @@ describe("Tabs", () => {
       </Tabs>,
     );
 
-    expect(screen.getByRole("tab", { name: "계정" })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
+    expect(screen.getByRole("tab", { name: "계정" })).toHaveAttribute("aria-selected", "true");
 
     expect(screen.getByText("계정 내용")).toBeVisible();
   });
@@ -43,10 +40,7 @@ describe("Tabs", () => {
 
     await user.click(screen.getByRole("tab", { name: "보안" }));
 
-    expect(screen.getByRole("tab", { name: "보안" })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
+    expect(screen.getByRole("tab", { name: "보안" })).toHaveAttribute("aria-selected", "true");
 
     expect(screen.getByText("보안 내용")).toBeVisible();
   });
@@ -74,10 +68,7 @@ describe("Tabs", () => {
 
     await user.click(disabledTab);
 
-    expect(screen.getByRole("tab", { name: "계정" })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
+    expect(screen.getByRole("tab", { name: "계정" })).toHaveAttribute("aria-selected", "true");
   });
 
   it("fullWidth와 size data attribute를 렌더링한다", () => {
@@ -94,19 +85,10 @@ describe("Tabs", () => {
     );
 
     expect(screen.getByRole("tablist")).toHaveAttribute("data-size", "lg");
-    expect(screen.getByRole("tablist")).toHaveAttribute(
-      "data-full-width",
-      "true",
-    );
+    expect(screen.getByRole("tablist")).toHaveAttribute("data-full-width", "true");
 
-    expect(screen.getByRole("tab", { name: "계정" })).toHaveAttribute(
-      "data-size",
-      "lg",
-    );
-    expect(screen.getByRole("tab", { name: "계정" })).toHaveAttribute(
-      "data-full-width",
-      "true",
-    );
+    expect(screen.getByRole("tab", { name: "계정" })).toHaveAttribute("data-size", "lg");
+    expect(screen.getByRole("tab", { name: "계정" })).toHaveAttribute("data-full-width", "true");
   });
 
   it("className을 병합한다", () => {
@@ -125,9 +107,7 @@ describe("Tabs", () => {
     );
 
     expect(screen.getByRole("tablist")).toHaveClass("custom-list");
-    expect(screen.getByRole("tab", { name: "계정" })).toHaveClass(
-      "custom-trigger",
-    );
+    expect(screen.getByRole("tab", { name: "계정" })).toHaveClass("custom-trigger");
     expect(screen.getByText("계정 내용")).toHaveClass("custom-content");
   });
 });

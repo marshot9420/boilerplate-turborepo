@@ -2,12 +2,7 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import {
-  forwardRef,
-  type AnchorHTMLAttributes,
-  type MouseEvent,
-  type ReactNode,
-} from "react";
+import { forwardRef, type AnchorHTMLAttributes, type MouseEvent, type ReactNode } from "react";
 
 import { cn } from "../../../utils";
 
@@ -17,7 +12,7 @@ const linkButtonVariants = cva(
     "rounded-md font-medium whitespace-nowrap",
     "transition-colors",
     "outline-none",
-    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
     "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
   ],
   {
@@ -25,18 +20,11 @@ const linkButtonVariants = cva(
       variant: {
         default: ["bg-primary text-primary-foreground", "hover:bg-primary/90"],
 
-        outline: [
-          "border border-border",
-          "bg-background text-foreground",
-          "hover:bg-muted",
-        ],
+        outline: ["border-border border", "bg-background text-foreground", "hover:bg-muted"],
 
-        ghost: ["bg-transparent text-foreground", "hover:bg-muted"],
+        ghost: ["text-foreground bg-transparent", "hover:bg-muted"],
 
-        destructive: [
-          "bg-destructive text-destructive-foreground",
-          "hover:bg-destructive/90",
-        ],
+        destructive: ["bg-destructive text-destructive-foreground", "hover:bg-destructive/90"],
       },
 
       size: {
@@ -58,9 +46,7 @@ const linkButtonVariants = cva(
 );
 
 export interface LinkButtonProps
-  extends
-    AnchorHTMLAttributes<HTMLAnchorElement>,
-    VariantProps<typeof linkButtonVariants> {
+  extends AnchorHTMLAttributes<HTMLAnchorElement>, VariantProps<typeof linkButtonVariants> {
   disabled?: boolean;
   leftSlot?: ReactNode;
   rightSlot?: ReactNode;

@@ -16,9 +16,7 @@ export const serverEnvSchema = sharedEnvSchema.extend({
   WEB_APP_URL: httpUrl,
   ADMIN_APP_URL: httpUrl,
 
-  AUTH_SESSION_COOKIE_NAME: z
-    .string()
-    .min(1, "AUTH_SESSION_COOKIE_NAME is required"),
+  AUTH_SESSION_COOKIE_NAME: z.string().min(1, "AUTH_SESSION_COOKIE_NAME is required"),
   AUTH_SESSION_MAX_AGE_SECONDS: z.coerce
     .number()
     .int()

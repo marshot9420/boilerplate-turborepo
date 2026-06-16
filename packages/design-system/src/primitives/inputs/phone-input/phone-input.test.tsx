@@ -10,18 +10,13 @@ describe("PhoneInput", () => {
   it("phone input을 렌더링한다", () => {
     render(<PhoneInput aria-label="전화번호" />);
 
-    expect(
-      screen.getByRole("textbox", { name: "전화번호" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "전화번호" })).toBeInTheDocument();
   });
 
   it("type은 tel이다", () => {
     render(<PhoneInput aria-label="전화번호" />);
 
-    expect(screen.getByRole("textbox", { name: "전화번호" })).toHaveAttribute(
-      "type",
-      "tel",
-    );
+    expect(screen.getByRole("textbox", { name: "전화번호" })).toHaveAttribute("type", "tel");
   });
 
   it("기본 inputMode와 autoComplete를 tel로 설정한다", () => {
@@ -34,13 +29,7 @@ describe("PhoneInput", () => {
   });
 
   it("전달한 inputMode와 autoComplete를 우선 사용한다", () => {
-    render(
-      <PhoneInput
-        aria-label="전화번호"
-        inputMode="numeric"
-        autoComplete="tel-national"
-      />,
-    );
+    render(<PhoneInput aria-label="전화번호" inputMode="numeric" autoComplete="tel-national" />);
 
     const input = screen.getByRole("textbox", { name: "전화번호" });
 
@@ -59,9 +48,7 @@ describe("PhoneInput", () => {
   it("inputClassName을 input에 병합한다", () => {
     render(<PhoneInput aria-label="전화번호" inputClassName="custom-input" />);
 
-    expect(screen.getByRole("textbox", { name: "전화번호" })).toHaveClass(
-      "custom-input",
-    );
+    expect(screen.getByRole("textbox", { name: "전화번호" })).toHaveClass("custom-input");
   });
 
   it("기본 size를 data attribute로 노출한다", () => {
@@ -91,9 +78,7 @@ describe("PhoneInput", () => {
   it("defaultValue를 렌더링한다", () => {
     render(<PhoneInput aria-label="전화번호" defaultValue="01012345678" />);
 
-    expect(screen.getByRole("textbox", { name: "전화번호" })).toHaveValue(
-      "01012345678",
-    );
+    expect(screen.getByRole("textbox", { name: "전화번호" })).toHaveValue("01012345678");
   });
 
   it("입력 이벤트를 처리한다", async () => {
@@ -114,9 +99,7 @@ describe("PhoneInput", () => {
     const user = userEvent.setup();
     const handleChange = vi.fn();
 
-    render(
-      <PhoneInput aria-label="전화번호" disabled onChange={handleChange} />,
-    );
+    render(<PhoneInput aria-label="전화번호" disabled onChange={handleChange} />);
 
     const input = screen.getByRole("textbox", { name: "전화번호" });
 

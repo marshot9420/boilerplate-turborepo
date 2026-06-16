@@ -2,11 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 
-import Accordion, {
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "./accordion";
+import Accordion, { AccordionContent, AccordionItem, AccordionTrigger } from "./accordion";
 
 describe("Accordion", () => {
   it("defaultValue에 해당하는 콘텐츠를 표시한다", () => {
@@ -24,10 +20,7 @@ describe("Accordion", () => {
       </Accordion>,
     );
 
-    expect(screen.getByRole("button", { name: "질문 1" })).toHaveAttribute(
-      "data-state",
-      "open",
-    );
+    expect(screen.getByRole("button", { name: "질문 1" })).toHaveAttribute("data-state", "open");
 
     expect(screen.getByText("답변 1")).toBeVisible();
   });
@@ -46,10 +39,7 @@ describe("Accordion", () => {
 
     await user.click(screen.getByRole("button", { name: "질문 1" }));
 
-    expect(screen.getByRole("button", { name: "질문 1" })).toHaveAttribute(
-      "data-state",
-      "open",
-    );
+    expect(screen.getByRole("button", { name: "질문 1" })).toHaveAttribute("data-state", "open");
 
     expect(screen.getByText("답변 1")).toBeVisible();
   });
@@ -68,10 +58,7 @@ describe("Accordion", () => {
 
     await user.click(screen.getByRole("button", { name: "질문 1" }));
 
-    expect(screen.getByRole("button", { name: "질문 1" })).toHaveAttribute(
-      "data-state",
-      "closed",
-    );
+    expect(screen.getByRole("button", { name: "질문 1" })).toHaveAttribute("data-state", "closed");
   });
 
   it("disabled trigger는 클릭해도 열리지 않는다", async () => {
@@ -100,18 +87,13 @@ describe("Accordion", () => {
     render(
       <Accordion type="single" defaultValue="item-1" collapsible>
         <AccordionItem value="item-1">
-          <AccordionTrigger rightSlot={<span data-testid="icon">⌄</span>}>
-            질문 1
-          </AccordionTrigger>
+          <AccordionTrigger rightSlot={<span data-testid="icon">⌄</span>}>질문 1</AccordionTrigger>
           <AccordionContent>답변 1</AccordionContent>
         </AccordionItem>
       </Accordion>,
     );
 
-    expect(screen.getByTestId("icon").parentElement).toHaveAttribute(
-      "aria-hidden",
-      "true",
-    );
+    expect(screen.getByTestId("icon").parentElement).toHaveAttribute("aria-hidden", "true");
   });
 
   it("className을 병합한다", () => {
@@ -124,11 +106,7 @@ describe("Accordion", () => {
       </Accordion>,
     );
 
-    expect(screen.getByRole("button", { name: "질문 1" })).toHaveClass(
-      "custom-trigger",
-    );
-    expect(screen.getByText("답변 1").parentElement).toHaveClass(
-      "custom-content",
-    );
+    expect(screen.getByRole("button", { name: "질문 1" })).toHaveClass("custom-trigger");
+    expect(screen.getByText("답변 1").parentElement).toHaveClass("custom-content");
   });
 });

@@ -43,10 +43,7 @@ export function getPaginationItems({
     return [];
   }
 
-  const safeCurrentPage = Math.min(
-    Math.max(currentPage, FIRST_PAGE),
-    totalPages,
-  );
+  const safeCurrentPage = Math.min(Math.max(currentPage, FIRST_PAGE), totalPages);
   const totalVisibleItems = siblingCount * 2 + 5;
 
   if (totalPages <= totalVisibleItems) {
@@ -67,10 +64,7 @@ export function getPaginationItems({
   }
 
   if (shouldShowLeftEllipsis && !shouldShowRightEllipsis) {
-    const rightItems = createRange(
-      totalPages - (2 + siblingCount * 2),
-      totalPages,
-    );
+    const rightItems = createRange(totalPages - (2 + siblingCount * 2), totalPages);
 
     return [FIRST_PAGE, "ellipsis", ...rightItems];
   }
@@ -84,10 +78,7 @@ export function getPaginationItems({
   ];
 }
 
-export interface PaginationProps extends Omit<
-  ComponentPropsWithoutRef<"nav">,
-  "children"
-> {
+export interface PaginationProps extends Omit<ComponentPropsWithoutRef<"nav">, "children"> {
   meta: PaginationMeta;
   siblingCount?: number;
   disabled?: boolean;
@@ -123,11 +114,9 @@ const Pagination = forwardRef<HTMLElement, PaginationProps>(
     const previousPage = Math.max(meta.page - 1, FIRST_PAGE);
     const nextPage = Math.min(meta.page + 1, meta.totalPages);
 
-    const isPreviousDisabled =
-      disabled || !meta.hasPreviousPage || meta.page <= FIRST_PAGE;
+    const isPreviousDisabled = disabled || !meta.hasPreviousPage || meta.page <= FIRST_PAGE;
 
-    const isNextDisabled =
-      disabled || !meta.hasNextPage || meta.page >= meta.totalPages;
+    const isNextDisabled = disabled || !meta.hasNextPage || meta.page >= meta.totalPages;
 
     return (
       <nav
@@ -201,11 +190,7 @@ export type PaginationListProps = HTMLAttributes<HTMLUListElement>;
 export const PaginationList = forwardRef<HTMLUListElement, PaginationListProps>(
   ({ className, ...props }, ref) => {
     return (
-      <ul
-        ref={ref}
-        className={cn("flex flex-row items-center gap-1", className)}
-        {...props}
-      />
+      <ul ref={ref} className={cn("flex flex-row items-center gap-1", className)} {...props} />
     );
   },
 );
@@ -227,21 +212,15 @@ export interface PaginationLinkProps extends AnchorHTMLAttributes<HTMLAnchorElem
   disabled?: boolean;
 }
 
-export const PaginationLink = forwardRef<
-  HTMLAnchorElement,
-  PaginationLinkProps
->(
-  (
-    { className, active = false, disabled = false, tabIndex, ...props },
-    ref,
-  ) => {
+export const PaginationLink = forwardRef<HTMLAnchorElement, PaginationLinkProps>(
+  ({ className, active = false, disabled = false, tabIndex, ...props }, ref) => {
     return (
       <a
         ref={ref}
         className={cn(
           "inline-flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-3 text-sm transition-colors",
           "hover:bg-muted hover:text-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
           active && "border-border bg-surface text-foreground",
           disabled && "pointer-events-none opacity-50",
           className,
@@ -263,53 +242,48 @@ export interface PaginationButtonProps extends ButtonHTMLAttributes<HTMLButtonEl
   active?: boolean;
 }
 
-export const PaginationButton = forwardRef<
-  HTMLButtonElement,
-  PaginationButtonProps
->(({ className, active = false, disabled, type, ...props }, ref) => {
-  return (
-    <button
-      ref={ref}
-      type={type ?? "button"}
-      className={cn(
-        "inline-flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-3 text-sm transition-colors",
-        "hover:bg-muted hover:text-foreground",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "disabled:pointer-events-none disabled:opacity-50",
-        active && "border-border bg-surface text-foreground",
-        className,
-      )}
-      disabled={disabled}
-      aria-current={active ? "page" : undefined}
-      data-active={active ? "true" : "false"}
-      data-disabled={disabled ? "true" : "false"}
-      {...props}
-    />
-  );
-});
+export const PaginationButton = forwardRef<HTMLButtonElement, PaginationButtonProps>(
+  ({ className, active = false, disabled, type, ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        type={type ?? "button"}
+        className={cn(
+          "inline-flex h-9 min-w-9 items-center justify-center rounded-md border border-transparent px-3 text-sm transition-colors",
+          "hover:bg-muted hover:text-foreground",
+          "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+          "disabled:pointer-events-none disabled:opacity-50",
+          active && "border-border bg-surface text-foreground",
+          className,
+        )}
+        disabled={disabled}
+        aria-current={active ? "page" : undefined}
+        data-active={active ? "true" : "false"}
+        data-disabled={disabled ? "true" : "false"}
+        {...props}
+      />
+    );
+  },
+);
 
 PaginationButton.displayName = "PaginationButton";
 
 export type PaginationEllipsisProps = HTMLAttributes<HTMLSpanElement>;
 
-export const PaginationEllipsis = forwardRef<
-  HTMLSpanElement,
-  PaginationEllipsisProps
->(({ className, ...props }, ref) => {
-  return (
-    <span
-      ref={ref}
-      className={cn(
-        "inline-flex h-9 min-w-9 items-center justify-center",
-        className,
-      )}
-      aria-hidden="true"
-      {...props}
-    >
-      …
-    </span>
-  );
-});
+export const PaginationEllipsis = forwardRef<HTMLSpanElement, PaginationEllipsisProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <span
+        ref={ref}
+        className={cn("inline-flex h-9 min-w-9 items-center justify-center", className)}
+        aria-hidden="true"
+        {...props}
+      >
+        …
+      </span>
+    );
+  },
+);
 
 PaginationEllipsis.displayName = "PaginationEllipsis";
 

@@ -45,10 +45,7 @@ describe("Alert", () => {
       </Alert>,
     );
 
-    expect(screen.getByTestId("icon").parentElement).toHaveAttribute(
-      "aria-hidden",
-      "true",
-    );
+    expect(screen.getByTestId("icon").parentElement).toHaveAttribute("aria-hidden", "true");
   });
 
   it("actions를 렌더링한다", () => {

@@ -33,9 +33,7 @@ export async function GET(
   const providerId = parseOAuthProviderId(provider);
 
   if (!providerId) {
-    return NextResponse.redirect(
-      createWebUrl("/login?error=invalid_oauth_provider"),
-    );
+    return NextResponse.redirect(createWebUrl("/login?error=invalid_oauth_provider"));
   }
 
   const code = request.nextUrl.searchParams.get("code");

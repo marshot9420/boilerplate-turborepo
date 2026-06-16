@@ -6,7 +6,7 @@ import { forwardRef, type HTMLAttributes } from "react";
 
 import { cn } from "../../../utils";
 
-const skeletonVariants = cva("animate-pulse bg-muted", {
+const skeletonVariants = cva("bg-muted animate-pulse", {
   variants: {
     shape: {
       rectangle: "rounded-md",
@@ -20,9 +20,7 @@ const skeletonVariants = cva("animate-pulse bg-muted", {
 });
 
 export interface SkeletonProps
-  extends
-    HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof skeletonVariants> {}
+  extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof skeletonVariants> {}
 
 const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
   ({ className, shape, "aria-hidden": ariaHidden, ...props }, ref) => {

@@ -1,8 +1,4 @@
-import {
-  availableGenerators,
-  generateDomain,
-  isGeneratorType,
-} from "./generators";
+import { availableGenerators, generateDomain, isGeneratorType } from "./generators";
 
 function printHelp() {
   console.info(`

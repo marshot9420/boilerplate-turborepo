@@ -42,9 +42,7 @@ describe("Input", () => {
   it("placeholder를 렌더링한다", () => {
     render(<Input aria-label="이메일" placeholder="이메일을 입력해 주세요" />);
 
-    expect(
-      screen.getByPlaceholderText("이메일을 입력해 주세요"),
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("이메일을 입력해 주세요")).toBeInTheDocument();
   });
 
   it("defaultValue를 렌더링한다", () => {

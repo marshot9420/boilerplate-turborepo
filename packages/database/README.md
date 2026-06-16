@@ -95,10 +95,7 @@ Repository와 함께 사용할 경우에는 repository가 `database` 인자를 �
 
 ```ts
 import { transaction } from "@repo/database/transaction";
-import {
-  createUserRepository,
-  updateUserRepository,
-} from "@repo/database/user";
+import { createUserRepository, updateUserRepository } from "@repo/database/user";
 
 await transaction(async (database) => {
   const user = await createUserRepository(
@@ -148,9 +145,7 @@ import type { Prisma, User } from "@prisma/client";
 import { prisma } from "../client";
 import { mapPrismaError } from "../errors";
 
-export async function createUserRepository(
-  data: Prisma.UserCreateInput,
-): Promise<User> {
+export async function createUserRepository(data: Prisma.UserCreateInput): Promise<User> {
   try {
     return await prisma.user.create({ data });
   } catch (error) {

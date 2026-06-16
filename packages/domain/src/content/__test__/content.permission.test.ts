@@ -9,9 +9,7 @@ import {
   type ContentPermissionActor,
 } from "../content.permission";
 
-function createActor(
-  overrides: Partial<ContentPermissionActor> = {},
-): ContentPermissionActor {
+function createActor(overrides: Partial<ContentPermissionActor> = {}): ContentPermissionActor {
   return {
     id: "user-id",
     role: "USER",

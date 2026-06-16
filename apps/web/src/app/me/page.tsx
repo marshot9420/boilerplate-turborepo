@@ -20,9 +20,7 @@ export default async function MyPage() {
       <section className="mx-auto max-w-2xl rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-zinc-950">내 프로필</h1>
-          <p className="mt-2 text-sm text-zinc-500">
-            현재 로그인된 사용자 정보입니다.
-          </p>
+          <p className="mt-2 text-sm text-zinc-500">현재 로그인된 사용자 정보입니다.</p>
         </div>
 
         <dl className="space-y-4 text-sm">

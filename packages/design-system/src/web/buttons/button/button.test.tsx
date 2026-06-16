@@ -13,10 +13,7 @@ describe("Web Button", () => {
   it("기본 type은 button이다", () => {
     render(<Button>로그인</Button>);
 
-    expect(screen.getByRole("button", { name: "로그인" })).toHaveAttribute(
-      "type",
-      "button",
-    );
+    expect(screen.getByRole("button", { name: "로그인" })).toHaveAttribute("type", "button");
   });
 
   it("클릭 이벤트를 실행한다", async () => {
@@ -97,16 +94,12 @@ describe("Web Button", () => {
   it("fullWidth가 true면 w-full 클래스를 적용한다", () => {
     render(<Button fullWidth>로그인</Button>);
 
-    expect(screen.getByRole("button", { name: "로그인" })).toHaveClass(
-      "w-full",
-    );
+    expect(screen.getByRole("button", { name: "로그인" })).toHaveClass("w-full");
   });
 
   it("className을 병합한다", () => {
     render(<Button className="custom-class">로그인</Button>);
 
-    expect(screen.getByRole("button", { name: "로그인" })).toHaveClass(
-      "custom-class",
-    );
+    expect(screen.getByRole("button", { name: "로그인" })).toHaveClass("custom-class");
   });
 });

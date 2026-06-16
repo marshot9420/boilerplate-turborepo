@@ -14,10 +14,7 @@ export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Container = forwardRef<HTMLDivElement, ContainerProps>(
-  (
-    { className, size = "xl", padding = "md", centered = true, ...props },
-    ref,
-  ) => {
+  ({ className, size = "xl", padding = "md", centered = true, ...props }, ref) => {
     return (
       <div
         ref={ref}

@@ -13,10 +13,7 @@ describe("Admin Button", () => {
   it("기본 type은 button이다", () => {
     render(<Button>저장</Button>);
 
-    expect(screen.getByRole("button", { name: "저장" })).toHaveAttribute(
-      "type",
-      "button",
-    );
+    expect(screen.getByRole("button", { name: "저장" })).toHaveAttribute("type", "button");
   });
 
   it("클릭 이벤트를 실행한다", async () => {
@@ -123,8 +120,6 @@ describe("Admin Button", () => {
   it("className을 병합한다", () => {
     render(<Button className="custom-class">저장</Button>);
 
-    expect(screen.getByRole("button", { name: "저장" })).toHaveClass(
-      "custom-class",
-    );
+    expect(screen.getByRole("button", { name: "저장" })).toHaveClass("custom-class");
   });
 });

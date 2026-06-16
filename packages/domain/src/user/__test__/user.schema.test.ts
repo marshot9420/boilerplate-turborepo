@@ -103,9 +103,7 @@ describe("user.schema", () => {
       expect(result.success).toBe(false);
 
       if (!result.success) {
-        expect(result.error.issues[0]?.message).toBe(
-          USER.AVATAR_URL.INVALID_MESSAGE,
-        );
+        expect(result.error.issues[0]?.message).toBe(USER.AVATAR_URL.INVALID_MESSAGE);
       }
     });
 
@@ -147,9 +145,7 @@ describe("user.schema", () => {
       expect(result.success).toBe(false);
 
       if (!result.success) {
-        expect(result.error.issues[0]?.message).toBe(
-          USER.NICKNAME.INVALID_MESSAGE,
-        );
+        expect(result.error.issues[0]?.message).toBe(USER.NICKNAME.INVALID_MESSAGE);
       }
     });
   });

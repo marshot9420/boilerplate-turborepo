@@ -4,13 +4,10 @@ import { describe, expect, it } from "vitest";
 import { mapPrismaError } from "./prisma-error.mapper";
 
 function createKnownPrismaError(code: string) {
-  return new Prisma.PrismaClientKnownRequestError(
-    "Prisma known request error",
-    {
-      code,
-      clientVersion: "test",
-    },
-  );
+  return new Prisma.PrismaClientKnownRequestError("Prisma known request error", {
+    code,
+    clientVersion: "test",
+  });
 }
 
 function createValidationPrismaError() {

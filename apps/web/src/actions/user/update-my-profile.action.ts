@@ -9,10 +9,7 @@ import { updateUserProfileService } from "@repo/domain/user/server";
 
 import { URLS } from "@/constants";
 
-export async function updateMyProfileAction(
-  _prevState: unknown,
-  formData: FormData,
-) {
+export async function updateMyProfileAction(_prevState: unknown, formData: FormData) {
   const session = await requireUser();
 
   const result = await createAction({

@@ -17,10 +17,7 @@ describe("IconButton", () => {
   it("기본 type은 button이다", () => {
     render(<IconButton aria-label="닫기">X</IconButton>);
 
-    expect(screen.getByRole("button", { name: "닫기" })).toHaveAttribute(
-      "type",
-      "button",
-    );
+    expect(screen.getByRole("button", { name: "닫기" })).toHaveAttribute("type", "button");
   });
 
   it("전달한 type을 우선 사용한다", () => {
@@ -30,20 +27,12 @@ describe("IconButton", () => {
       </IconButton>,
     );
 
-    expect(screen.getByRole("button", { name: "저장" })).toHaveAttribute(
-      "type",
-      "submit",
-    );
+    expect(screen.getByRole("button", { name: "저장" })).toHaveAttribute("type", "submit");
   });
 
   it("variant, size, shape 상태를 data attribute로 노출한다", () => {
     render(
-      <IconButton
-        aria-label="삭제"
-        variant="destructive"
-        size="lg"
-        shape="circle"
-      >
+      <IconButton aria-label="삭제" variant="destructive" size="lg" shape="circle">
         D
       </IconButton>,
     );
@@ -72,9 +61,7 @@ describe("IconButton", () => {
       </IconButton>,
     );
 
-    expect(screen.getByRole("button", { name: "닫기" })).toHaveClass(
-      "custom-icon-button",
-    );
+    expect(screen.getByRole("button", { name: "닫기" })).toHaveClass("custom-icon-button");
   });
 
   it("클릭 이벤트를 호출한다", async () => {

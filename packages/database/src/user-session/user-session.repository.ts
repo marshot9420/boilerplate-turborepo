@@ -74,9 +74,7 @@ export async function updateUserSessionRepository(
   }
 }
 
-export async function revokeUserSessionByTokenHashRepository(
-  tokenHash: string,
-): Promise<number> {
+export async function revokeUserSessionByTokenHashRepository(tokenHash: string): Promise<number> {
   try {
     const result = await prisma.userSession.updateMany({
       where: {
@@ -94,9 +92,7 @@ export async function revokeUserSessionByTokenHashRepository(
   }
 }
 
-export async function revokeUserSessionsByUserIdRepository(
-  userId: string,
-): Promise<number> {
+export async function revokeUserSessionsByUserIdRepository(userId: string): Promise<number> {
   try {
     const result = await prisma.userSession.updateMany({
       where: {
@@ -114,9 +110,7 @@ export async function revokeUserSessionsByUserIdRepository(
   }
 }
 
-export async function deleteExpiredUserSessionsRepository(
-  now = new Date(),
-): Promise<number> {
+export async function deleteExpiredUserSessionsRepository(now = new Date()): Promise<number> {
   try {
     const result = await prisma.userSession.deleteMany({
       where: {

@@ -8,23 +8,22 @@ export interface FieldDescriptionProps extends HTMLAttributes<HTMLParagraphEleme
   disabled?: boolean;
 }
 
-const FieldDescription = forwardRef<
-  HTMLParagraphElement,
-  FieldDescriptionProps
->(({ className, disabled = false, ...props }, ref) => {
-  return (
-    <p
-      ref={ref}
-      data-disabled={disabled ? "true" : "false"}
-      className={cn(
-        "text-sm text-muted-foreground",
-        "data-[disabled=true]:opacity-50",
-        className,
-      )}
-      {...props}
-    />
-  );
-});
+const FieldDescription = forwardRef<HTMLParagraphElement, FieldDescriptionProps>(
+  ({ className, disabled = false, ...props }, ref) => {
+    return (
+      <p
+        ref={ref}
+        data-disabled={disabled ? "true" : "false"}
+        className={cn(
+          "text-muted-foreground text-sm",
+          "data-[disabled=true]:opacity-50",
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
 
 FieldDescription.displayName = "FieldDescription";
 

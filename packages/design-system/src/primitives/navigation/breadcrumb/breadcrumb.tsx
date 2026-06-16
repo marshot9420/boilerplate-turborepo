@@ -17,14 +17,7 @@ export interface BreadcrumbProps extends ComponentPropsWithoutRef<"nav"> {
 
 const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
   ({ className, label = "Breadcrumb", ...props }, ref) => {
-    return (
-      <nav
-        ref={ref}
-        className={cn("text-sm", className)}
-        aria-label={label}
-        {...props}
-      />
-    );
+    return <nav ref={ref} className={cn("text-sm", className)} aria-label={label} {...props} />;
   },
 );
 
@@ -38,7 +31,7 @@ export const BreadcrumbList = forwardRef<HTMLOListElement, BreadcrumbListProps>(
       <ol
         ref={ref}
         className={cn(
-          "flex flex-wrap items-center gap-1.5 wrap-break-word text-muted-foreground",
+          "text-muted-foreground flex flex-wrap items-center gap-1.5 wrap-break-word",
           className,
         )}
         {...props}
@@ -54,11 +47,7 @@ export type BreadcrumbItemProps = LiHTMLAttributes<HTMLLIElement>;
 export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
   ({ className, ...props }, ref) => {
     return (
-      <li
-        ref={ref}
-        className={cn("inline-flex items-center gap-1.5", className)}
-        {...props}
-      />
+      <li ref={ref} className={cn("inline-flex items-center gap-1.5", className)} {...props} />
     );
   },
 );
@@ -67,22 +56,21 @@ BreadcrumbItem.displayName = "BreadcrumbItem";
 
 export type BreadcrumbLinkProps = AnchorHTMLAttributes<HTMLAnchorElement>;
 
-export const BreadcrumbLink = forwardRef<
-  HTMLAnchorElement,
-  BreadcrumbLinkProps
->(({ className, ...props }, ref) => {
-  return (
-    <a
-      ref={ref}
-      className={cn(
-        "transition-colors hover:text-foreground",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        className,
-      )}
-      {...props}
-    />
-  );
-});
+export const BreadcrumbLink = forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <a
+        ref={ref}
+        className={cn(
+          "hover:text-foreground transition-colors",
+          "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
 
 BreadcrumbLink.displayName = "BreadcrumbLink";
 
@@ -93,7 +81,7 @@ export const BreadcrumbPage = forwardRef<HTMLSpanElement, BreadcrumbPageProps>(
     return (
       <span
         ref={ref}
-        className={cn("font-medium text-foreground", className)}
+        className={cn("text-foreground font-medium", className)}
         aria-current="page"
         {...props}
       />
@@ -107,45 +95,40 @@ export interface BreadcrumbSeparatorProps extends LiHTMLAttributes<HTMLLIElement
   children?: ReactNode;
 }
 
-export const BreadcrumbSeparator = forwardRef<
-  HTMLLIElement,
-  BreadcrumbSeparatorProps
->(({ className, children = "/", ...props }, ref) => {
-  return (
-    <li
-      ref={ref}
-      className={cn("select-none text-muted-foreground", className)}
-      role="presentation"
-      aria-hidden="true"
-      {...props}
-    >
-      {children}
-    </li>
-  );
-});
+export const BreadcrumbSeparator = forwardRef<HTMLLIElement, BreadcrumbSeparatorProps>(
+  ({ className, children = "/", ...props }, ref) => {
+    return (
+      <li
+        ref={ref}
+        className={cn("text-muted-foreground select-none", className)}
+        role="presentation"
+        aria-hidden="true"
+        {...props}
+      >
+        {children}
+      </li>
+    );
+  },
+);
 
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator";
 
 export type BreadcrumbEllipsisProps = HTMLAttributes<HTMLSpanElement>;
 
-export const BreadcrumbEllipsis = forwardRef<
-  HTMLSpanElement,
-  BreadcrumbEllipsisProps
->(({ className, ...props }, ref) => {
-  return (
-    <span
-      ref={ref}
-      className={cn(
-        "inline-flex size-9 items-center justify-center",
-        className,
-      )}
-      aria-hidden="true"
-      {...props}
-    >
-      …
-    </span>
-  );
-});
+export const BreadcrumbEllipsis = forwardRef<HTMLSpanElement, BreadcrumbEllipsisProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <span
+        ref={ref}
+        className={cn("inline-flex size-9 items-center justify-center", className)}
+        aria-hidden="true"
+        {...props}
+      >
+        …
+      </span>
+    );
+  },
+);
 
 BreadcrumbEllipsis.displayName = "BreadcrumbEllipsis";
 

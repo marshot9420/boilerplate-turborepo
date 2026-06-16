@@ -65,17 +65,13 @@ describe("ImageFrame", () => {
   it("fit이 contain이면 object-contain class를 적용한다", () => {
     render(<ImageFrame src="/image.png" alt="이미지" fit="contain" />);
 
-    expect(screen.getByRole("img", { name: "이미지" })).toHaveClass(
-      "object-contain",
-    );
+    expect(screen.getByRole("img", { name: "이미지" })).toHaveClass("object-contain");
   });
 
   it("fit 기본값은 object-cover class를 적용한다", () => {
     render(<ImageFrame src="/image.png" alt="이미지" />);
 
-    expect(screen.getByRole("img", { name: "이미지" })).toHaveClass(
-      "object-cover",
-    );
+    expect(screen.getByRole("img", { name: "이미지" })).toHaveClass("object-cover");
   });
 
   it("className과 imageClassName을 병합한다", () => {
@@ -90,9 +86,7 @@ describe("ImageFrame", () => {
     );
 
     expect(screen.getByTestId("image-frame")).toHaveClass("custom-frame");
-    expect(screen.getByRole("img", { name: "이미지" })).toHaveClass(
-      "custom-image",
-    );
+    expect(screen.getByRole("img", { name: "이미지" })).toHaveClass("custom-image");
   });
 
   it("imageProps를 img element에 전달한다", () => {

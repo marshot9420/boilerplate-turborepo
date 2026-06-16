@@ -8,14 +8,14 @@ import { cn } from "../../../utils";
 
 const fileInputVariants = cva(
   [
-    "flex w-full rounded-md border border-input",
+    "border-input flex w-full rounded-md border",
     "bg-background text-foreground",
     "transition-colors",
     "outline-none",
     "file:mr-3 file:rounded-md file:border-0",
-    "file:bg-muted file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-foreground",
+    "file:bg-muted file:text-foreground file:px-3 file:py-1.5 file:text-sm file:font-medium",
     "hover:file:bg-muted/80",
-    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
     "disabled:cursor-not-allowed disabled:opacity-50",
     "disabled:file:cursor-not-allowed",
     "data-[invalid=true]:border-destructive",

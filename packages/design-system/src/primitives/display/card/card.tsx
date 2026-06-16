@@ -7,11 +7,7 @@ import { forwardRef, type HTMLAttributes } from "react";
 import { cn } from "../../../utils";
 
 const cardVariants = cva(
-  [
-    "rounded-lg border border-border",
-    "bg-surface text-surface-foreground",
-    "transition-colors",
-  ],
+  ["border-border rounded-lg border", "bg-surface text-surface-foreground", "transition-colors"],
   {
     variants: {
       padding: {

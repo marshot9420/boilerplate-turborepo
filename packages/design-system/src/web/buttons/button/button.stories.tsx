@@ -156,7 +156,7 @@ export const LightAndDark: Story = {
       <div
         data-ds-theme="web"
         data-ds-mode="light"
-        className="rounded-lg border border-border bg-background p-4 text-foreground"
+        className="border-border bg-background text-foreground rounded-lg border p-4"
       >
         <p className="mb-4 text-sm font-medium">Web Light</p>
 
@@ -172,7 +172,7 @@ export const LightAndDark: Story = {
       <div
         data-ds-theme="web"
         data-ds-mode="dark"
-        className="rounded-lg border border-border bg-background p-4 text-foreground"
+        className="border-border bg-background text-foreground rounded-lg border p-4"
       >
         <p className="mb-4 text-sm font-medium">Web Dark</p>
 

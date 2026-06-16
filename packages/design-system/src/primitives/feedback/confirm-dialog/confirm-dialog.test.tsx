@@ -24,9 +24,7 @@ describe("ConfirmDialog", () => {
         <ConfirmDialogContent>
           <ConfirmDialogHeader>
             <ConfirmDialogTitle>콘텐츠를 삭제할까요?</ConfirmDialogTitle>
-            <ConfirmDialogDescription>
-              삭제한 콘텐츠는 복구할 수 없습니다.
-            </ConfirmDialogDescription>
+            <ConfirmDialogDescription>삭제한 콘텐츠는 복구할 수 없습니다.</ConfirmDialogDescription>
           </ConfirmDialogHeader>
 
           <ConfirmDialogFooter>
@@ -41,9 +39,7 @@ describe("ConfirmDialog", () => {
 
     expect(screen.getByRole("alertdialog")).toBeInTheDocument();
     expect(screen.getByText("콘텐츠를 삭제할까요?")).toBeInTheDocument();
-    expect(
-      screen.getByText("삭제한 콘텐츠는 복구할 수 없습니다."),
-    ).toBeInTheDocument();
+    expect(screen.getByText("삭제한 콘텐츠는 복구할 수 없습니다.")).toBeInTheDocument();
   });
 
   it("cancel을 클릭하면 confirm dialog를 닫는다", async () => {
@@ -56,9 +52,7 @@ describe("ConfirmDialog", () => {
         <ConfirmDialogContent>
           <ConfirmDialogHeader>
             <ConfirmDialogTitle>콘텐츠를 삭제할까요?</ConfirmDialogTitle>
-            <ConfirmDialogDescription>
-              삭제한 콘텐츠는 복구할 수 없습니다.
-            </ConfirmDialogDescription>
+            <ConfirmDialogDescription>삭제한 콘텐츠는 복구할 수 없습니다.</ConfirmDialogDescription>
           </ConfirmDialogHeader>
 
           <ConfirmDialogFooter>
@@ -88,16 +82,12 @@ describe("ConfirmDialog", () => {
         <ConfirmDialogContent>
           <ConfirmDialogHeader>
             <ConfirmDialogTitle>콘텐츠를 삭제할까요?</ConfirmDialogTitle>
-            <ConfirmDialogDescription>
-              삭제한 콘텐츠는 복구할 수 없습니다.
-            </ConfirmDialogDescription>
+            <ConfirmDialogDescription>삭제한 콘텐츠는 복구할 수 없습니다.</ConfirmDialogDescription>
           </ConfirmDialogHeader>
 
           <ConfirmDialogFooter>
             <ConfirmDialogCancel>취소</ConfirmDialogCancel>
-            <ConfirmDialogAction onClick={handleClick}>
-              삭제
-            </ConfirmDialogAction>
+            <ConfirmDialogAction onClick={handleClick}>삭제</ConfirmDialogAction>
           </ConfirmDialogFooter>
         </ConfirmDialogContent>
       </ConfirmDialog>,
@@ -123,9 +113,7 @@ describe("ConfirmDialog", () => {
         <ConfirmDialogContent>
           <ConfirmDialogHeader>
             <ConfirmDialogTitle>처리할까요?</ConfirmDialogTitle>
-            <ConfirmDialogDescription>
-              이 작업은 시간이 걸릴 수 있습니다.
-            </ConfirmDialogDescription>
+            <ConfirmDialogDescription>이 작업은 시간이 걸릴 수 있습니다.</ConfirmDialogDescription>
           </ConfirmDialogHeader>
 
           <ConfirmDialogFooter>
@@ -156,21 +144,13 @@ describe("ConfirmDialog", () => {
 
         <ConfirmDialogContent className="custom-content">
           <ConfirmDialogHeader className="custom-header">
-            <ConfirmDialogTitle className="custom-title">
-              제목
-            </ConfirmDialogTitle>
-            <ConfirmDialogDescription className="custom-description">
-              설명
-            </ConfirmDialogDescription>
+            <ConfirmDialogTitle className="custom-title">제목</ConfirmDialogTitle>
+            <ConfirmDialogDescription className="custom-description">설명</ConfirmDialogDescription>
           </ConfirmDialogHeader>
 
           <ConfirmDialogFooter className="custom-footer">
-            <ConfirmDialogCancel className="custom-cancel">
-              취소
-            </ConfirmDialogCancel>
-            <ConfirmDialogAction className="custom-action">
-              확인
-            </ConfirmDialogAction>
+            <ConfirmDialogCancel className="custom-cancel">취소</ConfirmDialogCancel>
+            <ConfirmDialogAction className="custom-action">확인</ConfirmDialogAction>
           </ConfirmDialogFooter>
         </ConfirmDialogContent>
       </ConfirmDialog>,
@@ -183,11 +163,7 @@ describe("ConfirmDialog", () => {
     expect(screen.getByText("제목")).toHaveClass("custom-title");
     expect(screen.getByText("설명")).toHaveClass("custom-description");
     expect(screen.getByText("취소").parentElement).toHaveClass("custom-footer");
-    expect(screen.getByRole("button", { name: "취소" })).toHaveClass(
-      "custom-cancel",
-    );
-    expect(screen.getByRole("button", { name: "확인" })).toHaveClass(
-      "custom-action",
-    );
+    expect(screen.getByRole("button", { name: "취소" })).toHaveClass("custom-cancel");
+    expect(screen.getByRole("button", { name: "확인" })).toHaveClass("custom-action");
   });
 });

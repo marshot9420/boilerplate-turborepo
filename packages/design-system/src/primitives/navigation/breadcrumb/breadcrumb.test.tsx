@@ -21,9 +21,7 @@ describe("Breadcrumb", () => {
       </Breadcrumb>,
     );
 
-    expect(
-      screen.getByRole("navigation", { name: "Breadcrumb" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toBeInTheDocument();
   });
 
   it("label prop으로 navigation label을 변경할 수 있다", () => {
@@ -37,9 +35,7 @@ describe("Breadcrumb", () => {
       </Breadcrumb>,
     );
 
-    expect(
-      screen.getByRole("navigation", { name: "현재 위치" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "현재 위치" })).toBeInTheDocument();
   });
 
   it("BreadcrumbLink를 링크로 렌더링한다", () => {
@@ -53,10 +49,7 @@ describe("Breadcrumb", () => {
       </Breadcrumb>,
     );
 
-    expect(screen.getByRole("link", { name: "설정" })).toHaveAttribute(
-      "href",
-      "/settings",
-    );
+    expect(screen.getByRole("link", { name: "설정" })).toHaveAttribute("href", "/settings");
   });
 
   it("BreadcrumbPage는 현재 페이지를 aria-current로 표시한다", () => {
@@ -109,9 +102,7 @@ describe("Breadcrumb", () => {
       </Breadcrumb>,
     );
 
-    expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toHaveClass(
-      "custom-breadcrumb",
-    );
+    expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toHaveClass("custom-breadcrumb");
 
     expect(screen.getByRole("list")).toHaveClass("custom-list");
     expect(screen.getByRole("listitem")).toHaveClass("custom-item");

@@ -5,10 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireUser } from "@repo/auth/server";
 import type { ActionResult } from "@repo/core/action";
 import { createAction } from "@repo/core/action";
-import {
-  UpdateContentByIdRequest,
-  type ContentDetailResponse,
-} from "@repo/domain/content/client";
+import { UpdateContentByIdRequest, type ContentDetailResponse } from "@repo/domain/content/client";
 import { updateContentService } from "@repo/domain/content/server";
 
 import { URLS } from "@/constants";

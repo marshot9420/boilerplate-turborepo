@@ -79,9 +79,7 @@ describe("updateContentStatusAction", () => {
     };
 
     authMock.requireAdmin.mockResolvedValue(createAdminSession());
-    contentServiceMock.updateContentStatusService.mockResolvedValue(
-      serviceResult,
-    );
+    contentServiceMock.updateContentStatusService.mockResolvedValue(serviceResult);
 
     actionMock.createAction.mockImplementationOnce(
       async (
@@ -168,9 +166,7 @@ describe("updateContentStatusAction", () => {
     };
 
     authMock.requireAdmin.mockResolvedValue(createAdminSession());
-    contentServiceMock.updateContentStatusService.mockResolvedValue(
-      serviceResult,
-    );
+    contentServiceMock.updateContentStatusService.mockResolvedValue(serviceResult);
 
     actionMock.createAction.mockImplementationOnce(
       async (

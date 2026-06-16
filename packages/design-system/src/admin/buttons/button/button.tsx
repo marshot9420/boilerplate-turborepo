@@ -18,8 +18,7 @@ const buttonVariants = cva(
         primary: "border-primary bg-primary text-primary-foreground",
         secondary: "border-border bg-muted text-foreground hover:bg-muted/80",
         outline: "border-border bg-background text-foreground hover:bg-muted",
-        ghost:
-          "border-transparent bg-transparent text-foreground hover:bg-muted",
+        ghost: "text-foreground hover:bg-muted border-transparent bg-transparent",
         destructive:
           "border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90",
       },
@@ -51,13 +50,7 @@ export interface ButtonProps
   className?: string;
 }
 
-export default function Button({
-  className,
-  variant,
-  size,
-  fullWidth,
-  ...props
-}: ButtonProps) {
+export default function Button({ className, variant, size, fullWidth, ...props }: ButtonProps) {
   return (
     <ButtonPrimitive
       data-variant={variant ?? "primary"}

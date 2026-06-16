@@ -33,19 +33,14 @@ describe("Table", () => {
 
     expect(screen.getByRole("table")).toBeInTheDocument();
     expect(screen.getByText("사용자 목록")).toBeInTheDocument();
-    expect(
-      screen.getByRole("columnheader", { name: "이름" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: "이름" })).toBeInTheDocument();
     expect(screen.getByRole("cell", { name: "홍길동" })).toBeInTheDocument();
   });
 
   it("fullWidth 값을 data attribute로 렌더링한다", () => {
     render(<Table fullWidth={false} />);
 
-    expect(screen.getByRole("table")).toHaveAttribute(
-      "data-full-width",
-      "false",
-    );
+    expect(screen.getByRole("table")).toHaveAttribute("data-full-width", "false");
   });
 
   it("selected row를 표시한다", () => {
@@ -98,10 +93,7 @@ describe("Table", () => {
       </Table>,
     );
 
-    expect(screen.getByRole("cell", { name: "데이터 없음" })).toHaveAttribute(
-      "colspan",
-      "3",
-    );
+    expect(screen.getByRole("cell", { name: "데이터 없음" })).toHaveAttribute("colspan", "3");
   });
 
   it("className을 병합한다", () => {
@@ -116,9 +108,7 @@ describe("Table", () => {
     );
 
     expect(screen.getByRole("table")).toHaveClass("custom-table");
-    expect(screen.getByRole("table").parentElement).toHaveClass(
-      "custom-container",
-    );
+    expect(screen.getByRole("table").parentElement).toHaveClass("custom-container");
     expect(screen.getByRole("row")).toHaveClass("custom-row");
     expect(screen.getByRole("cell", { name: "셀" })).toHaveClass("custom-cell");
   });

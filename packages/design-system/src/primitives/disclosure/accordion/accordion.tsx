@@ -11,15 +11,11 @@ import {
 
 import { cn } from "../../../utils";
 
-export type AccordionProps = ComponentPropsWithoutRef<
-  typeof AccordionPrimitive.Root
->;
+export type AccordionProps = ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>;
 
 const Accordion = AccordionPrimitive.Root;
 
-export type AccordionItemProps = ComponentPropsWithoutRef<
-  typeof AccordionPrimitive.Item
->;
+export type AccordionItemProps = ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>;
 
 export const AccordionItem = forwardRef<
   ComponentRef<typeof AccordionPrimitive.Item>,
@@ -28,7 +24,7 @@ export const AccordionItem = forwardRef<
   return (
     <AccordionPrimitive.Item
       ref={ref}
-      className={cn("border-b border-border", className)}
+      className={cn("border-border border-b", className)}
       {...props}
     />
   );
@@ -53,7 +49,7 @@ export const AccordionTrigger = forwardRef<
         className={cn(
           "group flex flex-1 items-center justify-between gap-3 py-4 text-left text-sm font-medium transition-colors",
           "hover:text-foreground",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
           "disabled:pointer-events-none disabled:opacity-50",
           className,
         )}
@@ -78,9 +74,7 @@ export const AccordionTrigger = forwardRef<
 
 AccordionTrigger.displayName = "AccordionTrigger";
 
-export type AccordionContentProps = ComponentPropsWithoutRef<
-  typeof AccordionPrimitive.Content
->;
+export type AccordionContentProps = ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>;
 
 export const AccordionContent = forwardRef<
   ComponentRef<typeof AccordionPrimitive.Content>,
@@ -90,12 +84,12 @@ export const AccordionContent = forwardRef<
     <AccordionPrimitive.Content
       ref={ref}
       className={cn(
-        "overflow-hidden text-sm text-muted-foreground data-[state=closed]:hidden",
+        "text-muted-foreground overflow-hidden text-sm data-[state=closed]:hidden",
         className,
       )}
       {...props}
     >
-      <div className="pb-4 pt-0">{children}</div>
+      <div className="pt-0 pb-4">{children}</div>
     </AccordionPrimitive.Content>
   );
 });

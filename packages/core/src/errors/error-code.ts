@@ -7,5 +7,4 @@ export const COMMON_ERROR_CODE = {
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
 } as const;
 
-export type CommonErrorCode =
-  (typeof COMMON_ERROR_CODE)[keyof typeof COMMON_ERROR_CODE];
+export type CommonErrorCode = (typeof COMMON_ERROR_CODE)[keyof typeof COMMON_ERROR_CODE];

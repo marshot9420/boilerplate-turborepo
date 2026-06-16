@@ -9,7 +9,7 @@ import { cn } from "../../../utils";
 const emptyStateVariants = cva(
   [
     "flex flex-col items-center justify-center text-center",
-    "rounded-lg border border-dashed border-border",
+    "border-border rounded-lg border border-dashed",
     "bg-background text-foreground",
   ],
   {
@@ -30,9 +30,7 @@ const emptyStateVariants = cva(
 );
 
 export interface EmptyStateProps
-  extends
-    HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof emptyStateVariants> {
+  extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof emptyStateVariants> {
   icon?: ReactNode;
   heading?: ReactNode;
   description?: ReactNode;
@@ -40,20 +38,7 @@ export interface EmptyStateProps
 }
 
 const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(
-  (
-    {
-      className,
-      size,
-      fullWidth,
-      icon,
-      heading,
-      description,
-      action,
-      children,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ className, size, fullWidth, icon, heading, description, action, children, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -68,14 +53,10 @@ const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(
           </div>
         ) : null}
 
-        {heading ? (
-          <p className="text-sm font-medium text-foreground">{heading}</p>
-        ) : null}
+        {heading ? <p className="text-foreground text-sm font-medium">{heading}</p> : null}
 
         {description ? (
-          <p className="max-w-sm text-sm text-muted-foreground">
-            {description}
-          </p>
+          <p className="text-muted-foreground max-w-sm text-sm">{description}</p>
         ) : null}
 
         {action ? <div>{action}</div> : null}

@@ -7,13 +7,7 @@ import { cn } from "../../../utils";
 export type StackDirection = "vertical" | "horizontal";
 export type StackGap = "none" | "xs" | "sm" | "md" | "lg" | "xl";
 export type StackAlign = "start" | "center" | "end" | "stretch" | "baseline";
-export type StackJustify =
-  | "start"
-  | "center"
-  | "end"
-  | "between"
-  | "around"
-  | "evenly";
+export type StackJustify = "start" | "center" | "end" | "between" | "around" | "evenly";
 
 export interface StackProps extends HTMLAttributes<HTMLDivElement> {
   direction?: StackDirection;

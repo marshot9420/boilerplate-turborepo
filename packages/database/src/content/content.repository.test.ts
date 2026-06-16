@@ -124,9 +124,7 @@ describe("content.repository", () => {
 
       prismaMock.content.findUnique.mockRejectedValue(error);
 
-      await expect(
-        findContentByIdRepository("content-id"),
-      ).rejects.toMatchObject({
+      await expect(findContentByIdRepository("content-id")).rejects.toMatchObject({
         code: "DATABASE_UNKNOWN_ERROR",
         message: "데이터 처리 중 알 수 없는 오류가 발생했습니다.",
         cause: error,
@@ -339,9 +337,7 @@ describe("content.repository", () => {
 
       prismaMock.content.update.mockRejectedValue(error);
 
-      await expect(
-        softDeleteContentRepository("content-id"),
-      ).rejects.toMatchObject({
+      await expect(softDeleteContentRepository("content-id")).rejects.toMatchObject({
         code: "DATABASE_UNKNOWN_ERROR",
         message: "데이터 처리 중 알 수 없는 오류가 발생했습니다.",
         cause: error,

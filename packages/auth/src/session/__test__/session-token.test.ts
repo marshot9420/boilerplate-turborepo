@@ -1,10 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import {
-  createSessionExpiresAt,
-  createSessionToken,
-  hashSessionToken,
-} from "../session-token";
+import { createSessionExpiresAt, createSessionToken, hashSessionToken } from "../session-token";
 
 describe("session-token", () => {
   afterEach(() => {

@@ -206,10 +206,7 @@ http://localhost:3001/api/auth/kakao/callback
 // apps/web/app/api/auth/[provider]/route.ts
 import { type NextRequest, NextResponse } from "next/server";
 
-import {
-  createOAuthAuthorizeUrl,
-  parseOAuthProviderId,
-} from "@repo/auth/server";
+import { createOAuthAuthorizeUrl, parseOAuthProviderId } from "@repo/auth/server";
 import { serverEnv } from "@repo/env/server";
 
 export const runtime = "nodejs";
@@ -232,9 +229,7 @@ export async function GET(
   const providerId = parseOAuthProviderId(provider);
 
   if (!providerId) {
-    return NextResponse.redirect(
-      createWebUrl("/login?error=invalid_oauth_provider"),
-    );
+    return NextResponse.redirect(createWebUrl("/login?error=invalid_oauth_provider"));
   }
 
   const authorizeUrl = await createOAuthAuthorizeUrl({
@@ -286,9 +281,7 @@ export async function GET(
   const providerId = parseOAuthProviderId(provider);
 
   if (!providerId) {
-    return NextResponse.redirect(
-      createWebUrl("/login?error=invalid_oauth_provider"),
-    );
+    return NextResponse.redirect(createWebUrl("/login?error=invalid_oauth_provider"));
   }
 
   const code = request.nextUrl.searchParams.get("code");
@@ -456,10 +449,7 @@ import { AUTH_ERROR_CODE, requireAdmin } from "@repo/auth/server";
 
 function isAuthError(error: unknown): error is { code: string } {
   return (
-    typeof error === "object" &&
-    error !== null &&
-    "code" in error &&
-    typeof error.code === "string"
+    typeof error === "object" && error !== null && "code" in error && typeof error.code === "string"
   );
 }
 

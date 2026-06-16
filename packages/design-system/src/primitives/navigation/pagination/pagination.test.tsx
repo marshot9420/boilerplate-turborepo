@@ -19,13 +19,12 @@ describe("Pagination", () => {
   it("페이지네이션을 렌더링한다", () => {
     render(<Pagination meta={meta} onPageChange={vi.fn()} />);
 
-    expect(
-      screen.getByRole("navigation", { name: "Pagination" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Pagination" })).toBeInTheDocument();
 
-    expect(
-      screen.getByRole("button", { name: "2 페이지로 이동" }),
-    ).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("button", { name: "2 페이지로 이동" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
   });
 
   it("페이지 버튼을 클릭하면 onPageChange를 호출한다", async () => {
@@ -99,24 +98,19 @@ describe("Pagination", () => {
 
   it("getHref가 있으면 링크 기반 페이지네이션을 렌더링한다", () => {
     render(
-      <Pagination
-        meta={meta}
-        getHref={(page) => `/contents?page=${page}&limit=${meta.limit}`}
-      />,
+      <Pagination meta={meta} getHref={(page) => `/contents?page=${page}&limit=${meta.limit}`} />,
     );
 
-    expect(
-      screen.getByRole("link", { name: "3 페이지로 이동" }),
-    ).toHaveAttribute("href", "/contents?page=3&limit=20");
+    expect(screen.getByRole("link", { name: "3 페이지로 이동" })).toHaveAttribute(
+      "href",
+      "/contents?page=3&limit=20",
+    );
   });
 
   it("PaginationButton의 기본 type은 button이다", () => {
     render(<PaginationButton>페이지</PaginationButton>);
 
-    expect(screen.getByRole("button", { name: "페이지" })).toHaveAttribute(
-      "type",
-      "button",
-    );
+    expect(screen.getByRole("button", { name: "페이지" })).toHaveAttribute("type", "button");
   });
 
   it("getPaginationItems는 전체 페이지가 적으면 모든 페이지를 반환한다", () => {

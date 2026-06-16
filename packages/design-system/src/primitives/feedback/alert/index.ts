@@ -1,9 +1,4 @@
-export {
-  default as Alert,
-  AlertActions,
-  AlertDescription,
-  AlertTitle,
-} from "./alert";
+export { default as Alert, AlertActions, AlertDescription, AlertTitle } from "./alert";
 
 export type {
   AlertActionsProps,

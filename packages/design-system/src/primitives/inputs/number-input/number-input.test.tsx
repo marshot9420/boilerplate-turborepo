@@ -10,18 +10,13 @@ describe("NumberInput", () => {
   it("number input을 렌더링한다", () => {
     render(<NumberInput aria-label="수량" />);
 
-    expect(
-      screen.getByRole("spinbutton", { name: "수량" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("spinbutton", { name: "수량" })).toBeInTheDocument();
   });
 
   it("type은 number다", () => {
     render(<NumberInput aria-label="수량" />);
 
-    expect(screen.getByRole("spinbutton", { name: "수량" })).toHaveAttribute(
-      "type",
-      "number",
-    );
+    expect(screen.getByRole("spinbutton", { name: "수량" })).toHaveAttribute("type", "number");
   });
 
   it("기본 inputMode는 decimal이다", () => {
@@ -55,27 +50,19 @@ describe("NumberInput", () => {
   it("className을 병합한다", () => {
     render(<NumberInput aria-label="수량" className="custom-number-input" />);
 
-    expect(screen.getByRole("spinbutton", { name: "수량" })).toHaveClass(
-      "custom-number-input",
-    );
+    expect(screen.getByRole("spinbutton", { name: "수량" })).toHaveClass("custom-number-input");
   });
 
   it("기본 size를 data attribute로 노출한다", () => {
     render(<NumberInput aria-label="수량" />);
 
-    expect(screen.getByRole("spinbutton", { name: "수량" })).toHaveAttribute(
-      "data-size",
-      "md",
-    );
+    expect(screen.getByRole("spinbutton", { name: "수량" })).toHaveAttribute("data-size", "md");
   });
 
   it("전달한 size를 data attribute로 노출한다", () => {
     render(<NumberInput aria-label="수량" size="lg" />);
 
-    expect(screen.getByRole("spinbutton", { name: "수량" })).toHaveAttribute(
-      "data-size",
-      "lg",
-    );
+    expect(screen.getByRole("spinbutton", { name: "수량" })).toHaveAttribute("data-size", "lg");
   });
 
   it("defaultValue를 렌더링한다", () => {

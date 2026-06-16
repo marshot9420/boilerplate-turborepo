@@ -13,11 +13,6 @@ export default function ToastProvider({
   ...props
 }: ToastProviderProps) {
   return (
-    <Toaster
-      richColors={richColors}
-      closeButton={closeButton}
-      position={position}
-      {...props}
-    />
+    <Toaster richColors={richColors} closeButton={closeButton} position={position} {...props} />
   );
 }

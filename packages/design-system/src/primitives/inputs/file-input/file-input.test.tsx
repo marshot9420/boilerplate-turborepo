@@ -22,10 +22,7 @@ describe("FileInput", () => {
   it("accept를 전달한다", () => {
     render(<FileInput aria-label="이미지" accept="image/*" />);
 
-    expect(screen.getByLabelText("이미지")).toHaveAttribute(
-      "accept",
-      "image/*",
-    );
+    expect(screen.getByLabelText("이미지")).toHaveAttribute("accept", "image/*");
   });
 
   it("multiple 상태를 노출한다", () => {
@@ -40,10 +37,7 @@ describe("FileInput", () => {
   it("기본 multiple 상태는 false다", () => {
     render(<FileInput aria-label="파일" />);
 
-    expect(screen.getByLabelText("파일")).toHaveAttribute(
-      "data-multiple",
-      "false",
-    );
+    expect(screen.getByLabelText("파일")).toHaveAttribute("data-multiple", "false");
   });
 
   it("className을 병합한다", () => {

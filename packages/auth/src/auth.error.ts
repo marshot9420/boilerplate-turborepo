@@ -10,8 +10,7 @@ export const AUTH_ERROR_CODE = {
   OAUTH_INVALID_STATE: "AUTH_OAUTH_INVALID_STATE",
 } as const;
 
-export type AuthErrorCode =
-  (typeof AUTH_ERROR_CODE)[keyof typeof AUTH_ERROR_CODE];
+export type AuthErrorCode = (typeof AUTH_ERROR_CODE)[keyof typeof AUTH_ERROR_CODE];
 
 export function createUnauthorizedError(): AppError {
   return {
@@ -35,9 +34,7 @@ export function createOAuthRequestFailedError(cause?: unknown): AppError {
   };
 }
 
-export function createOAuthInvalidTokenResponseError(
-  cause?: unknown,
-): AppError {
+export function createOAuthInvalidTokenResponseError(cause?: unknown): AppError {
   return {
     code: AUTH_ERROR_CODE.OAUTH_INVALID_TOKEN_RESPONSE,
     message: "OAuth 토큰 응답이 올바르지 않습니다.",
@@ -45,9 +42,7 @@ export function createOAuthInvalidTokenResponseError(
   };
 }
 
-export function createOAuthInvalidProfileResponseError(
-  cause?: unknown,
-): AppError {
+export function createOAuthInvalidProfileResponseError(cause?: unknown): AppError {
   return {
     code: AUTH_ERROR_CODE.OAUTH_INVALID_PROFILE_RESPONSE,
     message: "OAuth 사용자 정보 응답이 올바르지 않습니다.",

@@ -1,9 +1,4 @@
-import type {
-  AuthProvider,
-  Prisma,
-  User,
-  UserOAuthAccount,
-} from "@prisma/client";
+import type { AuthProvider, Prisma, User, UserOAuthAccount } from "@prisma/client";
 
 import { prisma } from "../client";
 import { mapPrismaError } from "../errors";

@@ -43,27 +43,11 @@ export interface AvatarProps
   alt?: string;
   fallback?: ReactNode;
   imageClassName?: string;
-  imageProps?: Omit<
-    ImgHTMLAttributes<HTMLImageElement>,
-    "src" | "alt" | "className"
-  >;
+  imageProps?: Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt" | "className">;
 }
 
 const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
-  (
-    {
-      className,
-      imageClassName,
-      size,
-      shape,
-      src,
-      alt,
-      fallback,
-      imageProps,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ className, imageClassName, size, shape, src, alt, fallback, imageProps, ...props }, ref) => {
     const [hasImageError, setHasImageError] = useState(false);
     const shouldRenderImage = !!src && !hasImageError;
 

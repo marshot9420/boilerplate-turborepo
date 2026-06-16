@@ -42,9 +42,7 @@ export async function getOAuthStateCookieValue(
   return cookieStore.get(getOAuthStateCookieName(providerId))?.value;
 }
 
-export async function deleteOAuthStateCookie(
-  providerId: OAuthProviderId,
-): Promise<void> {
+export async function deleteOAuthStateCookie(providerId: OAuthProviderId): Promise<void> {
   const cookieStore = await cookies();
 
   cookieStore.delete(getOAuthStateCookieName(providerId));

@@ -60,19 +60,13 @@ describe("TextCounter", () => {
   it("maxLength를 넘지 않으면 data-over-limit은 false다", () => {
     render(<TextCounter value="hello" maxLength={10} />);
 
-    expect(screen.getByText("5 / 10")).toHaveAttribute(
-      "data-over-limit",
-      "false",
-    );
+    expect(screen.getByText("5 / 10")).toHaveAttribute("data-over-limit", "false");
   });
 
   it("maxLength를 넘으면 data-over-limit은 true다", () => {
     render(<TextCounter value="hello world" maxLength={5} />);
 
-    expect(screen.getByText("11 / 5")).toHaveAttribute(
-      "data-over-limit",
-      "true",
-    );
+    expect(screen.getByText("11 / 5")).toHaveAttribute("data-over-limit", "true");
   });
 
   it("align과 fullWidth 상태를 className과 data attribute로 반영한다", () => {

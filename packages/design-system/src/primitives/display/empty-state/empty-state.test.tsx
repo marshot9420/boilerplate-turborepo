@@ -7,43 +7,23 @@ import EmptyState from "./empty-state";
 
 describe("EmptyState", () => {
   it("heading과 description을 렌더링한다", () => {
-    render(
-      <EmptyState
-        heading="콘텐츠가 없습니다"
-        description="새 콘텐츠를 생성해 주세요."
-      />,
-    );
+    render(<EmptyState heading="콘텐츠가 없습니다" description="새 콘텐츠를 생성해 주세요." />);
 
     expect(screen.getByText("콘텐츠가 없습니다")).toBeInTheDocument();
     expect(screen.getByText("새 콘텐츠를 생성해 주세요.")).toBeInTheDocument();
   });
 
   it("icon을 렌더링한다", () => {
-    render(
-      <EmptyState
-        icon={<span data-testid="empty-icon">아이콘</span>}
-        heading="비어 있음"
-      />,
-    );
+    render(<EmptyState icon={<span data-testid="empty-icon">아이콘</span>} heading="비어 있음" />);
 
     expect(screen.getByTestId("empty-icon")).toBeInTheDocument();
-    expect(screen.getByTestId("empty-icon").parentElement).toHaveAttribute(
-      "aria-hidden",
-      "true",
-    );
+    expect(screen.getByTestId("empty-icon").parentElement).toHaveAttribute("aria-hidden", "true");
   });
 
   it("action을 렌더링한다", () => {
-    render(
-      <EmptyState
-        heading="비어 있음"
-        action={<button type="button">생성하기</button>}
-      />,
-    );
+    render(<EmptyState heading="비어 있음" action={<button type="button">생성하기</button>} />);
 
-    expect(
-      screen.getByRole("button", { name: "생성하기" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "생성하기" })).toBeInTheDocument();
   });
 
   it("children을 렌더링한다", () => {

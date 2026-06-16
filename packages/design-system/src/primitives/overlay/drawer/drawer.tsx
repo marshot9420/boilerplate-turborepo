@@ -21,7 +21,7 @@ const drawerOverlayVariants = cva([
 const drawerContentVariants = cva(
   [
     "fixed z-50",
-    "grid gap-4 border-border bg-surface p-6 text-surface-foreground shadow-lg",
+    "border-border bg-surface text-surface-foreground grid gap-4 p-6 shadow-lg",
     "outline-none",
     "data-[state=open]:animate-in data-[state=closed]:animate-out",
   ],
@@ -83,13 +83,11 @@ const drawerContentVariants = cva(
 
 const drawerHeaderVariants = cva("grid gap-1.5 text-left");
 
-const drawerFooterVariants = cva(
-  "mt-auto flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
-);
+const drawerFooterVariants = cva("mt-auto flex flex-col-reverse gap-2 sm:flex-row sm:justify-end");
 
-const drawerTitleVariants = cva("text-lg font-semibold leading-none");
+const drawerTitleVariants = cva("text-lg leading-none font-semibold");
 
-const drawerDescriptionVariants = cva("text-sm text-muted-foreground");
+const drawerDescriptionVariants = cva("text-muted-foreground text-sm");
 
 export const Drawer = DialogPrimitive.Root;
 
@@ -99,9 +97,7 @@ export const DrawerClose = DialogPrimitive.Close;
 
 export const DrawerPortal = DialogPrimitive.Portal;
 
-export type DrawerOverlayProps = ComponentPropsWithoutRef<
-  typeof DialogPrimitive.Overlay
->;
+export type DrawerOverlayProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>;
 
 export const DrawerOverlay = forwardRef<
   ComponentRef<typeof DialogPrimitive.Overlay>,
@@ -150,13 +146,7 @@ export type DrawerHeaderProps = HTMLAttributes<HTMLDivElement>;
 
 export const DrawerHeader = forwardRef<HTMLDivElement, DrawerHeaderProps>(
   ({ className, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(drawerHeaderVariants(), className)}
-        {...props}
-      />
-    );
+    return <div ref={ref} className={cn(drawerHeaderVariants(), className)} {...props} />;
   },
 );
 
@@ -166,40 +156,29 @@ export type DrawerFooterProps = HTMLAttributes<HTMLDivElement>;
 
 export const DrawerFooter = forwardRef<HTMLDivElement, DrawerFooterProps>(
   ({ className, ...props }, ref) => {
+    return <div ref={ref} className={cn(drawerFooterVariants(), className)} {...props} />;
+  },
+);
+
+DrawerFooter.displayName = "DrawerFooter";
+
+export type DrawerTitleProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Title>;
+
+export const DrawerTitle = forwardRef<ComponentRef<typeof DialogPrimitive.Title>, DrawerTitleProps>(
+  ({ className, ...props }, ref) => {
     return (
-      <div
+      <DialogPrimitive.Title
         ref={ref}
-        className={cn(drawerFooterVariants(), className)}
+        className={cn(drawerTitleVariants(), className)}
         {...props}
       />
     );
   },
 );
 
-DrawerFooter.displayName = "DrawerFooter";
-
-export type DrawerTitleProps = ComponentPropsWithoutRef<
-  typeof DialogPrimitive.Title
->;
-
-export const DrawerTitle = forwardRef<
-  ComponentRef<typeof DialogPrimitive.Title>,
-  DrawerTitleProps
->(({ className, ...props }, ref) => {
-  return (
-    <DialogPrimitive.Title
-      ref={ref}
-      className={cn(drawerTitleVariants(), className)}
-      {...props}
-    />
-  );
-});
-
 DrawerTitle.displayName = "DrawerTitle";
 
-export type DrawerDescriptionProps = ComponentPropsWithoutRef<
-  typeof DialogPrimitive.Description
->;
+export type DrawerDescriptionProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Description>;
 
 export const DrawerDescription = forwardRef<
   ComponentRef<typeof DialogPrimitive.Description>,

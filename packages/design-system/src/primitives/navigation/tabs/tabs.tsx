@@ -2,11 +2,7 @@
 
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 
-import {
-  forwardRef,
-  type ComponentPropsWithoutRef,
-  type ComponentRef,
-} from "react";
+import { forwardRef, type ComponentPropsWithoutRef, type ComponentRef } from "react";
 
 import { cn } from "../../../utils";
 
@@ -16,55 +12,44 @@ export type TabsProps = ComponentPropsWithoutRef<typeof TabsPrimitive.Root>;
 
 const Tabs = TabsPrimitive.Root;
 
-export interface TabsListProps extends ComponentPropsWithoutRef<
-  typeof TabsPrimitive.List
-> {
+export interface TabsListProps extends ComponentPropsWithoutRef<typeof TabsPrimitive.List> {
   size?: TabsSize;
   fullWidth?: boolean;
 }
 
-export const TabsList = forwardRef<
-  ComponentRef<typeof TabsPrimitive.List>,
-  TabsListProps
->(({ className, size = "md", fullWidth = false, ...props }, ref) => {
-  return (
-    <TabsPrimitive.List
-      ref={ref}
-      className={cn(
-        "inline-flex items-center rounded-md bg-muted p-1 text-muted-foreground",
-        fullWidth && "w-full",
-        className,
-      )}
-      data-size={size}
-      data-full-width={fullWidth ? "true" : "false"}
-      {...props}
-    />
-  );
-});
+export const TabsList = forwardRef<ComponentRef<typeof TabsPrimitive.List>, TabsListProps>(
+  ({ className, size = "md", fullWidth = false, ...props }, ref) => {
+    return (
+      <TabsPrimitive.List
+        ref={ref}
+        className={cn(
+          "bg-muted text-muted-foreground inline-flex items-center rounded-md p-1",
+          fullWidth && "w-full",
+          className,
+        )}
+        data-size={size}
+        data-full-width={fullWidth ? "true" : "false"}
+        {...props}
+      />
+    );
+  },
+);
 
 TabsList.displayName = "TabsList";
 
-export interface TabsTriggerProps extends ComponentPropsWithoutRef<
-  typeof TabsPrimitive.Trigger
-> {
+export interface TabsTriggerProps extends ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> {
   size?: TabsSize;
   fullWidth?: boolean;
 }
 
-export const TabsTrigger = forwardRef<
-  ComponentRef<typeof TabsPrimitive.Trigger>,
-  TabsTriggerProps
->(
-  (
-    { className, size = "md", fullWidth = false, disabled, children, ...props },
-    ref,
-  ) => {
+export const TabsTrigger = forwardRef<ComponentRef<typeof TabsPrimitive.Trigger>, TabsTriggerProps>(
+  ({ className, size = "md", fullWidth = false, disabled, children, ...props }, ref) => {
     return (
       <TabsPrimitive.Trigger
         ref={ref}
         className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-sm font-medium transition-colors",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          "inline-flex items-center justify-center rounded-sm font-medium whitespace-nowrap transition-colors",
+          "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
           "disabled:pointer-events-none disabled:opacity-50",
           "data-[state=active]:bg-surface data-[state=active]:text-surface-foreground data-[state=active]:shadow-sm",
           fullWidth && "flex-1",
@@ -87,25 +72,22 @@ export const TabsTrigger = forwardRef<
 
 TabsTrigger.displayName = "TabsTrigger";
 
-export type TabsContentProps = ComponentPropsWithoutRef<
-  typeof TabsPrimitive.Content
->;
+export type TabsContentProps = ComponentPropsWithoutRef<typeof TabsPrimitive.Content>;
 
-export const TabsContent = forwardRef<
-  ComponentRef<typeof TabsPrimitive.Content>,
-  TabsContentProps
->(({ className, ...props }, ref) => {
-  return (
-    <TabsPrimitive.Content
-      ref={ref}
-      className={cn(
-        "mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        className,
-      )}
-      {...props}
-    />
-  );
-});
+export const TabsContent = forwardRef<ComponentRef<typeof TabsPrimitive.Content>, TabsContentProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <TabsPrimitive.Content
+        ref={ref}
+        className={cn(
+          "focus-visible:ring-ring mt-4 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
 
 TabsContent.displayName = "TabsContent";
 

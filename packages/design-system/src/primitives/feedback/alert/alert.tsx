@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  forwardRef,
-  type AriaRole,
-  type HTMLAttributes,
-  type ReactNode,
-} from "react";
+import { forwardRef, type AriaRole, type HTMLAttributes, type ReactNode } from "react";
 
 import { cn } from "../../../utils";
 
@@ -40,7 +35,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
       >
         {icon ? (
           <div
-            className="absolute left-4 top-4 flex size-5 items-center justify-center"
+            className="absolute top-4 left-4 flex size-5 items-center justify-center"
             aria-hidden="true"
             data-slot="alert-icon"
           >
@@ -63,10 +58,7 @@ export const AlertTitle = forwardRef<HTMLHeadingElement, AlertTitleProps>(
     return (
       <h5
         ref={ref}
-        className={cn(
-          "mb-1 font-medium leading-none tracking-tight",
-          className,
-        )}
+        className={cn("mb-1 leading-none font-medium tracking-tight", className)}
         {...props}
       />
     );
@@ -77,18 +69,17 @@ AlertTitle.displayName = "AlertTitle";
 
 export type AlertDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
 
-export const AlertDescription = forwardRef<
-  HTMLParagraphElement,
-  AlertDescriptionProps
->(({ className, ...props }, ref) => {
-  return (
-    <p
-      ref={ref}
-      className={cn("text-sm leading-relaxed text-muted-foreground", className)}
-      {...props}
-    />
-  );
-});
+export const AlertDescription = forwardRef<HTMLParagraphElement, AlertDescriptionProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <p
+        ref={ref}
+        className={cn("text-muted-foreground text-sm leading-relaxed", className)}
+        {...props}
+      />
+    );
+  },
+);
 
 AlertDescription.displayName = "AlertDescription";
 

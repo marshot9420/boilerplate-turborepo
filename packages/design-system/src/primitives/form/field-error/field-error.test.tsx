@@ -38,14 +38,9 @@ describe("FieldError", () => {
   });
 
   it("role과 aria-live를 직접 지정할 수 있다", () => {
-    render(
-      <FieldError message="오류 메시지" role="status" aria-live="assertive" />,
-    );
+    render(<FieldError message="오류 메시지" role="status" aria-live="assertive" />);
 
-    expect(screen.getByRole("status")).toHaveAttribute(
-      "aria-live",
-      "assertive",
-    );
+    expect(screen.getByRole("status")).toHaveAttribute("aria-live", "assertive");
   });
 
   it("className을 병합한다", () => {

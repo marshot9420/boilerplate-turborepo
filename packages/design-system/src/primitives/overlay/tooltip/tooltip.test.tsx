@@ -4,13 +4,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { createRef } from "react";
 
-import {
-  Tooltip,
-  TooltipArrow,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./tooltip";
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 const ResizeObserverMock = class ResizeObserver {
   observe() {}
@@ -79,10 +73,7 @@ describe("Tooltip", () => {
       </TooltipProvider>,
     );
 
-    expect(screen.getByTestId("tooltip-content")).toHaveAttribute(
-      "data-size",
-      "lg",
-    );
+    expect(screen.getByTestId("tooltip-content")).toHaveAttribute("data-size", "lg");
   });
 
   it("기본 size는 md다", () => {
@@ -90,17 +81,12 @@ describe("Tooltip", () => {
       <TooltipProvider>
         <Tooltip defaultOpen>
           <TooltipTrigger>도움말</TooltipTrigger>
-          <TooltipContent data-testid="tooltip-content">
-            기본 Tooltip
-          </TooltipContent>
+          <TooltipContent data-testid="tooltip-content">기본 Tooltip</TooltipContent>
         </Tooltip>
       </TooltipProvider>,
     );
 
-    expect(screen.getByTestId("tooltip-content")).toHaveAttribute(
-      "data-size",
-      "md",
-    );
+    expect(screen.getByTestId("tooltip-content")).toHaveAttribute("data-size", "md");
   });
 
   it("className을 병합한다", () => {
@@ -108,10 +94,7 @@ describe("Tooltip", () => {
       <TooltipProvider>
         <Tooltip defaultOpen>
           <TooltipTrigger>도움말</TooltipTrigger>
-          <TooltipContent
-            data-testid="tooltip-content"
-            className="custom-tooltip"
-          >
+          <TooltipContent data-testid="tooltip-content" className="custom-tooltip">
             Tooltip
           </TooltipContent>
         </Tooltip>

@@ -12,8 +12,7 @@ export const USER_ERROR_CODE = {
   OAUTH_LOGIN_FAILED: "USER_OAUTH_LOGIN_FAILED",
 } as const;
 
-export type UserErrorCode =
-  (typeof USER_ERROR_CODE)[keyof typeof USER_ERROR_CODE];
+export type UserErrorCode = (typeof USER_ERROR_CODE)[keyof typeof USER_ERROR_CODE];
 
 export function createOAuthUserBlockedError(): AppError {
   return {

@@ -35,10 +35,7 @@ interface NaverOAuthTokenResponse {
   errorDescription: string | null;
 }
 
-function createOAuthRedirectUri(params: {
-  appBaseUrl: string;
-  callbackPath: string;
-}): string {
+function createOAuthRedirectUri(params: { appBaseUrl: string; callbackPath: string }): string {
   return new URL(params.callbackPath, params.appBaseUrl).toString();
 }
 
@@ -46,10 +43,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-function getStringProperty(
-  value: Record<string, unknown>,
-  key: string,
-): string | null {
+function getStringProperty(value: Record<string, unknown>, key: string): string | null {
   const property = value[key];
 
   if (typeof property !== "string") {
@@ -146,9 +140,7 @@ export async function exchangeNaverOAuthCode(
   return toNaverOAuthTokenResponse(json);
 }
 
-export async function getNaverOAuthProfile(
-  accessToken: string,
-): Promise<OAuthProfile> {
+export async function getNaverOAuthProfile(accessToken: string): Promise<OAuthProfile> {
   const response = await fetch(NAVER_USERINFO_ENDPOINT, {
     headers: {
       Authorization: `Bearer ${accessToken}`,

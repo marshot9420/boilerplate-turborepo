@@ -9,11 +9,7 @@ interface LogPayload {
   meta?: LogMeta;
 }
 
-function createLogPayload(
-  level: LogLevel,
-  message: string,
-  meta?: LogMeta,
-): LogPayload {
+function createLogPayload(level: LogLevel, message: string, meta?: LogMeta): LogPayload {
   return {
     level,
     message,
@@ -36,8 +32,6 @@ export const logger = {
   },
 
   error(message: string, meta?: LogMeta): void {
-    console.error(
-      stringifyLogPayload(createLogPayload("error", message, meta)),
-    );
+    console.error(stringifyLogPayload(createLogPayload("error", message, meta)));
   },
 };

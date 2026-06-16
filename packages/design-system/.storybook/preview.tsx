@@ -20,10 +20,7 @@ const preview: Preview = {
       const theme = context.parameters["dsTheme"] ?? "web";
 
       return (
-        <div
-          data-ds-theme={theme}
-          className="min-h-screen bg-background p-6 text-foreground"
-        >
+        <div data-ds-theme={theme} className="bg-background text-foreground min-h-screen p-6">
           <Story />
           <ToastProvider />
         </div>

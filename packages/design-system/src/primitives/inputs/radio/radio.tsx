@@ -8,11 +8,11 @@ import { cn } from "../../../utils";
 
 const radioVariants = cva(
   [
-    "shrink-0 rounded-full border border-input",
+    "border-input shrink-0 rounded-full border",
     "bg-background text-primary accent-primary",
     "transition-colors",
     "outline-none",
-    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
     "disabled:cursor-not-allowed disabled:opacity-50",
     "data-[invalid=true]:border-destructive",
   ],
@@ -38,17 +38,7 @@ export interface RadioProps
 }
 
 const Radio = forwardRef<HTMLInputElement, RadioProps>(
-  (
-    {
-      className,
-      size,
-      hasError = false,
-      disabled,
-      "aria-invalid": ariaInvalid,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ className, size, hasError = false, disabled, "aria-invalid": ariaInvalid, ...props }, ref) => {
     const resolvedAriaInvalid = ariaInvalid ?? (hasError ? true : undefined);
 
     return (

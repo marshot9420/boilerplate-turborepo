@@ -10,8 +10,7 @@ import {
 import type { OAuthProfile } from "./oauth-profile";
 
 const GOOGLE_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token";
-const GOOGLE_USERINFO_ENDPOINT =
-  "https://openidconnect.googleapis.com/v1/userinfo";
+const GOOGLE_USERINFO_ENDPOINT = "https://openidconnect.googleapis.com/v1/userinfo";
 
 interface ExchangeGoogleOAuthCodeParams {
   code: string;
@@ -33,10 +32,7 @@ interface GoogleOAuthTokenResponse {
   idToken: string | null;
 }
 
-function createOAuthRedirectUri(params: {
-  appBaseUrl: string;
-  callbackPath: string;
-}): string {
+function createOAuthRedirectUri(params: { appBaseUrl: string; callbackPath: string }): string {
   return new URL(params.callbackPath, params.appBaseUrl).toString();
 }
 
@@ -44,10 +40,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-function getStringProperty(
-  value: Record<string, unknown>,
-  key: string,
-): string | null {
+function getStringProperty(value: Record<string, unknown>, key: string): string | null {
   const property = value[key];
 
   if (typeof property !== "string") {
@@ -57,10 +50,7 @@ function getStringProperty(
   return property;
 }
 
-function getNumberProperty(
-  value: Record<string, unknown>,
-  key: string,
-): number | null {
+function getNumberProperty(value: Record<string, unknown>, key: string): number | null {
   const property = value[key];
 
   if (typeof property !== "number") {
@@ -70,10 +60,7 @@ function getNumberProperty(
   return property;
 }
 
-function getBooleanProperty(
-  value: Record<string, unknown>,
-  key: string,
-): boolean | null {
+function getBooleanProperty(value: Record<string, unknown>, key: string): boolean | null {
   const property = value[key];
 
   if (typeof property !== "boolean") {
@@ -167,9 +154,7 @@ export async function exchangeGoogleOAuthCode(
   return toGoogleOAuthTokenResponse(json);
 }
 
-export async function getGoogleOAuthProfile(
-  accessToken: string,
-): Promise<OAuthProfile> {
+export async function getGoogleOAuthProfile(accessToken: string): Promise<OAuthProfile> {
   const response = await fetch(GOOGLE_USERINFO_ENDPOINT, {
     headers: {
       Authorization: `Bearer ${accessToken}`,

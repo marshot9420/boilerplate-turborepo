@@ -12,7 +12,7 @@ const buttonVariants = cva(
     "rounded-md font-medium whitespace-nowrap",
     "transition-colors",
     "outline-none",
-    "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2",
     "disabled:pointer-events-none disabled:opacity-50",
   ],
   {
@@ -20,18 +20,11 @@ const buttonVariants = cva(
       variant: {
         default: ["bg-primary text-primary-foreground", "hover:bg-primary/90"],
 
-        outline: [
-          "border border-border",
-          "bg-background text-foreground",
-          "hover:bg-muted",
-        ],
+        outline: ["border-border border", "bg-background text-foreground", "hover:bg-muted"],
 
-        ghost: ["bg-transparent text-foreground", "hover:bg-muted"],
+        ghost: ["text-foreground bg-transparent", "hover:bg-muted"],
 
-        destructive: [
-          "bg-destructive text-destructive-foreground",
-          "hover:bg-destructive/90",
-        ],
+        destructive: ["bg-destructive text-destructive-foreground", "hover:bg-destructive/90"],
       },
 
       size: {
@@ -53,9 +46,7 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends
-    ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   loading?: boolean;
   leftSlot?: ReactNode;
   rightSlot?: ReactNode;

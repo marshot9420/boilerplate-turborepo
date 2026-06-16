@@ -1,9 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import {
-  createOAuthAuthorizeUrl,
-  parseOAuthProviderId,
-} from "@repo/auth/server";
+import { createOAuthAuthorizeUrl, parseOAuthProviderId } from "@repo/auth/server";
 import { serverEnv } from "@repo/env/server";
 
 export const runtime = "nodejs";
@@ -26,9 +23,7 @@ export async function GET(
   const providerId = parseOAuthProviderId(provider);
 
   if (!providerId) {
-    return NextResponse.redirect(
-      createAdminUrl("/login?error=invalid_oauth_provider"),
-    );
+    return NextResponse.redirect(createAdminUrl("/login?error=invalid_oauth_provider"));
   }
 
   const authorizeUrl = await createOAuthAuthorizeUrl({

@@ -5,13 +5,7 @@ import { forwardRef, type HTMLAttributes } from "react";
 import { cn } from "../../../utils";
 
 export type StatCardSize = "sm" | "md" | "lg";
-export type StatCardTone =
-  | "default"
-  | "muted"
-  | "success"
-  | "warning"
-  | "danger"
-  | "info";
+export type StatCardTone = "default" | "muted" | "success" | "warning" | "danger" | "info";
 
 export interface StatCardProps extends HTMLAttributes<HTMLDivElement> {
   size?: StatCardSize;
@@ -20,21 +14,18 @@ export interface StatCardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const StatCard = forwardRef<HTMLDivElement, StatCardProps>(
-  (
-    { className, size = "md", tone = "default", interactive = false, ...props },
-    ref,
-  ) => {
+  ({ className, size = "md", tone = "default", interactive = false, ...props }, ref) => {
     return (
       <div
         ref={ref}
         className={cn(
-          "rounded-lg border border-border bg-surface text-surface-foreground shadow-sm",
+          "border-border bg-surface text-surface-foreground rounded-lg border shadow-sm",
           size === "sm" && "p-4",
           size === "md" && "p-5",
           size === "lg" && "p-6",
           tone === "muted" && "bg-muted",
           interactive &&
-            "transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+            "hover:bg-muted/50 focus-visible:ring-ring transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
           className,
         )}
         data-size={size}
@@ -71,7 +62,7 @@ export const StatCardTitle = forwardRef<HTMLHeadingElement, StatCardTitleProps>(
     return (
       <h3
         ref={ref}
-        className={cn("text-sm font-medium text-muted-foreground", className)}
+        className={cn("text-muted-foreground text-sm font-medium", className)}
         {...props}
       />
     );
@@ -82,35 +73,29 @@ StatCardTitle.displayName = "StatCardTitle";
 
 export type StatCardValueProps = HTMLAttributes<HTMLParagraphElement>;
 
-export const StatCardValue = forwardRef<
-  HTMLParagraphElement,
-  StatCardValueProps
->(({ className, ...props }, ref) => {
-  return (
-    <p
-      ref={ref}
-      className={cn("mt-2 text-2xl font-semibold tracking-tight", className)}
-      {...props}
-    />
-  );
-});
+export const StatCardValue = forwardRef<HTMLParagraphElement, StatCardValueProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <p
+        ref={ref}
+        className={cn("mt-2 text-2xl font-semibold tracking-tight", className)}
+        {...props}
+      />
+    );
+  },
+);
 
 StatCardValue.displayName = "StatCardValue";
 
 export type StatCardDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
 
-export const StatCardDescription = forwardRef<
-  HTMLParagraphElement,
-  StatCardDescriptionProps
->(({ className, ...props }, ref) => {
-  return (
-    <p
-      ref={ref}
-      className={cn("mt-1 text-sm text-muted-foreground", className)}
-      {...props}
-    />
-  );
-});
+export const StatCardDescription = forwardRef<HTMLParagraphElement, StatCardDescriptionProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <p ref={ref} className={cn("text-muted-foreground mt-1 text-sm", className)} {...props} />
+    );
+  },
+);
 
 StatCardDescription.displayName = "StatCardDescription";
 
@@ -144,11 +129,7 @@ export type StatCardFooterProps = HTMLAttributes<HTMLDivElement>;
 export const StatCardFooter = forwardRef<HTMLDivElement, StatCardFooterProps>(
   ({ className, ...props }, ref) => {
     return (
-      <div
-        ref={ref}
-        className={cn("mt-4 flex items-center gap-2 text-sm", className)}
-        {...props}
-      />
+      <div ref={ref} className={cn("mt-4 flex items-center gap-2 text-sm", className)} {...props} />
     );
   },
 );

@@ -3,18 +3,14 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { cva, type VariantProps } from "class-variance-authority";
 
-import {
-  forwardRef,
-  type ComponentPropsWithoutRef,
-  type ComponentRef,
-} from "react";
+import { forwardRef, type ComponentPropsWithoutRef, type ComponentRef } from "react";
 
 import { cn } from "../../../utils";
 
 const dropdownMenuContentVariants = cva(
   [
-    "z-50 min-w-40 overflow-hidden rounded-md border border-border",
-    "bg-surface p-1 text-surface-foreground shadow-md",
+    "border-border z-50 min-w-40 overflow-hidden rounded-md border",
+    "bg-surface text-surface-foreground p-1 shadow-md",
     "outline-none",
     "data-[state=open]:animate-in data-[state=closed]:animate-out",
   ],
@@ -34,8 +30,8 @@ const dropdownMenuContentVariants = cva(
 
 const dropdownMenuItemVariants = cva(
   [
-    "relative flex cursor-default select-none items-center gap-2 rounded-sm",
-    "px-2 py-1.5 text-sm outline-none transition-colors",
+    "relative flex cursor-default items-center gap-2 rounded-sm select-none",
+    "px-2 py-1.5 text-sm transition-colors outline-none",
     "focus:bg-muted",
     "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
   ],
@@ -43,8 +39,7 @@ const dropdownMenuItemVariants = cva(
     variants: {
       variant: {
         default: "text-foreground",
-        destructive:
-          "text-destructive focus:bg-destructive focus:text-destructive-foreground",
+        destructive: "text-destructive focus:bg-destructive focus:text-destructive-foreground",
       },
       inset: {
         true: "pl-8",
@@ -64,7 +59,7 @@ const dropdownMenuLabelVariants = cva("px-2 py-1.5 text-sm font-medium", {
   },
 });
 
-const dropdownMenuSeparatorVariants = cva("-mx-1 my-1 h-px bg-border");
+const dropdownMenuSeparatorVariants = cva("bg-border -mx-1 my-1 h-px");
 
 export const DropdownMenu = DropdownMenuPrimitive.Root;
 
@@ -102,9 +97,7 @@ export const DropdownMenuContent = forwardRef<
 
 DropdownMenuContent.displayName = "DropdownMenuContent";
 
-export type DropdownMenuItemProps = ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.Item
-> &
+export type DropdownMenuItemProps = ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> &
   VariantProps<typeof dropdownMenuItemVariants>;
 
 export const DropdownMenuItem = forwardRef<
@@ -168,9 +161,7 @@ export const DropdownMenuRadioItem = forwardRef<
 
 DropdownMenuRadioItem.displayName = "DropdownMenuRadioItem";
 
-export type DropdownMenuLabelProps = ComponentPropsWithoutRef<
-  typeof DropdownMenuPrimitive.Label
-> &
+export type DropdownMenuLabelProps = ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> &
   VariantProps<typeof dropdownMenuLabelVariants>;
 
 export const DropdownMenuLabel = forwardRef<

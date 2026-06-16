@@ -15,9 +15,7 @@ describe("Section", () => {
   it("aria-label이 있으면 region으로 탐색할 수 있다", () => {
     render(<Section aria-label="히어로 섹션">섹션 콘텐츠</Section>);
 
-    expect(
-      screen.getByRole("region", { name: "히어로 섹션" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "히어로 섹션" })).toBeInTheDocument();
   });
 
   it("기본 data attribute를 렌더링한다", () => {

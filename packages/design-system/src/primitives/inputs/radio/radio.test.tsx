@@ -16,49 +16,29 @@ describe("Radio", () => {
   it("type은 radio다", () => {
     render(<Radio aria-label="옵션 A" name="option" value="A" />);
 
-    expect(screen.getByRole("radio", { name: "옵션 A" })).toHaveAttribute(
-      "type",
-      "radio",
-    );
+    expect(screen.getByRole("radio", { name: "옵션 A" })).toHaveAttribute("type", "radio");
   });
 
   it("className을 병합한다", () => {
-    render(
-      <Radio
-        aria-label="옵션 A"
-        name="option"
-        value="A"
-        className="custom-radio"
-      />,
-    );
+    render(<Radio aria-label="옵션 A" name="option" value="A" className="custom-radio" />);
 
-    expect(screen.getByRole("radio", { name: "옵션 A" })).toHaveClass(
-      "custom-radio",
-    );
+    expect(screen.getByRole("radio", { name: "옵션 A" })).toHaveClass("custom-radio");
   });
 
   it("기본 size를 data attribute로 노출한다", () => {
     render(<Radio aria-label="옵션 A" name="option" value="A" />);
 
-    expect(screen.getByRole("radio", { name: "옵션 A" })).toHaveAttribute(
-      "data-size",
-      "md",
-    );
+    expect(screen.getByRole("radio", { name: "옵션 A" })).toHaveAttribute("data-size", "md");
   });
 
   it("전달한 size를 data attribute로 노출한다", () => {
     render(<Radio aria-label="옵션 A" name="option" value="A" size="lg" />);
 
-    expect(screen.getByRole("radio", { name: "옵션 A" })).toHaveAttribute(
-      "data-size",
-      "lg",
-    );
+    expect(screen.getByRole("radio", { name: "옵션 A" })).toHaveAttribute("data-size", "lg");
   });
 
   it("defaultChecked를 렌더링한다", () => {
-    render(
-      <Radio aria-label="옵션 A" name="option" value="A" defaultChecked />,
-    );
+    render(<Radio aria-label="옵션 A" name="option" value="A" defaultChecked />);
 
     expect(screen.getByRole("radio", { name: "옵션 A" })).toBeChecked();
   });
@@ -91,14 +71,7 @@ describe("Radio", () => {
     const user = userEvent.setup();
     const handleChange = vi.fn();
 
-    render(
-      <Radio
-        aria-label="옵션 A"
-        name="option"
-        value="A"
-        onChange={handleChange}
-      />,
-    );
+    render(<Radio aria-label="옵션 A" name="option" value="A" onChange={handleChange} />);
 
     await user.click(screen.getByRole("radio", { name: "옵션 A" }));
 
@@ -109,15 +82,7 @@ describe("Radio", () => {
     const user = userEvent.setup();
     const handleChange = vi.fn();
 
-    render(
-      <Radio
-        aria-label="옵션 A"
-        name="option"
-        value="A"
-        disabled
-        onChange={handleChange}
-      />,
-    );
+    render(<Radio aria-label="옵션 A" name="option" value="A" disabled onChange={handleChange} />);
 
     const radio = screen.getByRole("radio", { name: "옵션 A" });
 
@@ -139,15 +104,7 @@ describe("Radio", () => {
   });
 
   it("명시적으로 전달한 aria-invalid를 우선 사용한다", () => {
-    render(
-      <Radio
-        aria-label="옵션 A"
-        name="option"
-        value="A"
-        hasError
-        aria-invalid={false}
-      />,
-    );
+    render(<Radio aria-label="옵션 A" name="option" value="A" hasError aria-invalid={false} />);
 
     const radio = screen.getByRole("radio", { name: "옵션 A" });
 

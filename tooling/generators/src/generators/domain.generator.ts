@@ -2,12 +2,7 @@ import { join } from "node:path";
 
 import { writeFileSafe } from "../utils/file";
 import { addPackageExport } from "../utils/package-json";
-import {
-  toCamelCase,
-  toConstantCase,
-  toKebabCase,
-  toPascalCase,
-} from "../utils/string";
+import { toCamelCase, toConstantCase, toKebabCase, toPascalCase } from "../utils/string";
 
 export interface GenerateDomainOptions {
   name: string;
@@ -20,11 +15,7 @@ export async function generateDomain(options: GenerateDomainOptions) {
   const constantName = toConstantCase(kebabName);
 
   const domainDir = join(process.cwd(), "../../packages/domain/src", kebabName);
-  const databaseDir = join(
-    process.cwd(),
-    "../../packages/database/src",
-    kebabName,
-  );
+  const databaseDir = join(process.cwd(), "../../packages/database/src", kebabName);
   const domainTestDir = join(domainDir, "__test__");
 
   const domainFiles = [
@@ -662,12 +653,7 @@ describe("${pascalName} repository", () => {
     constantName,
   });
 
-  for (const file of [
-    ...domainFiles,
-    ...domainTestFiles,
-    ...databaseFiles,
-    ...databaseTestFiles,
-  ]) {
+  for (const file of [...domainFiles, ...domainTestFiles, ...databaseFiles, ...databaseTestFiles]) {
     await writeFileSafe(file);
   }
 
@@ -684,10 +670,7 @@ describe("${pascalName} repository", () => {
   });
 
   await addPackageExport({
-    packageJsonPath: join(
-      process.cwd(),
-      "../../packages/database/package.json",
-    ),
+    packageJsonPath: join(process.cwd(), "../../packages/database/package.json"),
     exportPath: `./${kebabName}`,
     targetPath: `./src/${kebabName}/index.ts`,
   });
