@@ -25,7 +25,22 @@ const fieldVariants = cva("grid gap-2", {
 
 export interface FieldProps
   extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof fieldVariants> {
+  /**
+   * Field의 invalid 상태를 표시한다.
+   *
+   * 이 값은 wrapper의 `data-invalid` 상태와 스타일 제어를 위한 값이며,
+   * 내부 form control의 `aria-invalid`를 자동으로 설정하지 않는다.
+   * 실제 input, textarea, select에는 직접 `aria-invalid`를 전달해야 한다.
+   */
   hasError?: boolean;
+
+  /**
+   * Field의 disabled 상태를 표시한다.
+   *
+   * 이 값은 wrapper의 `data-disabled` 상태와 스타일 제어를 위한 값이며,
+   * 내부 form control을 자동으로 disabled 처리하지 않는다.
+   * 실제 input, textarea, select에는 직접 `disabled`를 전달해야 한다.
+   */
   disabled?: boolean;
 }
 

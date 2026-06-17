@@ -5,6 +5,14 @@ import Field from "./field";
 const meta = {
   title: "Web/Form/Field",
   component: Field,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Field는 label, control, help text, error message 등을 배치하는 wrapper입니다. disabled와 hasError는 wrapper 상태 표시용 prop이며, 내부 form control을 자동으로 disabled 처리하거나 aria-invalid 처리하지 않습니다.",
+      },
+    },
+  },
   argTypes: {
     direction: {
       control: "inline-radio",
@@ -19,9 +27,13 @@ const meta = {
     },
     hasError: {
       control: "boolean",
+      description:
+        "Field wrapper의 invalid 상태 표시용 prop입니다. 내부 form control의 aria-invalid는 직접 전달해야 합니다.",
     },
     disabled: {
       control: "boolean",
+      description:
+        "Field wrapper의 disabled 상태 표시용 prop입니다. 내부 form control의 disabled는 직접 전달해야 합니다.",
     },
   },
   args: {
