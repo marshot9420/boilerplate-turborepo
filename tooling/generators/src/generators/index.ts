@@ -1,9 +1,10 @@
-export * from "./domain.generator";
+export { generateComponent } from "./component.generator";
+export { generateDomain } from "./domain.generator";
 
-export const availableGenerators = ["domain", "feature", "package"] as const;
+export const availableGenerators = ["domain", "component"] as const;
 
 export type GeneratorType = (typeof availableGenerators)[number];
 
-export function isGeneratorType(value: string): value is GeneratorType {
-  return availableGenerators.includes(value as GeneratorType);
+export function isGeneratorType(type: string): type is GeneratorType {
+  return availableGenerators.includes(type as GeneratorType);
 }

@@ -1,12 +1,22 @@
-import { availableGenerators, generateDomain, isGeneratorType } from "./generators";
+import {
+  availableGenerators,
+  generateComponent,
+  generateDomain,
+  isGeneratorType,
+} from "./generators";
 
 function printHelp() {
   console.info(`
 Usage:
-  pnpm --filter @repo/generators generate <type> <name>
+  pnpm generate <type> <name> [options]
 
 Examples:
-  pnpm --filter @repo/generators generate domain content
+  pnpm generate domain content
+
+  pnpm generate component empty-state --target all --category feedback
+  pnpm generate component phone-input --target primitive --category inputs
+  pnpm generate component phone-input --target web --category inputs --primitive phone-input
+  pnpm generate component phone-input --target admin --category inputs --primitive phone-input
 
 Available generators:
   ${availableGenerators.join(", ")}
@@ -14,7 +24,7 @@ Available generators:
 }
 
 async function main() {
-  const [, , type, name] = process.argv;
+  const [, , type, name, ...args] = process.argv;
 
   if (!type || !name) {
     printHelp();
@@ -31,6 +41,14 @@ async function main() {
 
   if (type === "domain") {
     await generateDomain({ name });
+    return;
+  }
+
+  if (type === "component") {
+    await generateComponent({
+      name,
+      args,
+    });
     return;
   }
 
