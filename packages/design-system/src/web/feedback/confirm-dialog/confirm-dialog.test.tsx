@@ -195,4 +195,30 @@ describe("Web ConfirmDialog", () => {
     expect(cancelRef.current).toBeInstanceOf(HTMLButtonElement);
     expect(actionRef.current).toBeInstanceOf(HTMLButtonElement);
   });
+
+  it("loadingText를 지정하면 loading 상태에서 해당 문구를 렌더링한다", () => {
+    render(
+      <ConfirmDialog defaultOpen>
+        <ConfirmDialogContent>
+          <ConfirmDialogHeader>
+            <ConfirmDialogTitle>탈퇴할까요?</ConfirmDialogTitle>
+            <ConfirmDialogDescription>계정 탈퇴 처리를 진행합니다.</ConfirmDialogDescription>
+          </ConfirmDialogHeader>
+          <ConfirmDialogFooter>
+            <ConfirmDialogAction tone="danger" loading loadingText="탈퇴 처리 중...">
+              탈퇴
+            </ConfirmDialogAction>
+          </ConfirmDialogFooter>
+        </ConfirmDialogContent>
+      </ConfirmDialog>,
+    );
+
+    const action = screen.getByRole("button", {
+      name: "탈퇴 처리 중...",
+    });
+
+    expect(action).toBeDisabled();
+    expect(action).toHaveAttribute("data-tone", "danger");
+    expect(action).toHaveAttribute("data-loading", "true");
+  });
 });

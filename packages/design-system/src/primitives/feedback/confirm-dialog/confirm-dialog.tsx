@@ -174,35 +174,49 @@ export interface ConfirmDialogActionProps extends ComponentPropsWithoutRef<
 > {
   tone?: ConfirmDialogActionTone;
   loading?: boolean;
+  loadingText?: string;
 }
 
 export const ConfirmDialogAction = forwardRef<
   ComponentRef<typeof AlertDialogPrimitive.Action>,
   ConfirmDialogActionProps
->(({ className, tone = "default", loading = false, disabled, children, ...props }, ref) => {
-  const resolvedDisabled = disabled || loading;
+>(
+  (
+    {
+      className,
+      tone = "default",
+      loading = false,
+      loadingText = "처리 중...",
+      disabled,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    const resolvedDisabled = disabled || loading;
 
-  return (
-    <AlertDialogPrimitive.Action
-      ref={ref}
-      className={cn(
-        "inline-flex h-10 items-center justify-center rounded-md px-4 text-sm font-medium",
-        "transition-colors",
-        "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-        "disabled:pointer-events-none disabled:opacity-50",
-        tone === "default" && "bg-primary text-primary-foreground hover:opacity-90",
-        tone === "danger" && "bg-destructive text-destructive-foreground hover:opacity-90",
-        className,
-      )}
-      disabled={resolvedDisabled}
-      data-tone={tone}
-      data-loading={loading ? "true" : "false"}
-      {...props}
-    >
-      {loading ? "처리 중..." : children}
-    </AlertDialogPrimitive.Action>
-  );
-});
+    return (
+      <AlertDialogPrimitive.Action
+        ref={ref}
+        className={cn(
+          "inline-flex h-10 items-center justify-center rounded-md px-4 text-sm font-medium",
+          "transition-colors",
+          "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+          "disabled:pointer-events-none disabled:opacity-50",
+          tone === "default" && "bg-primary text-primary-foreground hover:opacity-90",
+          tone === "danger" && "bg-destructive text-destructive-foreground hover:opacity-90",
+          className,
+        )}
+        disabled={resolvedDisabled}
+        data-tone={tone}
+        data-loading={loading ? "true" : "false"}
+        {...props}
+      >
+        {loading ? loadingText : children}
+      </AlertDialogPrimitive.Action>
+    );
+  },
+);
 
 ConfirmDialogAction.displayName = "ConfirmDialogAction";
 

@@ -94,7 +94,9 @@ export const Loading: Story = {
 
           <ConfirmDialogFooter>
             <ConfirmDialogCancel disabled>취소</ConfirmDialogCancel>
-            <ConfirmDialogAction loading>저장</ConfirmDialogAction>
+            <ConfirmDialogAction loading loadingText="저장 중...">
+              저장
+            </ConfirmDialogAction>
           </ConfirmDialogFooter>
         </ConfirmDialogContent>
       </ConfirmDialog>

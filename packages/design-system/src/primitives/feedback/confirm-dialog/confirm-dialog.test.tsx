@@ -166,4 +166,38 @@ describe("ConfirmDialog", () => {
     expect(screen.getByRole("button", { name: "취소" })).toHaveClass("custom-cancel");
     expect(screen.getByRole("button", { name: "확인" })).toHaveClass("custom-action");
   });
+
+  it("loadingText를 지정하면 loading 상태에서 해당 문구를 렌더링한다", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <ConfirmDialog>
+        <ConfirmDialogTrigger>열기</ConfirmDialogTrigger>
+
+        <ConfirmDialogContent>
+          <ConfirmDialogHeader>
+            <ConfirmDialogTitle>삭제할까요?</ConfirmDialogTitle>
+            <ConfirmDialogDescription>삭제 처리를 진행합니다.</ConfirmDialogDescription>
+          </ConfirmDialogHeader>
+
+          <ConfirmDialogFooter>
+            <ConfirmDialogCancel>취소</ConfirmDialogCancel>
+            <ConfirmDialogAction tone="danger" loading loadingText="삭제 중...">
+              삭제
+            </ConfirmDialogAction>
+          </ConfirmDialogFooter>
+        </ConfirmDialogContent>
+      </ConfirmDialog>,
+    );
+
+    await user.click(screen.getByRole("button", { name: "열기" }));
+
+    const actionButton = screen.getByRole("button", {
+      name: "삭제 중...",
+    });
+
+    expect(actionButton).toBeDisabled();
+    expect(actionButton).toHaveAttribute("data-tone", "danger");
+    expect(actionButton).toHaveAttribute("data-loading", "true");
+  });
 });
