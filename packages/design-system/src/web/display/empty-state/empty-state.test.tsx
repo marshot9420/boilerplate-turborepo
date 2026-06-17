@@ -75,4 +75,23 @@ describe("Web EmptyState", () => {
 
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
+
+  it("headingElement를 primitive에 전달한다", () => {
+    render(<EmptyState heading="비어 있음" headingElement="h2" />);
+
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: "비어 있음",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("headingElement data attribute를 가진다", () => {
+    render(<EmptyState heading="비어 있음" headingElement="h3" />);
+
+    const emptyState = screen.getByText("비어 있음").closest("div");
+
+    expect(emptyState).toHaveAttribute("data-heading-element", "h3");
+  });
 });

@@ -28,6 +28,7 @@ const meta = {
   args: {
     icon: <EmptyIcon />,
     heading: "콘텐츠가 없습니다",
+    headingElement: "h3",
     description: "아직 표시할 콘텐츠가 없습니다.",
   },
   argTypes: {
@@ -41,6 +42,10 @@ const meta = {
     },
     fullWidth: {
       control: "boolean",
+    },
+    headingElement: {
+      control: "inline-radio",
+      options: ["p", "h2", "h3", "h4"],
     },
   },
 } satisfies Meta<typeof EmptyState>;

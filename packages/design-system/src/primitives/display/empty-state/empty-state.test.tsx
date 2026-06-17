@@ -67,4 +67,32 @@ describe("EmptyState", () => {
 
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
+
+  it("기본 headingElement는 p로 heading을 렌더링한다", () => {
+    render(<EmptyState heading="콘텐츠가 없습니다" />);
+
+    const heading = screen.getByText("콘텐츠가 없습니다");
+
+    expect(heading.tagName).toBe("P");
+  });
+
+  it("headingElement로 heading 태그를 변경할 수 있다", () => {
+    render(<EmptyState heading="콘텐츠가 없습니다" headingElement="h2" />);
+
+    const heading = screen.getByRole("heading", {
+      level: 2,
+      name: "콘텐츠가 없습니다",
+    });
+
+    expect(heading).toBeInTheDocument();
+    expect(heading.tagName).toBe("H2");
+  });
+
+  it("headingElement 상태를 data attribute로 노출한다", () => {
+    render(
+      <EmptyState data-testid="empty-state" heading="콘텐츠가 없습니다" headingElement="h3" />,
+    );
+
+    expect(screen.getByTestId("empty-state")).toHaveAttribute("data-heading-element", "h3");
+  });
 });
