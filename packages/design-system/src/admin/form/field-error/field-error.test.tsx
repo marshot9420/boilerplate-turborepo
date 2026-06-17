@@ -69,4 +69,19 @@ describe("Admin FieldError", () => {
 
     expect(ref.current).toBeInstanceOf(HTMLParagraphElement);
   });
+
+  it("message가 0이면 렌더링한다", () => {
+    render(<FieldError message={0} />);
+
+    const error = screen.getByRole("alert");
+
+    expect(error).toHaveTextContent("0");
+    expect(error).toHaveAttribute("data-size", "md");
+  });
+
+  it("children이 숫자 0이면 렌더링한다", () => {
+    render(<FieldError>{0}</FieldError>);
+
+    expect(screen.getByRole("alert")).toHaveTextContent("0");
+  });
 });

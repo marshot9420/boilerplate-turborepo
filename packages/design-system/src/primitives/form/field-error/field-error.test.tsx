@@ -56,4 +56,35 @@ describe("FieldError", () => {
 
     expect(ref.current).toBeInstanceOf(HTMLParagraphElement);
   });
+
+  it("message가 0이면 렌더링한다", () => {
+    render(<FieldError message={0} />);
+
+    expect(screen.getByRole("alert")).toHaveTextContent("0");
+  });
+
+  it("children이 0이면 children을 렌더링한다", () => {
+    render(<FieldError message="message">0</FieldError>);
+
+    expect(screen.getByRole("alert")).toHaveTextContent("0");
+    expect(screen.queryByText("message")).not.toBeInTheDocument();
+  });
+
+  it("빈 문자열이면 렌더링하지 않는다", () => {
+    const { container } = render(<FieldError message="" />);
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it("boolean 값이면 렌더링하지 않는다", () => {
+    const { container } = render(<FieldError message={false} />);
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it("children이 숫자 0이면 렌더링한다", () => {
+    render(<FieldError>{0}</FieldError>);
+
+    expect(screen.getByRole("alert")).toHaveTextContent("0");
+  });
 });
