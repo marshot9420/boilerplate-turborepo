@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>;
 export const Default = {
   render: () => {
     return (
-      <Tabs defaultValue="overview" className="w-[480px]">
+      <Tabs defaultValue="overview" className="w-120">
         <TabsList aria-label="관리자 탭">
           <TabsTrigger value="overview">개요</TabsTrigger>
           <TabsTrigger value="users">사용자</TabsTrigger>
@@ -50,7 +50,7 @@ export const Default = {
 export const Sizes = {
   render: () => {
     return (
-      <div className="flex w-[480px] flex-col gap-6">
+      <div className="flex w-120 flex-col gap-6">
         <Tabs defaultValue="overview">
           <TabsList aria-label="작은 탭" size="sm">
             <TabsTrigger value="overview" size="sm">
@@ -91,7 +91,7 @@ export const Sizes = {
 export const FullWidth = {
   render: () => {
     return (
-      <Tabs defaultValue="overview" className="w-[480px]">
+      <Tabs defaultValue="overview" className="w-120">
         <TabsList aria-label="관리자 탭" fullWidth>
           <TabsTrigger value="overview" fullWidth>
             개요
@@ -129,7 +129,7 @@ export const FullWidth = {
 export const Disabled = {
   render: () => {
     return (
-      <Tabs defaultValue="overview" className="w-[480px]">
+      <Tabs defaultValue="overview" className="w-120">
         <TabsList aria-label="관리자 탭">
           <TabsTrigger value="overview">개요</TabsTrigger>
           <TabsTrigger value="users" disabled>
