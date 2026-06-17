@@ -166,20 +166,53 @@ async function writeGeneratedFile(params: {
   await writeFile(filePath, content);
 }
 
-async function ensureExportLine(filePath: string, exportLine: string): Promise<void> {
+const exportAllLinePattern = /^export \* from ["'](.+)["'];$/;
+
+function createExportAllLine(modulePath: string): string {
+  return `export * from "${modulePath}";`;
+}
+
+function parseExportAllModulePath(line: string): string | null {
+  const match = exportAllLinePattern.exec(line.trim());
+
+  return match?.[1] ?? null;
+}
+
+async function ensureSortedExportAllLine(filePath: string, modulePath: string): Promise<void> {
   await mkdir(path.dirname(filePath), { recursive: true });
 
   const currentContent = await readTextFile(filePath);
+  const lines = currentContent
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
 
-  if (currentContent.includes(exportLine)) {
-    return;
+  const nonExportAllLines: string[] = [];
+  const modulePaths = new Set<string>();
+
+  for (const line of lines) {
+    const parsedModulePath = parseExportAllModulePath(line);
+
+    if (parsedModulePath) {
+      modulePaths.add(parsedModulePath);
+      continue;
+    }
+
+    nonExportAllLines.push(line);
   }
 
-  const nextContent = currentContent.trimEnd()
-    ? `${currentContent.trimEnd()}\n${exportLine}\n`
-    : `${exportLine}\n`;
+  modulePaths.add(modulePath);
 
-  await writeFile(filePath, nextContent);
+  const sortedExportAllLines = [...modulePaths]
+    .sort((a, b) => a.localeCompare(b))
+    .map(createExportAllLine);
+
+  const nextLines =
+    nonExportAllLines.length > 0
+      ? [...nonExportAllLines, "", ...sortedExportAllLines]
+      : sortedExportAllLines;
+
+  await writeFile(filePath, `${nextLines.join("\n")}\n`);
 }
 
 function resolveTargets(target: ComponentTarget): ResolvedComponentTarget[] {
@@ -451,14 +484,14 @@ async function generatePrimitiveComponent(params: {
     force,
   });
 
-  await ensureExportLine(
+  await ensureSortedExportAllLine(
     path.join(designSystemSrcPath, "primitives", category, "index.ts"),
-    `export * from "./${kebabName}";`,
+    `./${kebabName}`,
   );
 
-  await ensureExportLine(
+  await ensureSortedExportAllLine(
     path.join(designSystemSrcPath, "primitives", "index.ts"),
-    `export * from "./${category}";`,
+    `./${category}`,
   );
 }
 
@@ -534,14 +567,14 @@ async function generateUiComponent(params: {
     force,
   });
 
-  await ensureExportLine(
-    path.join(designSystemSrcPath, target, category, "index.ts"),
-    `export * from "./${kebabName}";`,
+  await ensureSortedExportAllLine(
+    path.join(designSystemSrcPath, "primitives", category, "index.ts"),
+    `./${kebabName}`,
   );
 
-  await ensureExportLine(
-    path.join(designSystemSrcPath, target, "index.ts"),
-    `export * from "./${category}";`,
+  await ensureSortedExportAllLine(
+    path.join(designSystemSrcPath, "primitives", "index.ts"),
+    `./${category}`,
   );
 }
 

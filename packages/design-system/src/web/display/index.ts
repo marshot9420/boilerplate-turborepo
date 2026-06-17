@@ -4,3 +4,5 @@ export * from "./card";
 export * from "./empty-state";
 export * from "./image-frame";
 export * from "./separator";
+export * from "./skeleton";
+export * from "./spinner";
