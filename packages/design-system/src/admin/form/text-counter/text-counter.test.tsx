@@ -96,4 +96,13 @@ describe("Admin TextCounter", () => {
 
     expect(ref.current).toBeInstanceOf(HTMLSpanElement);
   });
+
+  it("countStrategy가 grapheme이면 사용자 체감 글자 수 기준으로 계산한다", () => {
+    render(<TextCounter value="👍" countStrategy="grapheme" />);
+
+    const counter = screen.getByText("1");
+
+    expect(counter).toHaveAttribute("data-count", "1");
+    expect(counter).toHaveAttribute("data-count-strategy", "grapheme");
+  });
 });

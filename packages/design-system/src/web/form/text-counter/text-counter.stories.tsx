@@ -59,6 +59,10 @@ const meta = {
     maxLength: {
       control: "number",
     },
+    countStrategy: {
+      control: "inline-radio",
+      options: ["code-unit", "grapheme"],
+    },
   },
   args: {
     value: "서비스 소개",
@@ -67,6 +71,7 @@ const meta = {
     size: "sm",
     weight: "normal",
     fullWidth: false,
+    countStrategy: "code-unit",
   },
 } satisfies Meta<typeof TextCounter>;
 
@@ -108,5 +113,14 @@ export const Alignments: Story = {
 export const WithField: Story = {
   render: () => {
     return <TextCounterFieldDemo />;
+  },
+};
+
+export const Grapheme: Story = {
+  args: {
+    value: "👍👍",
+    maxLength: 2,
+    countStrategy: "grapheme",
+    weight: "medium",
   },
 };

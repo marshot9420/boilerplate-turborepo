@@ -93,4 +93,31 @@ describe("TextCounter", () => {
 
     expect(ref.current).toBeInstanceOf(HTMLSpanElement);
   });
+
+  it("기본 countStrategy는 code-unit이다", () => {
+    render(<TextCounter value="👍" />);
+
+    const counter = screen.getByText("2");
+
+    expect(counter).toHaveAttribute("data-count", "2");
+    expect(counter).toHaveAttribute("data-count-strategy", "code-unit");
+  });
+
+  it("countStrategy가 grapheme이면 사용자 체감 글자 수 기준으로 계산한다", () => {
+    render(<TextCounter value="👍" countStrategy="grapheme" />);
+
+    const counter = screen.getByText("1");
+
+    expect(counter).toHaveAttribute("data-count", "1");
+    expect(counter).toHaveAttribute("data-count-strategy", "grapheme");
+  });
+
+  it("count가 있으면 countStrategy보다 count를 우선 사용한다", () => {
+    render(<TextCounter value="👍" count={7} countStrategy="grapheme" />);
+
+    const counter = screen.getByText("7");
+
+    expect(counter).toHaveAttribute("data-count", "7");
+    expect(counter).toHaveAttribute("data-count-strategy", "grapheme");
+  });
 });
