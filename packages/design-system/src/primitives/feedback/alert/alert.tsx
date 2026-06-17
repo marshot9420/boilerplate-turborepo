@@ -1,6 +1,12 @@
 "use client";
 
-import { forwardRef, type AriaRole, type HTMLAttributes, type ReactNode } from "react";
+import {
+  createElement,
+  forwardRef,
+  type AriaRole,
+  type HTMLAttributes,
+  type ReactNode,
+} from "react";
 
 import { cn } from "../../../utils";
 
@@ -51,17 +57,20 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
 
 Alert.displayName = "Alert";
 
-export type AlertTitleProps = HTMLAttributes<HTMLHeadingElement>;
+export type AlertTitleElement = "p" | "h2" | "h3" | "h4" | "h5";
 
-export const AlertTitle = forwardRef<HTMLHeadingElement, AlertTitleProps>(
-  ({ className, ...props }, ref) => {
-    return (
-      <h5
-        ref={ref}
-        className={cn("mb-1 leading-none font-medium tracking-tight", className)}
-        {...props}
-      />
-    );
+export interface AlertTitleProps extends HTMLAttributes<HTMLElement> {
+  as?: AlertTitleElement;
+}
+
+export const AlertTitle = forwardRef<HTMLElement, AlertTitleProps>(
+  ({ as: TitleElement = "h5", className, ...props }, ref) => {
+    return createElement(TitleElement, {
+      ref,
+      className: cn("mb-1 leading-none font-medium tracking-tight", className),
+      "data-title-element": TitleElement,
+      ...props,
+    });
   },
 );
 

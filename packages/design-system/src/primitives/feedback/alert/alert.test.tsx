@@ -76,4 +76,46 @@ describe("Alert", () => {
     expect(screen.getByText("설명")).toHaveClass("custom-description");
     expect(screen.getByText("액션")).toHaveClass("custom-actions");
   });
+
+  it("AlertTitle은 기본적으로 h5로 렌더링한다", () => {
+    render(
+      <Alert>
+        <AlertTitle>알림 제목</AlertTitle>
+      </Alert>,
+    );
+
+    const title = screen.getByText("알림 제목");
+
+    expect(title.tagName).toBe("H5");
+    expect(title).toHaveAttribute("data-title-element", "h5");
+  });
+
+  it("AlertTitle의 as prop으로 제목 태그를 변경할 수 있다", () => {
+    render(
+      <Alert>
+        <AlertTitle as="h2">중요 알림</AlertTitle>
+      </Alert>,
+    );
+
+    const title = screen.getByRole("heading", {
+      level: 2,
+      name: "중요 알림",
+    });
+
+    expect(title).toBeInTheDocument();
+    expect(title).toHaveAttribute("data-title-element", "h2");
+  });
+
+  it("AlertTitle을 p 태그로 렌더링할 수 있다", () => {
+    render(
+      <Alert>
+        <AlertTitle as="p">보조 알림 제목</AlertTitle>
+      </Alert>,
+    );
+
+    const title = screen.getByText("보조 알림 제목");
+
+    expect(title.tagName).toBe("P");
+    expect(title).toHaveAttribute("data-title-element", "p");
+  });
 });

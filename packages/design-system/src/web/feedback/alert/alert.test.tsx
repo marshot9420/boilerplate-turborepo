@@ -102,4 +102,30 @@ describe("Web Alert", () => {
     expect(descriptionRef.current).toBeInstanceOf(HTMLParagraphElement);
     expect(actionsRef.current).toBeInstanceOf(HTMLDivElement);
   });
+
+  it("AlertTitle의 as prop을 전달한다", () => {
+    render(
+      <Alert>
+        <AlertTitle as="h3">서비스 알림 제목</AlertTitle>
+      </Alert>,
+    );
+
+    const title = screen.getByRole("heading", {
+      level: 3,
+      name: "서비스 알림 제목",
+    });
+
+    expect(title).toHaveAttribute("data-slot", "alert-title");
+    expect(title).toHaveAttribute("data-title-element", "h3");
+  });
+
+  it("AlertTitle을 p 태그로 렌더링할 수 있다", () => {
+    render(
+      <Alert>
+        <AlertTitle as="p">서비스 보조 알림</AlertTitle>
+      </Alert>,
+    );
+
+    expect(screen.getByText("서비스 보조 알림").tagName).toBe("P");
+  });
 });

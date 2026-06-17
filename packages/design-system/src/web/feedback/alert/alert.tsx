@@ -42,7 +42,7 @@ Alert.displayName = "Alert";
 
 export type AlertTitleProps = PrimitiveAlertTitleProps;
 
-export const AlertTitle = forwardRef<HTMLHeadingElement, AlertTitleProps>(
+export const AlertTitle = forwardRef<HTMLElement, AlertTitleProps>(
   ({ className, ...props }, ref) => {
     return (
       <PrimitiveAlertTitle

@@ -129,3 +129,26 @@ export const Tones: Story = {
     );
   },
 };
+
+export const HeadingLevels: Story = {
+  render: () => {
+    return (
+      <div className="grid max-w-2xl gap-3">
+        <Alert tone="info">
+          <AlertTitle as="h2">h2 서비스 알림</AlertTitle>
+          <AlertDescription>페이지 섹션의 주요 알림으로 사용할 수 있습니다.</AlertDescription>
+        </Alert>
+
+        <Alert tone="info">
+          <AlertTitle as="h3">h3 서비스 알림</AlertTitle>
+          <AlertDescription>하위 섹션 알림으로 사용할 수 있습니다.</AlertDescription>
+        </Alert>
+
+        <Alert tone="info">
+          <AlertTitle as="p">p 서비스 알림</AlertTitle>
+          <AlertDescription>문서 제목 계층에 포함하지 않을 때 사용할 수 있습니다.</AlertDescription>
+        </Alert>
+      </div>
+    );
+  },
+};
