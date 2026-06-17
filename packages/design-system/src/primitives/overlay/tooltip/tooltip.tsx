@@ -70,3 +70,5 @@ export const TooltipArrow = forwardRef<
 });
 
 TooltipArrow.displayName = "TooltipArrow";
+
+export default Tooltip;
