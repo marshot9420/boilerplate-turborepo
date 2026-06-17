@@ -84,3 +84,14 @@ export const Ratios = {
     );
   },
 } satisfies Story;
+
+export const ImageSlot = {
+  args: {
+    src: undefined,
+    alt: undefined,
+    ratio: "video",
+    imageSlot: (
+      <img src={sampleImageUrl} alt="커스텀 이미지 렌더러" className="size-full object-cover" />
+    ),
+  },
+} satisfies Story;

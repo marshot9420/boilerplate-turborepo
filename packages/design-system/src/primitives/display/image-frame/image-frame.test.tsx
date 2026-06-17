@@ -114,4 +114,33 @@ describe("ImageFrame", () => {
 
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
+
+  it("imageSlot이 있으면 내부 img 대신 imageSlot을 렌더링한다", () => {
+    render(
+      <ImageFrame
+        data-testid="image-frame"
+        src="/image.png"
+        alt="이미지"
+        imageSlot={<span data-testid="image-slot">커스텀 이미지 렌더러</span>}
+      />,
+    );
+
+    const frame = screen.getByTestId("image-frame");
+
+    expect(screen.getByTestId("image-slot")).toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: "이미지" })).not.toBeInTheDocument();
+    expect(frame).toHaveAttribute("data-has-image", "true");
+  });
+
+  it("src 없이 imageSlot만 있어도 이미지가 있는 상태로 처리한다", () => {
+    render(
+      <ImageFrame
+        data-testid="image-frame"
+        imageSlot={<span data-testid="image-slot">커스텀 이미지 렌더러</span>}
+      />,
+    );
+
+    expect(screen.getByTestId("image-slot")).toBeInTheDocument();
+    expect(screen.getByTestId("image-frame")).toHaveAttribute("data-has-image", "true");
+  });
 });

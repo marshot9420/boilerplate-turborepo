@@ -133,4 +133,16 @@ describe("Web ImageFrame", () => {
 
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
+
+  it("imageSlot을 primitive에 전달한다", () => {
+    render(
+      <ImageFrame
+        data-testid="image-frame"
+        imageSlot={<span data-testid="image-slot">Next Image Slot</span>}
+      />,
+    );
+
+    expect(screen.getByTestId("image-slot")).toBeInTheDocument();
+    expect(screen.getByTestId("image-frame")).toHaveAttribute("data-has-image", "true");
+  });
 });

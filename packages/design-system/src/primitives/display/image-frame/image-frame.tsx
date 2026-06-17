@@ -36,6 +36,15 @@ export interface ImageFrameProps
   src?: string;
   alt?: string;
   fallback?: ReactNode;
+
+  /**
+   * next/image 등 외부 이미지 렌더러를 주입할 때 사용한다.
+   *
+   * imageSlot이 있으면 primitive는 내부 <img>를 렌더링하지 않고,
+   * 프레임 컨테이너 역할만 수행한다.
+   */
+  imageSlot?: ReactNode;
+
   imageClassName?: string;
   imageProps?: Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt" | "className">;
 }
@@ -51,6 +60,7 @@ const ImageFrame = forwardRef<HTMLDivElement, ImageFrameProps>(
       src,
       alt,
       fallback,
+      imageSlot,
       imageProps,
       children,
       ...props
@@ -58,6 +68,8 @@ const ImageFrame = forwardRef<HTMLDivElement, ImageFrameProps>(
     ref,
   ) => {
     const objectFitClassName = fit === "contain" ? "object-contain" : "object-cover";
+    const hasImageSlot = imageSlot !== undefined && imageSlot !== null && imageSlot !== false;
+    const hasImage = hasImageSlot || Boolean(src);
 
     return (
       <div
@@ -65,11 +77,13 @@ const ImageFrame = forwardRef<HTMLDivElement, ImageFrameProps>(
         data-ratio={ratio ?? "auto"}
         data-fit={fit ?? "cover"}
         data-full-width={fullWidth ? "true" : "false"}
-        data-has-image={src ? "true" : "false"}
+        data-has-image={hasImage ? "true" : "false"}
         className={cn(imageFrameVariants({ ratio, fit, fullWidth }), className)}
         {...props}
       >
-        {src ? (
+        {hasImageSlot ? (
+          imageSlot
+        ) : src ? (
           <img
             src={src}
             alt={alt ?? ""}
