@@ -68,10 +68,16 @@ const prisma = scriptPrisma;
 
 const now = new Date();
 
+const SEED_UUID_PREFIX = "00000000-0000-4000-8000";
+
+function createSeedUuid(sequence: number) {
+  return `${SEED_UUID_PREFIX}-${String(sequence).padStart(12, "0")}`;
+}
+
 const SEED_USERS = [
   {
     key: "admin",
-    id: "00000000-0000-0000-0000-000000000001",
+    id: createSeedUuid(1),
     email: "admin@example.com",
     name: "관리자",
     avatarUrl: "https://example.com/avatars/admin.png",
@@ -83,7 +89,7 @@ const SEED_USERS = [
   },
   {
     key: "manager",
-    id: "00000000-0000-0000-0000-000000000002",
+    id: createSeedUuid(2),
     email: "manager@example.com",
     name: "운영 관리자",
     avatarUrl: "https://example.com/avatars/manager.png",
@@ -95,7 +101,7 @@ const SEED_USERS = [
   },
   {
     key: "normal01",
-    id: "00000000-0000-0000-0000-000000000003",
+    id: createSeedUuid(3),
     email: "user01@example.com",
     name: "일반 사용자 01",
     avatarUrl: "https://example.com/avatars/user01.png",
@@ -107,7 +113,7 @@ const SEED_USERS = [
   },
   {
     key: "normal02",
-    id: "00000000-0000-0000-0000-000000000004",
+    id: createSeedUuid(4),
     email: "user02@example.com",
     name: "일반 사용자 02",
     avatarUrl: "https://example.com/avatars/user02.png",
@@ -119,7 +125,7 @@ const SEED_USERS = [
   },
   {
     key: "normal03",
-    id: "00000000-0000-0000-0000-000000000005",
+    id: createSeedUuid(5),
     email: "user03@example.com",
     name: "일반 사용자 03",
     avatarUrl: "https://example.com/avatars/user03.png",
@@ -131,7 +137,7 @@ const SEED_USERS = [
   },
   {
     key: "normal04",
-    id: "00000000-0000-0000-0000-000000000006",
+    id: createSeedUuid(6),
     email: "user04@example.com",
     name: "일반 사용자 04",
     avatarUrl: null,
@@ -143,7 +149,7 @@ const SEED_USERS = [
   },
   {
     key: "normal05",
-    id: "00000000-0000-0000-0000-000000000007",
+    id: createSeedUuid(7),
     email: "user05@example.com",
     name: "일반 사용자 05",
     avatarUrl: null,
@@ -155,7 +161,7 @@ const SEED_USERS = [
   },
   {
     key: "suspended",
-    id: "00000000-0000-0000-0000-000000000008",
+    id: createSeedUuid(8),
     email: "suspended@example.com",
     name: "정지 사용자",
     avatarUrl: null,
@@ -167,7 +173,7 @@ const SEED_USERS = [
   },
   {
     key: "banned",
-    id: "00000000-0000-0000-0000-000000000009",
+    id: createSeedUuid(9),
     email: "banned@example.com",
     name: "차단 사용자",
     avatarUrl: null,
@@ -179,7 +185,7 @@ const SEED_USERS = [
   },
   {
     key: "deleted",
-    id: "00000000-0000-0000-0000-000000000010",
+    id: createSeedUuid(10),
     email: "deleted@example.com",
     name: "삭제 사용자",
     avatarUrl: null,
@@ -195,61 +201,61 @@ type SeedUserKey = (typeof SEED_USERS)[number]["key"];
 
 const SEED_OAUTH_ACCOUNTS = [
   {
-    id: "00000000-0000-0000-0000-000000000101",
+    id: createSeedUuid(101),
     provider: "GOOGLE",
     providerUserId: "seed-google-admin",
     userKey: "admin",
   },
   {
-    id: "00000000-0000-0000-0000-000000000102",
+    id: createSeedUuid(102),
     provider: "GOOGLE",
     providerUserId: "seed-google-manager",
     userKey: "manager",
   },
   {
-    id: "00000000-0000-0000-0000-000000000103",
+    id: createSeedUuid(103),
     provider: "NAVER",
     providerUserId: "seed-naver-user-01",
     userKey: "normal01",
   },
   {
-    id: "00000000-0000-0000-0000-000000000104",
+    id: createSeedUuid(104),
     provider: "KAKAO",
     providerUserId: "seed-kakao-user-02",
     userKey: "normal02",
   },
   {
-    id: "00000000-0000-0000-0000-000000000105",
+    id: createSeedUuid(105),
     provider: "GOOGLE",
     providerUserId: "seed-google-user-03",
     userKey: "normal03",
   },
   {
-    id: "00000000-0000-0000-0000-000000000106",
+    id: createSeedUuid(106),
     provider: "NAVER",
     providerUserId: "seed-naver-user-04",
     userKey: "normal04",
   },
   {
-    id: "00000000-0000-0000-0000-000000000107",
+    id: createSeedUuid(107),
     provider: "KAKAO",
     providerUserId: "seed-kakao-user-05",
     userKey: "normal05",
   },
   {
-    id: "00000000-0000-0000-0000-000000000108",
+    id: createSeedUuid(108),
     provider: "GOOGLE",
     providerUserId: "seed-google-suspended",
     userKey: "suspended",
   },
   {
-    id: "00000000-0000-0000-0000-000000000109",
+    id: createSeedUuid(109),
     provider: "NAVER",
     providerUserId: "seed-naver-banned",
     userKey: "banned",
   },
   {
-    id: "00000000-0000-0000-0000-000000000110",
+    id: createSeedUuid(110),
     provider: "KAKAO",
     providerUserId: "seed-kakao-deleted",
     userKey: "deleted",
@@ -263,7 +269,7 @@ const SEED_OAUTH_ACCOUNTS = [
 
 const SEED_CONTENTS = [
   {
-    id: "00000000-0000-0000-0000-000000000201",
+    id: createSeedUuid(201),
     title: "공개 콘텐츠 01",
     content:
       "일반 사용자 01이 작성한 공개 콘텐츠입니다. 기본 목록 노출과 상세 조회 테스트에 사용할 수 있습니다.",
@@ -271,7 +277,7 @@ const SEED_CONTENTS = [
     authorKey: "normal01",
   },
   {
-    id: "00000000-0000-0000-0000-000000000202",
+    id: createSeedUuid(202),
     title: "공개 콘텐츠 02",
     content:
       "일반 사용자 02가 작성한 공개 콘텐츠입니다. 페이지네이션과 정렬 테스트에 사용할 수 있습니다.",
@@ -279,7 +285,7 @@ const SEED_CONTENTS = [
     authorKey: "normal02",
   },
   {
-    id: "00000000-0000-0000-0000-000000000203",
+    id: createSeedUuid(203),
     title: "공개 콘텐츠 03",
     content:
       "일반 사용자 03이 작성한 공개 콘텐츠입니다. 작성자 정보 표시 테스트에 사용할 수 있습니다.",
@@ -287,7 +293,7 @@ const SEED_CONTENTS = [
     authorKey: "normal03",
   },
   {
-    id: "00000000-0000-0000-0000-000000000204",
+    id: createSeedUuid(204),
     title: "공개 콘텐츠 04",
     content:
       "일반 사용자 04가 작성한 공개 콘텐츠입니다. 사용자별 콘텐츠 목록 테스트에 사용할 수 있습니다.",
@@ -295,7 +301,7 @@ const SEED_CONTENTS = [
     authorKey: "normal04",
   },
   {
-    id: "00000000-0000-0000-0000-000000000205",
+    id: createSeedUuid(205),
     title: "공개 콘텐츠 05",
     content:
       "일반 사용자 05가 작성한 공개 콘텐츠입니다. 검색어 필터링 테스트에 사용할 수 있습니다.",
@@ -303,7 +309,7 @@ const SEED_CONTENTS = [
     authorKey: "normal05",
   },
   {
-    id: "00000000-0000-0000-0000-000000000206",
+    id: createSeedUuid(206),
     title: "관리자 공지 콘텐츠",
     content:
       "관리자가 작성한 공개 공지 콘텐츠입니다. 관리자 작성 콘텐츠 표시 테스트에 사용할 수 있습니다.",
@@ -311,7 +317,7 @@ const SEED_CONTENTS = [
     authorKey: "admin",
   },
   {
-    id: "00000000-0000-0000-0000-000000000207",
+    id: createSeedUuid(207),
     title: "숨김 콘텐츠 01",
     content:
       "숨김 상태의 콘텐츠입니다. 일반 사용자 화면에서 제외되는지 확인할 때 사용할 수 있습니다.",
@@ -319,7 +325,7 @@ const SEED_CONTENTS = [
     authorKey: "normal01",
   },
   {
-    id: "00000000-0000-0000-0000-000000000208",
+    id: createSeedUuid(208),
     title: "숨김 콘텐츠 02",
     content:
       "운영 관리자가 숨긴 콘텐츠입니다. 관리자 화면의 상태 변경 테스트에 사용할 수 있습니다.",
@@ -327,14 +333,14 @@ const SEED_CONTENTS = [
     authorKey: "manager",
   },
   {
-    id: "00000000-0000-0000-0000-000000000209",
+    id: createSeedUuid(209),
     title: "삭제된 콘텐츠 01",
     content: "삭제 상태로 표시되는 콘텐츠입니다. 소프트 삭제 필터링 테스트에 사용할 수 있습니다.",
     status: "DELETED",
     authorKey: "normal02",
   },
   {
-    id: "00000000-0000-0000-0000-000000000210",
+    id: createSeedUuid(210),
     title: "삭제된 콘텐츠 02",
     content:
       "관리자에 의해 삭제된 콘텐츠입니다. 관리자 복구/삭제 정책 테스트에 사용할 수 있습니다.",
@@ -351,7 +357,7 @@ const SEED_CONTENTS = [
 
 const SEED_SESSIONS = [
   {
-    id: "00000000-0000-0000-0000-000000000301",
+    id: createSeedUuid(301),
     tokenHash: hashToken("seed-admin-active-session-token"),
     expiresAt: addDays(now, 30),
     revokedAt: null,
@@ -360,7 +366,7 @@ const SEED_SESSIONS = [
     userKey: "admin",
   },
   {
-    id: "00000000-0000-0000-0000-000000000302",
+    id: createSeedUuid(302),
     tokenHash: hashToken("seed-manager-active-session-token"),
     expiresAt: addDays(now, 30),
     revokedAt: null,
@@ -369,7 +375,7 @@ const SEED_SESSIONS = [
     userKey: "manager",
   },
   {
-    id: "00000000-0000-0000-0000-000000000303",
+    id: createSeedUuid(303),
     tokenHash: hashToken("seed-user-01-active-session-token"),
     expiresAt: addDays(now, 30),
     revokedAt: null,
@@ -378,7 +384,7 @@ const SEED_SESSIONS = [
     userKey: "normal01",
   },
   {
-    id: "00000000-0000-0000-0000-000000000304",
+    id: createSeedUuid(304),
     tokenHash: hashToken("seed-user-02-active-session-token"),
     expiresAt: addDays(now, 14),
     revokedAt: null,
@@ -387,7 +393,7 @@ const SEED_SESSIONS = [
     userKey: "normal02",
   },
   {
-    id: "00000000-0000-0000-0000-000000000305",
+    id: createSeedUuid(305),
     tokenHash: hashToken("seed-user-03-active-session-token"),
     expiresAt: addDays(now, 7),
     revokedAt: null,
@@ -396,7 +402,7 @@ const SEED_SESSIONS = [
     userKey: "normal03",
   },
   {
-    id: "00000000-0000-0000-0000-000000000306",
+    id: createSeedUuid(306),
     tokenHash: hashToken("seed-user-04-expired-session-token"),
     expiresAt: addDays(now, -1),
     revokedAt: null,
@@ -405,7 +411,7 @@ const SEED_SESSIONS = [
     userKey: "normal04",
   },
   {
-    id: "00000000-0000-0000-0000-000000000307",
+    id: createSeedUuid(307),
     tokenHash: hashToken("seed-user-05-expired-session-token"),
     expiresAt: addDays(now, -3),
     revokedAt: null,
@@ -414,7 +420,7 @@ const SEED_SESSIONS = [
     userKey: "normal05",
   },
   {
-    id: "00000000-0000-0000-0000-000000000308",
+    id: createSeedUuid(308),
     tokenHash: hashToken("seed-user-01-revoked-session-token"),
     expiresAt: addDays(now, 30),
     revokedAt: addDays(now, -1),
@@ -423,7 +429,7 @@ const SEED_SESSIONS = [
     userKey: "normal01",
   },
   {
-    id: "00000000-0000-0000-0000-000000000309",
+    id: createSeedUuid(309),
     tokenHash: hashToken("seed-suspended-active-session-token"),
     expiresAt: addDays(now, 30),
     revokedAt: null,
@@ -432,7 +438,7 @@ const SEED_SESSIONS = [
     userKey: "suspended",
   },
   {
-    id: "00000000-0000-0000-0000-000000000310",
+    id: createSeedUuid(310),
     tokenHash: hashToken("seed-banned-revoked-session-token"),
     expiresAt: addDays(now, 30),
     revokedAt: addDays(now, -7),
