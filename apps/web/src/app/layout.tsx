@@ -1,7 +1,5 @@
 import "./globals.css";
 
-import Link from "next/link";
-
 import type { Metadata } from "next";
 
 import type { ReactNode } from "react";
@@ -10,8 +8,7 @@ import { ToastProvider } from "@repo/design-system/toast";
 import { clientEnv } from "@repo/env/client";
 import { serverEnv } from "@repo/env/server";
 
-import { URLS } from "@/constants";
-import { LogoutButton } from "@/features/auth";
+import { Shell } from "@/shared/layout";
 
 export const metadata: Metadata = {
   metadataBase: new URL(clientEnv.NEXT_PUBLIC_APP_URL),
@@ -31,10 +28,7 @@ export default function RootLayout({
       <body
         {...(isDev ? { suppressHydrationWarning: true } : {})} // Brave 브라우저에서 발생하는 개발 환경 문제 (`cz-shortcut-listen="true"` 주입 문제)
       >
-        <header>
-          <LogoutButton /> <Link href={URLS.CLIENT.LOGIN}>로그인</Link>
-        </header>
-        {children}
+        <Shell>{children}</Shell>
         <ToastProvider />
       </body>
     </html>

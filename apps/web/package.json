@@ -13,7 +13,7 @@
     "clean": "rm -rf .next node_modules",
     "test": "vitest run",
     "test:watch": "vitest",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6007",
     "build-storybook": "storybook build"
   },
   "dependencies": {

@@ -2,6 +2,7 @@ export const URLS = {
   CLIENT: {
     HOME: "/",
     LOGIN: "/login",
+    CONTENTS: "/contents",
     MY_PAGE: "/me",
   },
 
