@@ -45,4 +45,14 @@ describe("ContentCard", () => {
 
     expect(screen.getByRole("article")).toBeInTheDocument();
   });
+
+  it("콘텐츠 상세 페이지 링크를 렌더링한다", () => {
+    render(<ContentCard content={content} />);
+
+    expect(
+      screen.getByRole("link", {
+        name: "콘텐츠 제목 상세 보기",
+      }),
+    ).toHaveAttribute("href", `/contents/${content.id}`);
+  });
 });
