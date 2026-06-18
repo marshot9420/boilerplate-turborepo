@@ -1,2 +1,2 @@
-export * from "./LogoutButton";
-export * from "./SocialLoginButtons";
+export * from "./logout-button";
+export * from "./social-login-buttons";

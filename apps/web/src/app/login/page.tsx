@@ -1,4 +1,4 @@
-import { LoginView } from "@/views/LoginView";
+import { LoginView } from "@/views/login-view";
 
 interface LoginPageProps {
   searchParams: Promise<{
