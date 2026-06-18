@@ -8,10 +8,15 @@
   },
   "scripts": {
     "setup:scope": "tsx src/setup-scope.ts",
+    "seed": "tsx src/seed.ts",
     "clean": "tsx src/clean.ts",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
     "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/database": "workspace:*",
+    "dotenv": "^17.4.2"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
