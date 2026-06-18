@@ -51,7 +51,7 @@ describe("ContentCard", () => {
 
     expect(
       screen.getByRole("link", {
-        name: "콘텐츠 제목 상세 보기",
+        name: `${content.title} 상세 보기`,
       }),
     ).toHaveAttribute("href", `/contents/${content.id}`);
   });
