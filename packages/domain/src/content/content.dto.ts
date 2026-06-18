@@ -1,3 +1,5 @@
+import { type PaginationMeta } from "@repo/core/pagination";
+
 export type ContentStatus = "PUBLISHED" | "HIDDEN" | "DELETED";
 
 export interface ContentDetailResponse {
@@ -17,4 +19,9 @@ export interface ContentResponse {
   authorId: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ContentListResponse {
+  items: ContentResponse[];
+  meta: PaginationMeta;
 }

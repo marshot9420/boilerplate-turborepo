@@ -1,10 +1,8 @@
 import { z } from "zod";
 
-import type { ListQuery } from "@repo/core/types";
 import { zRequiredString } from "@repo/core/validation";
 
 import { CONTENT } from "./content.constant";
-import type { ContentStatus } from "./content.dto";
 
 export const ContentIdParam = z.object({
   id: z.uuid(CONTENT.ID.INVALID_MESSAGE),
@@ -18,12 +16,21 @@ export const UpdatableContentStatuses = ["PUBLISHED", "HIDDEN"] as const;
 
 export const ContentListSortKeys = ["TITLE", "STATUS", "CREATED_AT", "UPDATED_AT"] as const;
 
-export type ContentListSortKey = (typeof ContentListSortKeys)[number];
+export const ContentListQuery = z.object({
+  page: z.coerce.number().int().min(1).optional(),
 
-export interface ContentListQuery extends ListQuery<ContentListSortKey> {
-  status?: ContentStatus;
-  authorId?: string;
-}
+  limit: z.coerce.number().int().min(1).max(100).optional(),
+
+  status: z.enum(ContentStatuses).optional(),
+
+  authorId: z.uuid("작성자 식별자가 올바르지 않습니다.").optional(),
+
+  sort: z.enum(ContentListSortKeys).optional(),
+
+  order: z.enum(["asc", "desc"]).optional(),
+});
+
+export type ContentListQueryInput = z.infer<typeof ContentListQuery>;
 
 export const CreateContentRequest = z.object({
   title: zRequiredString(CONTENT.TITLE.REQUIRED_MESSAGE).max(
