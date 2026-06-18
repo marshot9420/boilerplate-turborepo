@@ -1,19 +1,3 @@
-export {
-  default as Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarInset,
-  SidebarLayout,
-  SidebarNav,
-  SidebarNavItem,
-  SidebarNavLink,
-  SidebarNavList,
-  SidebarSeparator,
-} from "./sidebar";
-
 export type {
   SidebarContentProps,
   SidebarFooterProps,
@@ -31,4 +15,19 @@ export type {
   SidebarSeparatorProps,
   SidebarVariant,
   SidebarWidth,
+} from "./sidebar";
+export {
+  default as Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarLayout,
+  SidebarNav,
+  SidebarNavItem,
+  SidebarNavLink,
+  SidebarNavList,
+  SidebarSeparator,
 } from "./sidebar";

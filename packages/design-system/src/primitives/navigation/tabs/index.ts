@@ -1,4 +1,3 @@
-export { default as Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 export type {
   TabsContentProps,
   TabsListProps,
@@ -6,3 +5,4 @@ export type {
   TabsSize,
   TabsTriggerProps,
 } from "./tabs";
+export { default as Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";

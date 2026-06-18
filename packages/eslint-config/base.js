@@ -2,7 +2,9 @@ import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import importPlugin from "eslint-plugin-import";
 import onlyWarn from "eslint-plugin-only-warn";
+import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
+import unusedImportsPlugin from "eslint-plugin-unused-imports";
 import tseslint from "typescript-eslint";
 
 /**
@@ -18,7 +20,9 @@ export const baseConfig = [
   {
     plugins: {
       import: importPlugin,
+      "simple-import-sort": simpleImportSortPlugin,
       turbo: turboPlugin,
+      "unused-imports": unusedImportsPlugin,
     },
 
     settings: {
@@ -31,11 +35,26 @@ export const baseConfig = [
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
 
-      "@typescript-eslint/no-unused-vars": [
+      /**
+       * unused-imports plugin이 unused import/vars를 담당하도록 위임합니다.
+       * no-unused-imports는 --fix 시 안전하게 import를 제거합니다.
+       */
+      "@typescript-eslint/no-unused-vars": "off",
+      "no-unused-vars": "off",
+
+      "unused-imports/no-unused-imports": "error",
+
+      "unused-imports/no-unused-vars": [
         "error",
         {
-          argsIgnorePattern: "^_",
+          vars: "all",
           varsIgnorePattern: "^_",
+          args: "after-used",
+          argsIgnorePattern: "^_",
+          caughtErrors: "all",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          ignoreRestSiblings: true,
         },
       ],
 
@@ -89,6 +108,15 @@ export const baseConfig = [
           "newlines-between": "always",
         },
       ],
+
+      /**
+       * export 문 정렬.
+       *
+       * 예:
+       * export * from "./a";
+       * export * from "./b";
+       */
+      "simple-import-sort/exports": "error",
 
       "turbo/no-undeclared-env-vars": "warn",
     },

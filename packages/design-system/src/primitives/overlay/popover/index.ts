@@ -1,3 +1,4 @@
+export type { PopoverContentProps } from "./popover";
 export {
   Popover,
   PopoverAnchor,
@@ -6,5 +7,3 @@ export {
   PopoverPortal,
   PopoverTrigger,
 } from "./popover";
-
-export type { PopoverContentProps } from "./popover";

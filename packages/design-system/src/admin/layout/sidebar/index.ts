@@ -1,18 +1,3 @@
-export { default as Sidebar } from "./sidebar";
-export {
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarInset,
-  SidebarLayout,
-  SidebarNav,
-  SidebarNavItem,
-  SidebarNavLink,
-  SidebarNavList,
-  SidebarSeparator,
-} from "./sidebar";
 export type {
   SidebarContentProps,
   SidebarFooterProps,
@@ -28,3 +13,18 @@ export type {
   SidebarProps,
   SidebarSeparatorProps,
 } from "../../../primitives/layout/sidebar";
+export { default as Sidebar } from "./sidebar";
+export {
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarLayout,
+  SidebarNav,
+  SidebarNavItem,
+  SidebarNavLink,
+  SidebarNavList,
+  SidebarSeparator,
+} from "./sidebar";

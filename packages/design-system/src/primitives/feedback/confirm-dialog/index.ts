@@ -1,17 +1,3 @@
-export {
-  default as ConfirmDialog,
-  ConfirmDialogAction,
-  ConfirmDialogCancel,
-  ConfirmDialogContent,
-  ConfirmDialogDescription,
-  ConfirmDialogFooter,
-  ConfirmDialogHeader,
-  ConfirmDialogOverlay,
-  ConfirmDialogPortal,
-  ConfirmDialogTitle,
-  ConfirmDialogTrigger,
-} from "./confirm-dialog";
-
 export type {
   ConfirmDialogActionProps,
   ConfirmDialogActionTone,
@@ -25,4 +11,17 @@ export type {
   ConfirmDialogProps,
   ConfirmDialogTitleProps,
   ConfirmDialogTriggerProps,
+} from "./confirm-dialog";
+export {
+  default as ConfirmDialog,
+  ConfirmDialogAction,
+  ConfirmDialogCancel,
+  ConfirmDialogContent,
+  ConfirmDialogDescription,
+  ConfirmDialogFooter,
+  ConfirmDialogHeader,
+  ConfirmDialogOverlay,
+  ConfirmDialogPortal,
+  ConfirmDialogTitle,
+  ConfirmDialogTrigger,
 } from "./confirm-dialog";

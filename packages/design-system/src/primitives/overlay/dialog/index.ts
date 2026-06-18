@@ -1,3 +1,11 @@
+export type {
+  DialogContentProps,
+  DialogDescriptionProps,
+  DialogFooterProps,
+  DialogHeaderProps,
+  DialogOverlayProps,
+  DialogTitleProps,
+} from "./dialog";
 export {
   Dialog,
   DialogClose,
@@ -9,13 +17,4 @@ export {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
-} from "./dialog";
-
-export type {
-  DialogContentProps,
-  DialogDescriptionProps,
-  DialogFooterProps,
-  DialogHeaderProps,
-  DialogOverlayProps,
-  DialogTitleProps,
 } from "./dialog";

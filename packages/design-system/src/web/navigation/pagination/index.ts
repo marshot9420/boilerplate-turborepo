@@ -1,12 +1,3 @@
-export { default as Pagination } from "./pagination";
-export {
-  PaginationButton,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationList,
-} from "./pagination";
-export { getPaginationItems } from "../../../primitives/navigation/pagination";
 export type {
   GetPaginationItemsParams,
   PaginationButtonProps,
@@ -17,3 +8,12 @@ export type {
   PaginationListProps,
   PaginationProps,
 } from "../../../primitives/navigation/pagination";
+export { getPaginationItems } from "../../../primitives/navigation/pagination";
+export { default as Pagination } from "./pagination";
+export {
+  PaginationButton,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationList,
+} from "./pagination";

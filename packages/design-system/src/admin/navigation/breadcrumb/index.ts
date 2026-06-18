@@ -1,12 +1,3 @@
-export { default as Breadcrumb } from "./breadcrumb";
-export {
-  BreadcrumbEllipsis,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "./breadcrumb";
 export type {
   BreadcrumbEllipsisProps,
   BreadcrumbItemProps,
@@ -16,3 +7,12 @@ export type {
   BreadcrumbProps,
   BreadcrumbSeparatorProps,
 } from "../../../primitives/navigation/breadcrumb";
+export { default as Breadcrumb } from "./breadcrumb";
+export {
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "./breadcrumb";

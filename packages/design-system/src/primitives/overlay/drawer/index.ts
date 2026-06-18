@@ -1,3 +1,11 @@
+export type {
+  DrawerContentProps,
+  DrawerDescriptionProps,
+  DrawerFooterProps,
+  DrawerHeaderProps,
+  DrawerOverlayProps,
+  DrawerTitleProps,
+} from "./drawer";
 export {
   Drawer,
   DrawerClose,
@@ -9,13 +17,4 @@ export {
   DrawerPortal,
   DrawerTitle,
   DrawerTrigger,
-} from "./drawer";
-
-export type {
-  DrawerContentProps,
-  DrawerDescriptionProps,
-  DrawerFooterProps,
-  DrawerHeaderProps,
-  DrawerOverlayProps,
-  DrawerTitleProps,
 } from "./drawer";

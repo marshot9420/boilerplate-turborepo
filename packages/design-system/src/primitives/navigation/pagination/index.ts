@@ -1,13 +1,3 @@
-export {
-  default as Pagination,
-  PaginationButton,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationList,
-  getPaginationItems,
-} from "./pagination";
-
 export type {
   GetPaginationItemsParams,
   PaginationButtonProps,
@@ -17,4 +7,13 @@ export type {
   PaginationLinkProps,
   PaginationListProps,
   PaginationProps,
+} from "./pagination";
+export {
+  getPaginationItems,
+  default as Pagination,
+  PaginationButton,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationList,
 } from "./pagination";

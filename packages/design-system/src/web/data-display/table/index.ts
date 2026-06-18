@@ -1,14 +1,3 @@
-export {
-  default as Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableEmpty,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "./table";
 export type {
   TableBodyProps,
   TableCaptionProps,
@@ -19,4 +8,15 @@ export type {
   TableHeadProps,
   TableProps,
   TableRowProps,
+} from "./table";
+export {
+  default as Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableEmpty,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "./table";

@@ -1,3 +1,4 @@
+export type { TooltipArrowProps, TooltipContentProps } from "./tooltip";
 export { default as Tooltip } from "./tooltip";
 export {
   TooltipArrow,
@@ -6,4 +7,3 @@ export {
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip";
-export type { TooltipArrowProps, TooltipContentProps } from "./tooltip";

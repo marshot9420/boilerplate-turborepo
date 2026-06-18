@@ -1,5 +1,3 @@
-export { default as Alert, AlertActions, AlertDescription, AlertTitle } from "./alert";
-
 export type {
   AlertActionsProps,
   AlertDescriptionProps,
@@ -7,3 +5,4 @@ export type {
   AlertTitleProps,
   AlertTone,
 } from "./alert";
+export { default as Alert, AlertActions, AlertDescription, AlertTitle } from "./alert";

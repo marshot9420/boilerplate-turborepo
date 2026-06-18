@@ -1,3 +1,11 @@
+export type {
+  DropdownMenuCheckboxItemProps,
+  DropdownMenuContentProps,
+  DropdownMenuItemProps,
+  DropdownMenuLabelProps,
+  DropdownMenuRadioItemProps,
+  DropdownMenuSeparatorProps,
+} from "./dropdown-menu";
 export {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -11,13 +19,4 @@ export {
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuTrigger,
-} from "./dropdown-menu";
-
-export type {
-  DropdownMenuCheckboxItemProps,
-  DropdownMenuContentProps,
-  DropdownMenuItemProps,
-  DropdownMenuLabelProps,
-  DropdownMenuRadioItemProps,
-  DropdownMenuSeparatorProps,
 } from "./dropdown-menu";

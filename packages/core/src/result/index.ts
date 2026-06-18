@@ -1,9 +1,9 @@
 export {
+  type Failure,
   failure,
   isFailure,
   isSuccess,
-  success,
-  type Failure,
   type Result,
   type Success,
+  success,
 } from "./result";
