@@ -1,5 +1,7 @@
 import { ContentListView } from "@/views/content-list-view";
 
+export const runtime = "nodejs";
+
 interface ContentsPageProps {
   searchParams: Promise<{
     page?: string | string[];
