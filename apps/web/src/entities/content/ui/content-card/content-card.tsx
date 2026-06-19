@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Badge, Card } from "@repo/design-system/web";
 import type { ContentResponse } from "@repo/domain/content/client";
 
+import { URLS } from "@/constants";
+
 import { formatContentDate, getContentStatusLabel } from "../../lib";
 
 interface ContentCardProps {
@@ -12,7 +14,7 @@ interface ContentCardProps {
 export default function ContentCard({ content }: ContentCardProps) {
   return (
     <Link
-      href={`/contents/${content.id}`}
+      href={URLS.CLIENT.CONTENTS_DETAIL(content.id)}
       className="block h-full rounded-xl focus-visible:outline-none"
       aria-label={`${content.title} 상세 보기`}
     >

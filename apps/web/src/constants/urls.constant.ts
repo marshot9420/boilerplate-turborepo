@@ -3,6 +3,7 @@ export const URLS = {
     HOME: "/",
     LOGIN: "/login",
     CONTENTS: "/contents",
+    CONTENTS_DETAIL: (contentId: string) => `/contents/${contentId}`,
     MY_PAGE: "/me",
   },
 
@@ -12,6 +13,8 @@ export const URLS = {
       GOOGLE: "/api/auth/google",
       NAVER: "/api/auth/naver",
       KAKAO: "/api/auth/kakao",
+      OAUTH: (providerId: string) => `/api/auth/${providerId}`,
+      OAUTH_CALLBACK: (providerId: string) => `/api/auth/${providerId}/callback`,
     },
   },
 } as const;

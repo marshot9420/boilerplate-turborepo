@@ -3,6 +3,8 @@ import { type NextRequest, NextResponse } from "next/server";
 import { handleOAuthCallback, parseOAuthProviderId } from "@repo/auth/server";
 import { serverEnv } from "@repo/env/server";
 
+import { URLS } from "@/constants";
+
 export const runtime = "nodejs";
 
 interface OAuthCallbackRouteContext {
@@ -33,7 +35,7 @@ export async function GET(
   const providerId = parseOAuthProviderId(provider);
 
   if (!providerId) {
-    return NextResponse.redirect(createWebUrl("/login?error=invalid_oauth_provider"));
+    return NextResponse.redirect(createWebUrl(`${URLS.CLIENT.LOGIN}?error=invalid_oauth_provider`));
   }
 
   const code = request.nextUrl.searchParams.get("code");
@@ -45,13 +47,13 @@ export async function GET(
       code,
       state,
       appBaseUrl: serverEnv.WEB_APP_URL,
-      callbackPath: `/api/auth/${providerId}/callback`,
+      callbackPath: URLS.API.AUTH.OAUTH_CALLBACK(providerId),
       ipAddress: getRequestIpAddress(request),
       userAgent: request.headers.get("user-agent"),
     });
 
-    return NextResponse.redirect(createWebUrl("/me"));
+    return NextResponse.redirect(createWebUrl(URLS.CLIENT.MY_PAGE));
   } catch {
-    return NextResponse.redirect(createWebUrl("/login?error=oauth_failed"));
+    return NextResponse.redirect(createWebUrl(`${URLS.CLIENT.LOGIN}?error=oauth_failed`));
   }
 }

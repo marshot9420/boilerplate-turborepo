@@ -4,6 +4,8 @@ import { requireUser } from "@repo/auth/server";
 
 import { URLS } from "@/constants";
 
+export const runtime = "nodejs";
+
 async function getRequiredUserSession() {
   try {
     return await requireUser();

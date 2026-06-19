@@ -3,6 +3,8 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createOAuthAuthorizeUrl, parseOAuthProviderId } from "@repo/auth/server";
 import { serverEnv } from "@repo/env/server";
 
+import { URLS } from "@/constants";
+
 export const runtime = "nodejs";
 
 interface OAuthStartRouteContext {
@@ -23,13 +25,13 @@ export async function GET(
   const providerId = parseOAuthProviderId(provider);
 
   if (!providerId) {
-    return NextResponse.redirect(createWebUrl("/login?error=invalid_oauth_provider"));
+    return NextResponse.redirect(createWebUrl(`${URLS.CLIENT.LOGIN}?error=invalid_oauth_provider`));
   }
 
   const authorizeUrl = await createOAuthAuthorizeUrl({
     providerId,
     appBaseUrl: serverEnv.WEB_APP_URL,
-    callbackPath: `/api/auth/${providerId}/callback`,
+    callbackPath: URLS.API.AUTH.OAUTH_CALLBACK(providerId),
   });
 
   return NextResponse.redirect(authorizeUrl);
