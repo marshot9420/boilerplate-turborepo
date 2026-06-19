@@ -5,6 +5,8 @@ import { getCurrentAuthSession } from "@repo/auth/server";
 import { URLS } from "@/constants";
 import { LoginView } from "@/views/login-view";
 
+export const runtime = "nodejs";
+
 interface LoginPageProps {
   searchParams: Promise<{
     error?: string | string[];

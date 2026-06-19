@@ -2,6 +2,8 @@ import Link from "next/link";
 
 import { URLS } from "@/constants";
 
+export const runtime = "nodejs";
+
 export default function HomePage() {
   return (
     <section className="flex min-h-[calc(100dvh-12rem)] flex-col items-start justify-center gap-6">
