@@ -11,6 +11,21 @@ const baseDecorators = Array.isArray(basePreview.decorators)
 
 const preview: typeof basePreview = {
   ...basePreview,
+
+  parameters: {
+    ...basePreview.parameters,
+
+    nextjs: {
+      ...basePreview.parameters?.nextjs,
+      appDirectory: true,
+      navigation: {
+        ...basePreview.parameters?.nextjs?.navigation,
+        pathname: "/",
+        segments: [],
+      },
+    },
+  },
+
   decorators: [
     ...baseDecorators,
     (Story) => (
