@@ -35,7 +35,9 @@ export async function GET(
   const providerId = parseOAuthProviderId(provider);
 
   if (!providerId) {
-    return NextResponse.redirect(createAdminUrl("/login?error=invalid_oauth_provider"));
+    return NextResponse.redirect(
+      createAdminUrl(`${URLS.CLIENT.LOGIN}?error=invalid_oauth_provider`),
+    );
   }
 
   const code = request.nextUrl.searchParams.get("code");
@@ -47,13 +49,13 @@ export async function GET(
       code,
       state,
       appBaseUrl: serverEnv.ADMIN_APP_URL,
-      callbackPath: `/api/auth/${providerId}/callback`,
+      callbackPath: URLS.API.AUTH.OAUTH_CALLBACK(providerId),
       ipAddress: getRequestIpAddress(request),
       userAgent: request.headers.get("user-agent"),
     });
 
     return NextResponse.redirect(createAdminUrl(URLS.CLIENT.HOME));
   } catch {
-    return NextResponse.redirect(createAdminUrl("/login?error=oauth_failed"));
+    return NextResponse.redirect(createAdminUrl(`${URLS.CLIENT.LOGIN}?error=oauth_failed`));
   }
 }
