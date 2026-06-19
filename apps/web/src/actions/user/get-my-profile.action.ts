@@ -8,13 +8,14 @@ import { getUserByIdService } from "@repo/domain/user/server";
 
 export async function getMyProfileAction(): Promise<ActionResult<UserDetailResponse>> {
   try {
-    const user = await requireUser();
+    const session = await requireUser();
+    const userId = session.user.id;
 
-    const result = await getUserByIdService(user.id);
+    const result = await getUserByIdService(userId);
 
     if (!result.ok) {
       logger.warn("user.get_my_profile.failed", {
-        userId: user.id,
+        userId,
         code: result.error.code,
         message: result.error.message,
       });

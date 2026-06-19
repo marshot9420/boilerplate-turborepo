@@ -25,6 +25,15 @@ vi.mock("@repo/domain/user/server", () => ({
 
 const USER_ID = "user-1";
 
+function createRequiredUserSession() {
+  return {
+    id: "session-1",
+    user: {
+      id: USER_ID,
+    },
+  } as Awaited<ReturnType<typeof requireUser>>;
+}
+
 function createUserDetailResponse(overrides: Partial<UserDetailResponse> = {}): UserDetailResponse {
   return {
     id: USER_ID,
@@ -55,9 +64,7 @@ describe("getMyProfileAction", () => {
   it("인증된 사용자의 내 정보를 조회한다", async () => {
     const user = createUserDetailResponse();
 
-    mockRequireUser.mockResolvedValue({
-      id: USER_ID,
-    } as Awaited<ReturnType<typeof requireUser>>);
+    mockRequireUser.mockResolvedValue(createRequiredUserSession());
 
     mockGetUserByIdService.mockResolvedValue({
       ok: true,
@@ -85,9 +92,7 @@ describe("getMyProfileAction", () => {
       message: "사용자를 찾을 수 없습니다.",
     } satisfies AppError;
 
-    mockRequireUser.mockResolvedValue({
-      id: USER_ID,
-    } as Awaited<ReturnType<typeof requireUser>>);
+    mockRequireUser.mockResolvedValue(createRequiredUserSession());
 
     mockGetUserByIdService.mockResolvedValue({
       ok: false,
@@ -122,9 +127,7 @@ describe("getMyProfileAction", () => {
       },
     } satisfies AppError;
 
-    mockRequireUser.mockResolvedValue({
-      id: USER_ID,
-    } as Awaited<ReturnType<typeof requireUser>>);
+    mockRequireUser.mockResolvedValue(createRequiredUserSession());
 
     mockGetUserByIdService.mockResolvedValue({
       ok: false,
@@ -139,6 +142,15 @@ describe("getMyProfileAction", () => {
       message: error.message,
       fieldErrors: error.fieldErrors,
     });
+
+    expect(mockLoggerWarn).toHaveBeenCalledTimes(1);
+    expect(mockLoggerWarn).toHaveBeenCalledWith("user.get_my_profile.failed", {
+      userId: USER_ID,
+      code: error.code,
+      message: error.message,
+    });
+
+    expect(mockLoggerError).not.toHaveBeenCalled();
   });
 
   it("예상하지 못한 예외가 발생하면 INTERNAL_SERVER_ERROR를 반환하고 error 로그를 남긴다", async () => {
