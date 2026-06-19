@@ -3,11 +3,11 @@ import { describe, expect, it, vi } from "vitest";
 
 import Shell from "./shell";
 
-vi.mock("@/features/auth", () => ({
-  LogoutButton: () => <button type="button">로그아웃</button>,
+vi.mock("../header", () => ({
+  Header: () => <header>Mock Header</header>,
 }));
 
-describe("Web Shell", () => {
+describe("Shell", () => {
   it("헤더, 본문, 푸터를 함께 렌더링한다", () => {
     render(
       <Shell>

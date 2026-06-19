@@ -1,50 +1,51 @@
-import { render, screen, within } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
-
-import { URLS } from "@/constants";
+import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import Header from "./header";
+
+const getCurrentAuthSessionMock = vi.hoisted(() => vi.fn());
+
+vi.mock("@repo/auth/server", () => ({
+  getCurrentAuthSession: getCurrentAuthSessionMock,
+}));
 
 vi.mock("@/features/auth", () => ({
   LogoutButton: () => <button type="button">로그아웃</button>,
 }));
 
-describe("Web Header", () => {
-  it("헤더 랜드마크를 렌더링한다", () => {
-    render(<Header />);
-
-    expect(screen.getByRole("banner")).toBeInTheDocument();
+describe("Header", () => {
+  beforeEach(() => {
+    getCurrentAuthSessionMock.mockReset();
   });
 
-  it("브랜드 링크를 홈으로 연결한다", () => {
-    render(<Header />);
+  it("세션이 없으면 비로그인 헤더를 렌더링한다", async () => {
+    getCurrentAuthSessionMock.mockResolvedValue(null);
 
-    expect(screen.getByRole("link", { name: "Web" })).toHaveAttribute("href", URLS.CLIENT.HOME);
+    render(await Header());
+
+    expect(screen.getByRole("link", { name: "로그인" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "로그아웃" })).not.toBeInTheDocument();
   });
 
-  it("주요 메뉴를 렌더링한다", () => {
-    render(<Header />);
-
-    const navigation = screen.getByRole("navigation", {
-      name: "주요 메뉴",
+  it("세션이 있으면 로그인 헤더를 렌더링한다", async () => {
+    getCurrentAuthSessionMock.mockResolvedValue({
+      user: {
+        id: "user-id",
+        email: "user@example.com",
+      },
     });
 
-    expect(within(navigation).getByRole("link", { name: "홈" })).toHaveAttribute(
-      "href",
-      URLS.CLIENT.HOME,
-    );
+    render(await Header());
 
-    expect(within(navigation).getByRole("link", { name: "콘텐츠" })).toHaveAttribute(
-      "href",
-      URLS.CLIENT.CONTENTS,
-    );
+    expect(screen.getByRole("link", { name: "마이페이지" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "로그아웃" })).toBeInTheDocument();
   });
 
-  it("로그인 링크와 로그아웃 버튼을 렌더링한다", () => {
-    render(<Header />);
+  it("세션 조회 중 에러가 발생하면 비로그인 헤더를 렌더링한다", async () => {
+    getCurrentAuthSessionMock.mockRejectedValue(new Error("session failed"));
 
-    expect(screen.getByRole("link", { name: "로그인" })).toHaveAttribute("href", URLS.CLIENT.LOGIN);
+    render(await Header());
 
-    expect(screen.getByRole("button", { name: "로그아웃" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "로그인" })).toBeInTheDocument();
   });
 });

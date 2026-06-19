@@ -1,34 +1,78 @@
+"use client";
+
+import { LinkButton } from "@repo/design-system/web";
+
 import { URLS } from "@/constants";
 
-const OAuthLoginProviders = [
+export type SocialLoginProviderId = "google" | "naver" | "kakao";
+
+interface SocialLoginProvider {
+  id: SocialLoginProviderId;
+  label: string;
+  description: string;
+  href: string;
+}
+
+const SOCIAL_LOGIN_PROVIDERS = [
   {
+    id: "google",
+    label: "Google",
+    description: "Google 계정으로 계속하기",
     href: URLS.API.AUTH.GOOGLE,
-    label: "Google로 계속하기",
   },
-
   {
+    id: "naver",
+    label: "Naver",
+    description: "Naver 계정으로 계속하기",
     href: URLS.API.AUTH.NAVER,
-    label: "Naver로 계속하기",
   },
-
   {
+    id: "kakao",
+    label: "Kakao",
+    description: "Kakao 계정으로 계속하기",
     href: URLS.API.AUTH.KAKAO,
-    label: "Kakao로 계속하기",
   },
-] as const;
+] satisfies SocialLoginProvider[];
 
-export default function SocialLoginButtons() {
+export interface SocialLoginButtonsProps {
+  className?: string;
+  providers?: readonly SocialLoginProviderId[];
+}
+
+function joinClassNames(...classNames: Array<string | undefined>) {
+  return classNames.filter(Boolean).join(" ");
+}
+
+function getVisibleProviders(providerIds: readonly SocialLoginProviderId[] | undefined) {
+  if (!providerIds) {
+    return SOCIAL_LOGIN_PROVIDERS;
+  }
+
+  const providerIdSet = new Set(providerIds);
+
+  return SOCIAL_LOGIN_PROVIDERS.filter((provider) => providerIdSet.has(provider.id));
+}
+
+export default function SocialLoginButtons({ className, providers }: SocialLoginButtonsProps) {
+  const visibleProviders = getVisibleProviders(providers);
+
+  if (visibleProviders.length === 0) {
+    return null;
+  }
+
   return (
-    <div className="flex w-full flex-col gap-3">
-      {OAuthLoginProviders.map((provider) => (
-        <form key={provider.href} action={provider.href} method="get">
-          <button
-            type="submit"
-            className="flex h-11 w-full items-center justify-center rounded-md border border-zinc-300 bg-white px-4 text-sm font-medium text-zinc-900 transition hover:bg-zinc-50"
-          >
-            {provider.label}
-          </button>
-        </form>
+    <div aria-label="소셜 로그인" className={joinClassNames("grid gap-3", className)}>
+      {visibleProviders.map((provider) => (
+        <LinkButton
+          key={provider.id}
+          href={provider.href}
+          variant="outline"
+          size="lg"
+          className="w-full justify-between rounded-xl px-5"
+        >
+          <span className="font-semibold">{provider.label}</span>
+          <span className="text-muted-foreground text-xs">{provider.description}</span>
+        </LinkButton>
       ))}
     </div>
   );
