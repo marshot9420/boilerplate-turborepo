@@ -80,4 +80,14 @@ describe("ContentDetail", () => {
       }),
     ).toHaveAttribute("href", "/contents/content-id/edit");
   });
+
+  it("actions가 있으면 액션 영역을 렌더링한다", () => {
+    render(<ContentDetail content={content} actions={<button type="button">삭제 액션</button>} />);
+
+    expect(
+      screen.getByRole("button", {
+        name: "삭제 액션",
+      }),
+    ).toBeInTheDocument();
+  });
 });

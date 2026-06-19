@@ -1,7 +1,7 @@
+import type { ReactNode } from "react";
+
 import { Badge, Card, LinkButton, Separator } from "@repo/design-system/web";
 import type { ContentDetailResponse } from "@repo/domain/content/client";
-
-import { URLS } from "@/constants";
 
 import { formatContentDate, getContentStatusLabel } from "../../lib";
 
@@ -9,13 +9,17 @@ export interface ContentDetailProps {
   content: ContentDetailResponse;
   backHref?: string;
   editHref?: string;
+  actions?: ReactNode;
 }
 
 export default function ContentDetail({
   content,
-  backHref = URLS.CLIENT.CONTENTS,
+  backHref = "/contents",
   editHref,
+  actions,
 }: ContentDetailProps) {
+  const hasActions = Boolean(editHref || actions);
+
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -23,10 +27,16 @@ export default function ContentDetail({
           목록으로 돌아가기
         </LinkButton>
 
-        {editHref ? (
-          <LinkButton href={editHref} variant="outline" size="sm">
-            수정
-          </LinkButton>
+        {hasActions ? (
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            {editHref ? (
+              <LinkButton href={editHref} variant="outline" size="sm">
+                수정
+              </LinkButton>
+            ) : null}
+
+            {actions}
+          </div>
         ) : null}
       </div>
 

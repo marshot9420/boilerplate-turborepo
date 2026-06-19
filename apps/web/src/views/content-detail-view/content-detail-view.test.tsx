@@ -4,15 +4,25 @@ import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getCurrentSession } from "@repo/auth/server";
-import { canUpdateContent } from "@repo/domain/content/server";
+import { canDeleteContent, canUpdateContent } from "@repo/domain/content/server";
 
 import { getContentByIdAction } from "@/actions/content";
 
 import ContentDetailView from "./content-detail-view";
 
+const routerReplaceMock = vi.hoisted(() => vi.fn());
+
 vi.mock("next/navigation", () => ({
   notFound: vi.fn(() => {
     throw new Error("NEXT_NOT_FOUND");
+  }),
+  useRouter: () => ({
+    replace: routerReplaceMock,
+    push: vi.fn(),
+    refresh: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    prefetch: vi.fn(),
   }),
 }));
 
@@ -22,15 +32,22 @@ vi.mock("@repo/auth/server", () => ({
 
 vi.mock("@repo/domain/content/server", () => ({
   canUpdateContent: vi.fn(),
+  canDeleteContent: vi.fn(),
 }));
 
 vi.mock("@/actions/content", () => ({
   getContentByIdAction: vi.fn(),
+  deleteMyContentAction: vi.fn(),
+}));
+
+vi.mock("@repo/design-system/toast", () => ({
+  toastActionResult: vi.fn(),
 }));
 
 const mockedGetContentByIdAction = vi.mocked(getContentByIdAction);
 const mockedGetCurrentSession = vi.mocked(getCurrentSession);
 const mockedCanUpdateContent = vi.mocked(canUpdateContent);
+const mockedCanDeleteContent = vi.mocked(canDeleteContent);
 const mockedNotFound = vi.mocked(notFound);
 
 const contentResponse = {
@@ -63,8 +80,11 @@ function createSession() {
 describe("ContentDetailView", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    routerReplaceMock.mockClear();
+
     mockedGetCurrentSession.mockResolvedValue(null);
     mockedCanUpdateContent.mockReturnValue(false);
+    mockedCanDeleteContent.mockReturnValue(false);
   });
 
   it("콘텐츠 상세 조회에 성공하면 상세 UI를 렌더링한다", async () => {
@@ -200,5 +220,43 @@ describe("ContentDetailView", () => {
         name: "목록으로 돌아가기",
       }),
     ).toHaveAttribute("href", "/contents");
+  });
+
+  it("삭제 권한이 있으면 삭제 버튼을 렌더링한다", async () => {
+    mockedGetCurrentSession.mockResolvedValue(createSession());
+    mockedCanUpdateContent.mockReturnValue(false);
+    mockedCanDeleteContent.mockReturnValue(true);
+
+    mockedGetContentByIdAction.mockResolvedValue({
+      ok: true,
+      data: contentResponse,
+    });
+
+    render(await ContentDetailView({ contentId: "content-id" }));
+
+    expect(
+      screen.getByRole("button", {
+        name: "콘텐츠 삭제",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("삭제 권한이 없으면 삭제 버튼을 렌더링하지 않는다", async () => {
+    mockedGetCurrentSession.mockResolvedValue(createSession());
+    mockedCanUpdateContent.mockReturnValue(false);
+    mockedCanDeleteContent.mockReturnValue(false);
+
+    mockedGetContentByIdAction.mockResolvedValue({
+      ok: true,
+      data: contentResponse,
+    });
+
+    render(await ContentDetailView({ contentId: "content-id" }));
+
+    expect(
+      screen.queryByRole("button", {
+        name: "콘텐츠 삭제",
+      }),
+    ).not.toBeInTheDocument();
   });
 });

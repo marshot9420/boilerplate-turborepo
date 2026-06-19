@@ -1,3 +1,4 @@
+// apps/web/src/actions/content/delete-my-content.action.ts
 "use server";
 
 import { revalidatePath } from "next/cache";
@@ -9,6 +10,14 @@ import { ContentIdParam, type ContentDetailResponse } from "@repo/domain/content
 import { softDeleteContentService } from "@repo/domain/content/server";
 
 import { URLS } from "@/constants";
+
+function createContentDetailHref(contentId: string) {
+  return `${URLS.CLIENT.CONTENTS}/${contentId}`;
+}
+
+function createContentEditHref(contentId: string) {
+  return `${URLS.CLIENT.CONTENTS}/${contentId}/edit`;
+}
 
 export async function deleteMyContentAction(
   _prevState: ActionResult<ContentDetailResponse> | null,
@@ -31,7 +40,10 @@ export async function deleteMyContentAction(
 
   if (result.ok) {
     revalidatePath(URLS.CLIENT.HOME);
+    revalidatePath(URLS.CLIENT.CONTENTS);
     revalidatePath(URLS.CLIENT.MY_PAGE);
+    revalidatePath(createContentDetailHref(result.data.id));
+    revalidatePath(createContentEditHref(result.data.id));
   }
 
   return result;

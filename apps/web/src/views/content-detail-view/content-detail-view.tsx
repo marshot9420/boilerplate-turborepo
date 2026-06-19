@@ -2,11 +2,12 @@ import { notFound } from "next/navigation";
 
 import { getCurrentSession } from "@repo/auth/server";
 import { Card, LinkButton } from "@repo/design-system/web";
-import { canUpdateContent } from "@repo/domain/content/server";
+import { canDeleteContent, canUpdateContent } from "@repo/domain/content/server";
 
-import { getContentByIdAction } from "@/actions/content";
+import { deleteMyContentAction, getContentByIdAction } from "@/actions/content";
 import { URLS } from "@/constants";
 import { ContentDetail } from "@/entities/content";
+import { DeleteContentForm } from "@/features/content";
 
 interface ContentDetailViewProps {
   contentId: string;
@@ -62,12 +63,22 @@ export default async function ContentDetailView({ contentId }: ContentDetailView
     : null;
 
   const canEdit = actor ? canUpdateContent(actor, result.data) : false;
+  const canDelete = actor ? canDeleteContent(actor, result.data) : false;
 
   return (
     <ContentDetail
       content={result.data}
       backHref={URLS.CLIENT.CONTENTS}
       editHref={canEdit ? createContentEditHref(result.data.id) : undefined}
+      actions={
+        canDelete ? (
+          <DeleteContentForm
+            contentId={result.data.id}
+            action={deleteMyContentAction}
+            successHref={URLS.CLIENT.CONTENTS}
+          />
+        ) : undefined
+      }
     />
   );
 }
