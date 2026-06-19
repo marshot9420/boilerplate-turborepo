@@ -3,6 +3,7 @@ export const URLS = {
     HOME: "/",
     LOGIN: "/login",
     CONTENTS: "/contents",
+    CREATE_CONTENT: "/contents/create",
     CONTENTS_DETAIL: (contentId: string) => `/contents/${contentId}`,
     MY_PAGE: "/me",
   },

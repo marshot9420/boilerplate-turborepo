@@ -1,5 +1,7 @@
 import { Card, LinkButton } from "@repo/design-system/web";
 
+import { createContentAction } from "@/actions/content";
+import { URLS } from "@/constants";
 import { CreateContentForm } from "@/features/content";
 
 export default function CreateContentView() {
@@ -20,13 +22,21 @@ export default function CreateContentView() {
           </div>
         </div>
 
-        <LinkButton href="/contents" variant="outline" size="sm" className="w-full sm:w-auto">
+        <LinkButton
+          href={URLS.CLIENT.CONTENTS}
+          variant="outline"
+          size="sm"
+          className="w-full sm:w-auto"
+        >
           목록으로
         </LinkButton>
       </header>
 
       <Card className="p-5 sm:p-6">
-        <CreateContentForm />
+        <CreateContentForm
+          action={createContentAction}
+          createdContentHrefPrefix={URLS.CLIENT.CONTENTS}
+        />
       </Card>
     </main>
   );
