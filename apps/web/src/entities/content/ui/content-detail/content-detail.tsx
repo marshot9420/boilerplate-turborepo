@@ -1,19 +1,33 @@
 import { Badge, Card, LinkButton, Separator } from "@repo/design-system/web";
 import type { ContentDetailResponse } from "@repo/domain/content/client";
 
+import { URLS } from "@/constants";
+
 import { formatContentDate, getContentStatusLabel } from "../../lib";
 
 export interface ContentDetailProps {
   content: ContentDetailResponse;
+  backHref?: string;
+  editHref?: string;
 }
 
-export default function ContentDetail({ content }: ContentDetailProps) {
+export default function ContentDetail({
+  content,
+  backHref = URLS.CLIENT.CONTENTS,
+  editHref,
+}: ContentDetailProps) {
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mb-6">
-        <LinkButton href="/contents" variant="ghost" size="sm">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <LinkButton href={backHref} variant="ghost" size="sm">
           목록으로 돌아가기
         </LinkButton>
+
+        {editHref ? (
+          <LinkButton href={editHref} variant="outline" size="sm">
+            수정
+          </LinkButton>
+        ) : null}
       </div>
 
       <Card className="bg-surface text-surface-foreground border-border/80 border p-6 sm:p-8">

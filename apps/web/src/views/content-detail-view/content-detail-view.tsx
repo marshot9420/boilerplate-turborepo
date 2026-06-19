@@ -1,8 +1,11 @@
 import { notFound } from "next/navigation";
 
+import { getCurrentSession } from "@repo/auth/server";
 import { Card, LinkButton } from "@repo/design-system/web";
+import { canUpdateContent } from "@repo/domain/content/server";
 
 import { getContentByIdAction } from "@/actions/content";
+import { URLS } from "@/constants";
 import { ContentDetail } from "@/entities/content";
 
 interface ContentDetailViewProps {
@@ -18,8 +21,15 @@ function shouldRenderNotFound(code: string) {
   );
 }
 
+function createContentEditHref(contentId: string) {
+  return `${URLS.CLIENT.CONTENTS}/${contentId}/edit`;
+}
+
 export default async function ContentDetailView({ contentId }: ContentDetailViewProps) {
-  const result = await getContentByIdAction(contentId);
+  const [result, session] = await Promise.all([
+    getContentByIdAction(contentId),
+    getCurrentSession(),
+  ]);
 
   if (!result.ok) {
     if (shouldRenderNotFound(result.code)) {
@@ -35,7 +45,7 @@ export default async function ContentDetailView({ contentId }: ContentDetailView
             <p className="text-muted-foreground text-sm">{result.message}</p>
           </div>
 
-          <LinkButton href="/contents" variant="outline" size="sm">
+          <LinkButton href={URLS.CLIENT.CONTENTS} variant="outline" size="sm">
             목록으로 돌아가기
           </LinkButton>
         </Card>
@@ -43,5 +53,21 @@ export default async function ContentDetailView({ contentId }: ContentDetailView
     );
   }
 
-  return <ContentDetail content={result.data} />;
+  const actor = session
+    ? {
+        id: session.user.id,
+        role: session.user.role,
+        status: session.user.status,
+      }
+    : null;
+
+  const canEdit = actor ? canUpdateContent(actor, result.data) : false;
+
+  return (
+    <ContentDetail
+      content={result.data}
+      backHref={URLS.CLIENT.CONTENTS}
+      editHref={canEdit ? createContentEditHref(result.data.id) : undefined}
+    />
+  );
 }

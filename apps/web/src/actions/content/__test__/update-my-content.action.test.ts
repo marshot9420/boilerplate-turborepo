@@ -63,7 +63,7 @@ describe("updateMyContentAction", () => {
     vi.clearAllMocks();
   });
 
-  it("현재 사용자를 actor로 사용해 콘텐츠를 수정하고 HOME, MY_PAGE를 revalidate 한다", async () => {
+  it("현재 사용자를 actor로 사용해 콘텐츠를 수정하고 관련 경로를 revalidate 한다", async () => {
     const formData = new FormData();
 
     const response = createContentDetailResponse();
@@ -126,7 +126,11 @@ describe("updateMyContentAction", () => {
     );
 
     expect(nextCacheMock.revalidatePath).toHaveBeenCalledWith("/");
+    expect(nextCacheMock.revalidatePath).toHaveBeenCalledWith("/contents");
     expect(nextCacheMock.revalidatePath).toHaveBeenCalledWith("/me");
+    expect(nextCacheMock.revalidatePath).toHaveBeenCalledWith("/contents/content-id");
+    expect(nextCacheMock.revalidatePath).toHaveBeenCalledWith("/contents/content-id/edit");
+
     expect(result).toEqual(actionResult);
   });
 

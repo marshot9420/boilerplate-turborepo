@@ -1,5 +1,6 @@
 "use server";
 
+import { getCurrentSession } from "@repo/auth/server";
 import type { ActionResult } from "@repo/core/action";
 import { logger } from "@repo/core/logger";
 import { mapZodErrorToFieldErrors } from "@repo/core/validation";
@@ -23,11 +24,23 @@ export async function getContentByIdAction(
       };
     }
 
-    const result = await getContentByIdService(parsed.data.id);
+    const session = await getCurrentSession();
+
+    const actor = session
+      ? {
+          id: session.user.id,
+          role: session.user.role,
+          status: session.user.status,
+        }
+      : null;
+
+    const result = await getContentByIdService(parsed.data.id, actor);
 
     if (!result.ok) {
       logger.warn("content.get_by_id.failed", {
         contentId: parsed.data.id,
+        actorId: actor?.id,
+        actorRole: actor?.role,
         code: result.error.code,
         message: result.error.message,
       });

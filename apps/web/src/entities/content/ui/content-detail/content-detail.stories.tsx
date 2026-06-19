@@ -19,6 +19,7 @@ const meta = {
       createdAt: "2026-06-18T10:00:00.000Z",
       updatedAt: "2026-06-18T12:00:00.000Z",
     },
+    backHref: "/contents",
   },
 } satisfies Meta<typeof ContentDetail>;
 
@@ -52,6 +53,36 @@ export const LongContent: Story = {
         (_, index) =>
           `${index + 1}번째 문단입니다. 콘텐츠 상세 화면에서 긴 본문이 들어왔을 때 카드 내부 여백과 줄 간격이 자연스럽게 유지되는지 확인합니다.`,
       ).join("\n\n"),
+      status: "PUBLISHED",
+      authorId: "author-id",
+      createdAt: "2026-06-18T10:00:00.000Z",
+      updatedAt: "2026-06-18T12:00:00.000Z",
+    },
+  },
+};
+
+export const WithEditLink: Story = {
+  args: {
+    content: {
+      id: "editable-content-id",
+      title: "수정 가능한 콘텐츠",
+      content: "상세 화면에서 수정 버튼이 함께 표시되는 예시입니다.",
+      status: "PUBLISHED",
+      authorId: "author-id",
+      createdAt: "2026-06-18T10:00:00.000Z",
+      updatedAt: "2026-06-18T12:00:00.000Z",
+    },
+    editHref: "/contents/editable-content-id/edit",
+  },
+};
+
+export const CustomBackHref: Story = {
+  args: {
+    backHref: "/",
+    content: {
+      id: "custom-back-content-id",
+      title: "다른 뒤로가기 경로를 가진 콘텐츠",
+      content: "backHref를 통해 목록으로 돌아가기 링크 경로를 바꾼 예시입니다.",
       status: "PUBLISHED",
       authorId: "author-id",
       createdAt: "2026-06-18T10:00:00.000Z",

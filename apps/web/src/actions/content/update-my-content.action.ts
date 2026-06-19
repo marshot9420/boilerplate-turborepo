@@ -10,6 +10,14 @@ import { updateContentService } from "@repo/domain/content/server";
 
 import { URLS } from "@/constants";
 
+function createContentDetailHref(contentId: string) {
+  return `${URLS.CLIENT.CONTENTS}/${contentId}`;
+}
+
+function createContentEditHref(contentId: string) {
+  return `${URLS.CLIENT.CONTENTS}/${contentId}/edit`;
+}
+
 export async function updateMyContentAction(
   _prevState: ActionResult<ContentDetailResponse> | null,
   formData: FormData,
@@ -35,7 +43,10 @@ export async function updateMyContentAction(
 
   if (result.ok) {
     revalidatePath(URLS.CLIENT.HOME);
+    revalidatePath(URLS.CLIENT.CONTENTS);
     revalidatePath(URLS.CLIENT.MY_PAGE);
+    revalidatePath(createContentDetailHref(result.data.id));
+    revalidatePath(createContentEditHref(result.data.id));
   }
 
   return result;

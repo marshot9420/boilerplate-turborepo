@@ -50,4 +50,34 @@ describe("ContentDetail", () => {
       }),
     ).toHaveAttribute("href", "/contents");
   });
+
+  it("backHref를 전달하면 목록으로 돌아가기 링크 경로로 사용한다", () => {
+    render(<ContentDetail content={content} backHref="/" />);
+
+    expect(
+      screen.getByRole("link", {
+        name: "목록으로 돌아가기",
+      }),
+    ).toHaveAttribute("href", "/");
+  });
+
+  it("editHref가 없으면 수정 링크를 렌더링하지 않는다", () => {
+    render(<ContentDetail content={content} />);
+
+    expect(
+      screen.queryByRole("link", {
+        name: "수정",
+      }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("editHref가 있으면 수정 링크를 렌더링한다", () => {
+    render(<ContentDetail content={content} editHref="/contents/content-id/edit" />);
+
+    expect(
+      screen.getByRole("link", {
+        name: "수정",
+      }),
+    ).toHaveAttribute("href", "/contents/content-id/edit");
+  });
 });
