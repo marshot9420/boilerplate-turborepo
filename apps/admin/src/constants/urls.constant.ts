@@ -3,6 +3,8 @@ export const URLS = {
     HOME: "/",
     LOGIN: "/login",
     CONTENTS: "/contents",
+    USERS: "/users",
+    SETTINGS: "/settings",
   },
 
   API: {
