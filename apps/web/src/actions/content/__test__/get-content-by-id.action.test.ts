@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import type { AuthSession } from "@repo/auth/server";
 import { getCurrentSession } from "@repo/auth/server";
 import { logger } from "@repo/core/logger";
 import type { ContentDetailResponse } from "@repo/domain/content/client";
@@ -40,7 +41,7 @@ const contentDetail: ContentDetailResponse = {
   updatedAt: "2026-06-18T12:00:00.000Z",
 };
 
-function createSession() {
+function createSession(): AuthSession {
   return {
     id: "session-id",
     expiresAt: new Date("2026-12-31T00:00:00.000Z"),
