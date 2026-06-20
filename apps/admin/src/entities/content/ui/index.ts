@@ -1,3 +1,4 @@
+export * from "./content-detail";
 export * from "./content-empty";
 export * from "./content-pagination";
 export * from "./content-status-badge";
