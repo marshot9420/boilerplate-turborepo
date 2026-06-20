@@ -1,35 +1,30 @@
+import { ContentListQuery } from "@repo/domain/content/client";
+import { getContentsService } from "@repo/domain/content/server";
+
 import { ContentListView } from "@/views/content-list-view";
 
 export const runtime = "nodejs";
 
 interface ContentsPageProps {
-  searchParams: Promise<{
-    page?: string | string[];
-    limit?: string | string[];
-  }>;
-}
-
-function getNumberSearchParam(value: string | string[] | undefined) {
-  if (!value || Array.isArray(value)) {
-    return undefined;
-  }
-
-  const parsed = Number(value);
-
-  if (!Number.isInteger(parsed) || parsed < 1) {
-    return undefined;
-  }
-
-  return parsed;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default async function ContentsPage({ searchParams }: ContentsPageProps) {
-  const params = await searchParams;
+  const resolvedSearchParams = await searchParams;
+  const parsed = ContentListQuery.safeParse(resolvedSearchParams);
 
-  return (
-    <ContentListView
-      page={getNumberSearchParam(params.page)}
-      limit={getNumberSearchParam(params.limit)}
-    />
-  );
+  if (!parsed.success) {
+    return <ContentListView errorMessage="콘텐츠 목록 조회 조건을 확인해 주세요." />;
+  }
+
+  const result = await getContentsService({
+    ...parsed.data,
+    status: "PUBLISHED",
+  });
+
+  if (!result.ok) {
+    return <ContentListView errorMessage={result.error.message} />;
+  }
+
+  return <ContentListView data={result.data} />;
 }
