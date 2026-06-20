@@ -3,15 +3,11 @@
 import type { ActionResult } from "@repo/core/action";
 import { logger } from "@repo/core/logger";
 import { mapZodErrorToFieldErrors } from "@repo/core/validation";
-import {
-  ContentListQuery,
-  type ContentListQueryInput,
-  type ContentListResponse,
-} from "@repo/domain/content/client";
+import { ContentListQuery, type ContentListResponse } from "@repo/domain/content/client";
 import { getContentsService } from "@repo/domain/content/server";
 
 export async function getContentsAction(
-  query: ContentListQueryInput = {},
+  query: unknown = {},
 ): Promise<ActionResult<ContentListResponse>> {
   try {
     const parsed = ContentListQuery.safeParse(query);

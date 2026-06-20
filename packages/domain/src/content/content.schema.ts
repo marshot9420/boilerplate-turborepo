@@ -1,6 +1,11 @@
 import { z } from "zod";
 
-import { zRequiredString } from "@repo/core/validation";
+import {
+  zOptionalEnum,
+  zOptionalInt,
+  zOptionalString,
+  zRequiredString,
+} from "@repo/core/validation";
 
 import { CONTENT } from "./content.constant";
 
@@ -17,17 +22,17 @@ export const UpdatableContentStatuses = ["PUBLISHED", "HIDDEN"] as const;
 export const ContentListSortKeys = ["TITLE", "STATUS", "CREATED_AT", "UPDATED_AT"] as const;
 
 export const ContentListQuery = z.object({
-  page: z.coerce.number().int().min(1).optional(),
+  page: zOptionalInt().pipe(z.number().min(1).optional()),
 
-  limit: z.coerce.number().int().min(1).max(100).optional(),
+  limit: zOptionalInt().pipe(z.number().min(1).max(100).optional()),
 
-  status: z.enum(ContentStatuses).optional(),
+  status: zOptionalEnum(ContentStatuses),
 
-  authorId: z.uuid("작성자 식별자가 올바르지 않습니다.").optional(),
+  authorId: zOptionalString().pipe(z.uuid("작성자 식별자가 올바르지 않습니다.").optional()),
 
-  sort: z.enum(ContentListSortKeys).optional(),
+  sort: zOptionalEnum(ContentListSortKeys),
 
-  order: z.enum(["asc", "desc"]).optional(),
+  order: zOptionalEnum(["asc", "desc"]),
 });
 
 export type ContentListQueryInput = z.infer<typeof ContentListQuery>;
