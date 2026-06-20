@@ -1,8 +1,10 @@
 import { Card, LinkButton } from "@repo/design-system/admin";
 import type { ContentDetailResponse } from "@repo/domain/content/client";
 
+import { deleteContentAction, updateContentStatusAction } from "@/actions/content";
 import { URLS } from "@/constants";
 import { ContentDetail } from "@/entities/content";
+import { ContentAdminActions } from "@/features/content";
 
 export interface ContentDetailViewProps {
   content?: ContentDetailResponse;
@@ -37,5 +39,15 @@ export default function ContentDetailView({ content, errorMessage }: ContentDeta
     );
   }
 
-  return <ContentDetail content={content} />;
+  return (
+    <div className="space-y-6">
+      <ContentDetail content={content} />
+
+      <ContentAdminActions
+        content={content}
+        updateStatusAction={updateContentStatusAction}
+        deleteAction={deleteContentAction}
+      />
+    </div>
+  );
 }
