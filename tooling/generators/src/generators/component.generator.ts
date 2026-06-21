@@ -568,12 +568,12 @@ async function generateUiComponent(params: {
   });
 
   await ensureSortedExportAllLine(
-    path.join(designSystemSrcPath, "primitives", category, "index.ts"),
+    path.join(designSystemSrcPath, target, category, "index.ts"),
     `./${kebabName}`,
   );
 
   await ensureSortedExportAllLine(
-    path.join(designSystemSrcPath, "primitives", "index.ts"),
+    path.join(designSystemSrcPath, target, "index.ts"),
     `./${category}`,
   );
 }
