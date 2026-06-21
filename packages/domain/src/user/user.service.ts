@@ -139,12 +139,18 @@ export async function updateUserProfileService(
 
     return success(toUserDetailResponse(updatedUser));
   } catch (error) {
+    const appError = error as AppError;
+
     logger.error("user.update_profile.failed", {
       userId,
-      error,
+      error: appError,
     });
 
-    return failure(error as AppError);
+    if (appError.code === "DATABASE_UNIQUE_CONSTRAINT") {
+      return failure(createUserNicknameDuplicatedError());
+    }
+
+    return failure(appError);
   }
 }
 

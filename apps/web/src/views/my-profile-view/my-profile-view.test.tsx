@@ -22,7 +22,7 @@ const user = {
 } satisfies UserDetailResponse;
 
 describe("MyProfileView", () => {
-  it("내 정보 조회에 성공하면 프로필 화면을 표시한다", () => {
+  it("내 정보 조회에 성공하면 프로필 화면과 수정 링크를 표시한다", () => {
     const result = {
       ok: true,
       data: user,
@@ -38,6 +38,8 @@ describe("MyProfileView", () => {
 
     expect(screen.getByRole("heading", { name: user.nickname })).toBeInTheDocument();
     expect(screen.getAllByText(user.email)).toHaveLength(2);
+
+    expect(screen.getByRole("link", { name: "프로필 수정" })).toHaveAttribute("href", "/me/edit");
   });
 
   it("내 정보 조회에 실패하면 에러 알림을 표시한다", () => {
@@ -58,5 +60,6 @@ describe("MyProfileView", () => {
 
     expect(screen.queryByRole("heading", { name: "내 정보" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: user.nickname })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "프로필 수정" })).not.toBeInTheDocument();
   });
 });

@@ -1,8 +1,9 @@
 import type { AppError } from "@repo/core/errors";
 import type { Result } from "@repo/core/result";
-import { Alert, AlertDescription, AlertTitle } from "@repo/design-system/web";
+import { Alert, AlertDescription, AlertTitle, LinkButton } from "@repo/design-system/web";
 import type { UserDetailResponse } from "@repo/domain/user/client";
 
+import { URLS } from "@/constants";
 import { UserProfileCard } from "@/entities/user";
 
 export interface MyProfileViewProps {
@@ -33,7 +34,14 @@ export default function MyProfileView({ result }: MyProfileViewProps) {
         </p>
       </header>
 
-      <UserProfileCard user={result.data} />
+      <UserProfileCard
+        user={result.data}
+        actions={
+          <LinkButton href={`${URLS.CLIENT.MY_PAGE}/edit`} variant="outline" size="sm">
+            프로필 수정
+          </LinkButton>
+        }
+      />
     </main>
   );
 }

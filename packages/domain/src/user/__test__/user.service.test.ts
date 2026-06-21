@@ -81,6 +81,13 @@ function createDatabaseError(): AppError {
   };
 }
 
+function createDatabaseUniqueConstraintError(): AppError {
+  return {
+    code: "DATABASE_UNIQUE_CONSTRAINT",
+    message: "이미 존재하는 데이터입니다.",
+  };
+}
+
 describe("user.service", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -604,6 +611,48 @@ describe("user.service", () => {
       expect(result).toEqual({
         ok: false,
         error,
+      });
+
+      expect(loggerMock.error).toHaveBeenCalledWith("user.update_profile.failed", {
+        userId: "user-id",
+        error,
+      });
+    });
+
+    it("프로필 수정 중 unique constraint가 발생하면 USER_NICKNAME_DUPLICATED 실패 Result를 반환한다", async () => {
+      const error = createDatabaseUniqueConstraintError();
+
+      const user = createMockUser({
+        nickname: "gildong",
+      });
+
+      repositoryMock.findUserByIdRepository.mockResolvedValue(user);
+      repositoryMock.findUserByNicknameRepository.mockResolvedValue(null);
+      repositoryMock.updateUserRepository.mockRejectedValue(error);
+
+      const result = await updateUserProfileService("user-id", {
+        name: "홍길동",
+        avatarUrl: null,
+        nickname: "new_nickname",
+      });
+
+      expect(repositoryMock.findUserByNicknameRepository).toHaveBeenCalledWith("new_nickname");
+
+      expect(repositoryMock.updateUserRepository).toHaveBeenCalledWith("user-id", {
+        name: "홍길동",
+        avatarUrl: null,
+        nickname: "new_nickname",
+      });
+
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          code: "USER_NICKNAME_DUPLICATED",
+          message: "이미 사용 중인 닉네임입니다.",
+          fieldErrors: {
+            nickname: ["이미 사용 중인 닉네임입니다."],
+          },
+        },
       });
 
       expect(loggerMock.error).toHaveBeenCalledWith("user.update_profile.failed", {
