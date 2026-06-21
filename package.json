@@ -2,6 +2,7 @@
   "name": "boilerplate-turborepo",
   "private": true,
   "scripts": {
+    "init-project": "pnpm --filter @repo/scripts init-project",
     "setup:scope": "pnpm --filter @repo/scripts setup:scope",
     "build": "turbo run build",
     "dev": "turbo run dev",

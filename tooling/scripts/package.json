@@ -7,6 +7,7 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "init-project": "tsx src/init-project.ts",
     "setup:scope": "tsx src/setup-scope.ts",
     "seed": "tsx src/seed.ts",
     "clean": "tsx src/clean.ts",
