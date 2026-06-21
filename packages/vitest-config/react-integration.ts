@@ -9,22 +9,26 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["@testing-library/jest-dom/vitest"],
 
-    include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    include: ["src/**/*.integration.test.ts", "src/**/*.integration.test.tsx"],
 
-    exclude: [
-      ...coverageConfigDefaults.exclude,
-      "src/**/*.integration.test.ts",
-      "src/**/*.integration.test.tsx",
-      "src/**/*.spec.ts",
-      "src/**/*.spec.tsx",
-    ],
+    testTimeout: 30_000,
+    hookTimeout: 30_000,
+
+    fileParallelism: false,
 
     coverage: {
       provider: "v8",
 
       reporter: ["text", "html"],
 
-      exclude: [...coverageConfigDefaults.exclude, "**/*.d.ts", "**/*.config.*", "**/index.ts"],
+      exclude: [
+        ...coverageConfigDefaults.exclude,
+        "**/*.d.ts",
+        "**/*.config.*",
+        "**/index.ts",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+      ],
     },
   },
 });

@@ -15,6 +15,8 @@
     "check": "pnpm lint && pnpm check-types && pnpm format:check",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch --cache=false",
+    "test:integration": "turbo run test:integration",
+    "test:integration:watch": "turbo run test:integration:watch --cache=false",
     "db:generate": "pnpm --filter @repo/database db:generate",
     "db:push": "pnpm --filter @repo/database db:push",
     "db:migrate": "pnpm --filter @repo/database db:migrate",

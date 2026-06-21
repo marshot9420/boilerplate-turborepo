@@ -5,7 +5,13 @@ export default defineConfig({
     globals: true,
     environment: "node",
 
-    include: ["src/**/*.test.ts", "src/**/*.integration.test.ts"],
+    include: ["src/**/*.test.ts"],
+
+    exclude: [
+      ...coverageConfigDefaults.exclude,
+      "src/**/*.integration.test.ts",
+      "src/**/*.spec.ts",
+    ],
 
     coverage: {
       provider: "v8",

@@ -5,7 +5,9 @@
   "type": "module",
   "exports": {
     "./node": "./node.ts",
-    "./react": "./react.ts"
+    "./react": "./react.ts",
+    "./node-integration": "./node-integration.ts",
+    "./react-integration": "./react-integration.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

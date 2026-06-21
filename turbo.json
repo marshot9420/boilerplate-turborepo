@@ -41,6 +41,13 @@
       "cache": false,
       "persistent": true
     },
+    "test:integration": {
+      "cache": false
+    },
+    "test:integration:watch": {
+      "cache": false,
+      "persistent": true
+    },
     "clean": {
       "cache": false
     },
