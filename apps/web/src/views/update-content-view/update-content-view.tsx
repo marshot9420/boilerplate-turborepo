@@ -1,4 +1,3 @@
-import type { ActionResult } from "@repo/core/action";
 import { Alert, AlertDescription, AlertTitle, Card, LinkButton } from "@repo/design-system/web";
 import type { ContentDetailResponse } from "@repo/domain/content/client";
 
@@ -7,20 +6,23 @@ import { URLS } from "@/constants";
 import { UpdateContentForm } from "@/features/content";
 
 export interface UpdateContentViewProps {
-  result: ActionResult<ContentDetailResponse>;
+  content?: ContentDetailResponse;
+  errorMessage?: string;
 }
 
 function createContentDetailHref(contentId: string) {
   return `${URLS.CLIENT.CONTENTS}/${contentId}`;
 }
 
-export default function UpdateContentView({ result }: UpdateContentViewProps) {
-  if (!result.ok) {
+export default function UpdateContentView({ content, errorMessage }: UpdateContentViewProps) {
+  if (!content) {
     return (
       <main className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-10 sm:px-6 lg:px-8">
         <Alert tone="danger">
           <AlertTitle>콘텐츠를 불러올 수 없습니다.</AlertTitle>
-          <AlertDescription>{result.message}</AlertDescription>
+          <AlertDescription>
+            {errorMessage ?? "콘텐츠를 불러오는 중 오류가 발생했습니다."}
+          </AlertDescription>
         </Alert>
 
         <div>
@@ -50,7 +52,7 @@ export default function UpdateContentView({ result }: UpdateContentViewProps) {
         </div>
 
         <LinkButton
-          href={createContentDetailHref(result.data.id)}
+          href={createContentDetailHref(content.id)}
           variant="outline"
           size="sm"
           className="w-full sm:w-auto"
@@ -61,9 +63,9 @@ export default function UpdateContentView({ result }: UpdateContentViewProps) {
 
       <Card className="p-5 sm:p-6">
         <UpdateContentForm
-          content={result.data}
+          content={content}
           action={updateMyContentAction}
-          successHref={createContentDetailHref(result.data.id)}
+          successHref={createContentDetailHref(content.id)}
         />
       </Card>
     </main>

@@ -3,9 +3,9 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { requireUser } from "@repo/auth/server";
-import { canUpdateContent } from "@repo/domain/content/server";
+import { ContentIdParam } from "@repo/domain/content/client";
+import { canUpdateContent, getContentByIdService } from "@repo/domain/content/server";
 
-import { getContentByIdAction } from "@/actions/content";
 import { UpdateContentView } from "@/views/update-content-view";
 
 export const runtime = "nodejs";
@@ -22,26 +22,20 @@ interface UpdateContentPageProps {
 }
 
 function shouldRenderNotFound(code: string) {
-  return (
-    code === "VALIDATION_ERROR" ||
-    code === "CONTENT_NOT_FOUND" ||
-    code === "CONTENT_DELETED" ||
-    code === "CONTENT_FORBIDDEN"
-  );
+  return code === "CONTENT_NOT_FOUND" || code === "CONTENT_DELETED" || code === "CONTENT_FORBIDDEN";
 }
 
 export default async function UpdateContentPage({ params }: UpdateContentPageProps) {
   const session = await requireUser();
 
   const { id } = await params;
-  const result = await getContentByIdAction(id);
 
-  if (!result.ok) {
-    if (shouldRenderNotFound(result.code)) {
-      notFound();
-    }
+  const parsed = ContentIdParam.safeParse({
+    id,
+  });
 
-    return <UpdateContentView result={result} />;
+  if (!parsed.success) {
+    notFound();
   }
 
   const actor = {
@@ -50,9 +44,19 @@ export default async function UpdateContentPage({ params }: UpdateContentPagePro
     status: session.user.status,
   };
 
+  const result = await getContentByIdService(parsed.data.id, actor);
+
+  if (!result.ok) {
+    if (shouldRenderNotFound(result.error.code)) {
+      notFound();
+    }
+
+    return <UpdateContentView errorMessage={result.error.message} />;
+  }
+
   if (!canUpdateContent(actor, result.data)) {
     notFound();
   }
 
-  return <UpdateContentView result={result} />;
+  return <UpdateContentView content={result.data} />;
 }
