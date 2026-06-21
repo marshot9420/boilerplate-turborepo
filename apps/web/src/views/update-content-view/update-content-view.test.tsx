@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { ActionResult } from "@repo/core/action";
 import type { ContentDetailResponse } from "@repo/domain/content/client";
 
 import UpdateContentView from "./update-content-view";
@@ -54,13 +53,8 @@ describe("UpdateContentView", () => {
     vi.clearAllMocks();
   });
 
-  it("콘텐츠 조회에 성공하면 수정 화면을 렌더링한다", () => {
-    const result: ActionResult<ContentDetailResponse> = {
-      ok: true,
-      data: content,
-    };
-
-    render(<UpdateContentView result={result} />);
+  it("콘텐츠가 있으면 수정 화면을 렌더링한다", () => {
+    render(<UpdateContentView content={content} />);
 
     expect(
       screen.getByRole("heading", {
@@ -95,14 +89,8 @@ describe("UpdateContentView", () => {
     ).toBeInTheDocument();
   });
 
-  it("콘텐츠 조회에 실패하면 에러 화면을 렌더링한다", () => {
-    const result: ActionResult<ContentDetailResponse> = {
-      ok: false,
-      code: "CONTENT_FORBIDDEN",
-      message: "콘텐츠를 수정할 권한이 없습니다.",
-    };
-
-    render(<UpdateContentView result={result} />);
+  it("콘텐츠가 없으면 에러 화면을 렌더링한다", () => {
+    render(<UpdateContentView errorMessage="콘텐츠를 수정할 권한이 없습니다." />);
 
     expect(screen.getByText("콘텐츠를 불러올 수 없습니다.")).toBeInTheDocument();
     expect(screen.getByText("콘텐츠를 수정할 권한이 없습니다.")).toBeInTheDocument();
@@ -118,5 +106,18 @@ describe("UpdateContentView", () => {
         name: "콘텐츠 수정",
       }),
     ).not.toBeInTheDocument();
+  });
+
+  it("콘텐츠가 없고 에러 메시지도 없으면 기본 에러 메시지를 렌더링한다", () => {
+    render(<UpdateContentView />);
+
+    expect(screen.getByText("콘텐츠를 불러올 수 없습니다.")).toBeInTheDocument();
+    expect(screen.getByText("콘텐츠를 불러오는 중 오류가 발생했습니다.")).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("link", {
+        name: "목록으로",
+      }),
+    ).toHaveAttribute("href", "/contents");
   });
 });
