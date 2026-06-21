@@ -1,11 +1,12 @@
-import type { ActionResult } from "@repo/core/action";
-import { Alert, AlertDescription, AlertTitle, EmptyState } from "@repo/design-system/web";
+import type { AppError } from "@repo/core/errors";
+import type { Result } from "@repo/core/result";
+import { Alert, AlertDescription, AlertTitle } from "@repo/design-system/web";
 import type { UserDetailResponse } from "@repo/domain/user/client";
 
 import { UserProfileCard } from "@/entities/user";
 
 export interface MyProfileViewProps {
-  result: ActionResult<UserDetailResponse>;
+  result: Result<UserDetailResponse, AppError>;
 }
 
 export default function MyProfileView({ result }: MyProfileViewProps) {
@@ -14,20 +15,8 @@ export default function MyProfileView({ result }: MyProfileViewProps) {
       <main className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-10 sm:px-6 lg:px-8">
         <Alert tone="danger">
           <AlertTitle>내 정보를 불러올 수 없습니다.</AlertTitle>
-          <AlertDescription>{result.message}</AlertDescription>
+          <AlertDescription>{result.error.message}</AlertDescription>
         </Alert>
-      </main>
-    );
-  }
-
-  if (!result.data) {
-    return (
-      <main className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-10 sm:px-6 lg:px-8">
-        <EmptyState
-          heading="사용자 정보가 없습니다."
-          description="현재 로그인된 사용자 정보를 찾을 수 없습니다."
-          variant="surface"
-        />
       </main>
     );
   }
