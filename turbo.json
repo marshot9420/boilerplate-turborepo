@@ -41,6 +41,10 @@
       "cache": false,
       "persistent": true
     },
+    "test:coverage": {
+      "dependsOn": ["^test:coverage"],
+      "outputs": ["coverage/**"]
+    },
     "test:integration": {
       "cache": false
     },

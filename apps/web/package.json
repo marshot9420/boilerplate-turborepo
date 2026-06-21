@@ -13,6 +13,9 @@
     "clean": "rm -rf .next node_modules",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:integration:watch": "vitest --config vitest.integration.config.ts",
     "storybook": "storybook dev -p 6007",
     "build-storybook": "storybook build"
   },
