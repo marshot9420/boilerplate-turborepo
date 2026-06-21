@@ -79,3 +79,14 @@ export const FindOrCreateOAuthUserRequest = z.object({
 });
 
 export type FindOrCreateOAuthUserRequestInput = z.infer<typeof FindOrCreateOAuthUserRequest>;
+
+export const DeleteMyAccountRequest = z.object({
+  confirmation: z
+    .string()
+    .trim()
+    .refine((value) => value === "회원탈퇴", {
+      message: "회원탈퇴를 입력해 주세요.",
+    }),
+});
+
+export type DeleteMyAccountRequestInput = z.infer<typeof DeleteMyAccountRequest>;

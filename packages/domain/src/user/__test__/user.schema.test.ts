@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { USER } from "../user.constant";
 import {
+  DeleteMyAccountRequest,
   FindOrCreateOAuthUserRequest,
   UpdateUserProfileRequest,
   UserIdParam,
@@ -374,6 +375,56 @@ describe("user.schema", () => {
 
       if (!result.success) {
         expect(result.error.issues[0]?.message).toBe(USER.AVATAR_URL.INVALID_MESSAGE);
+      }
+    });
+  });
+
+  describe("DeleteMyAccountRequest", () => {
+    it("정확한 확인 문구를 허용한다", () => {
+      const result = DeleteMyAccountRequest.safeParse({
+        confirmation: "회원탈퇴",
+      });
+
+      expect(result.success).toBe(true);
+
+      if (result.success) {
+        expect(result.data.confirmation).toBe("회원탈퇴");
+      }
+    });
+
+    it("확인 문구 앞뒤 공백을 제거한다", () => {
+      const result = DeleteMyAccountRequest.safeParse({
+        confirmation: "  회원탈퇴  ",
+      });
+
+      expect(result.success).toBe(true);
+
+      if (result.success) {
+        expect(result.data.confirmation).toBe("회원탈퇴");
+      }
+    });
+
+    it("확인 문구가 다르면 실패한다", () => {
+      const result = DeleteMyAccountRequest.safeParse({
+        confirmation: "탈퇴",
+      });
+
+      expect(result.success).toBe(false);
+
+      if (!result.success) {
+        expect(result.error.issues[0]?.message).toBe("회원탈퇴를 입력해 주세요.");
+      }
+    });
+
+    it("확인 문구가 비어 있으면 실패한다", () => {
+      const result = DeleteMyAccountRequest.safeParse({
+        confirmation: "",
+      });
+
+      expect(result.success).toBe(false);
+
+      if (!result.success) {
+        expect(result.error.issues[0]?.message).toBe("회원탈퇴를 입력해 주세요.");
       }
     });
   });
