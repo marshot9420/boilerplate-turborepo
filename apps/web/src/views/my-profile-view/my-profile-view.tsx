@@ -3,8 +3,10 @@ import type { Result } from "@repo/core/result";
 import { Alert, AlertDescription, AlertTitle, LinkButton } from "@repo/design-system/web";
 import type { UserDetailResponse } from "@repo/domain/user/client";
 
+import { deleteMyAccountAction } from "@/actions/user";
 import { URLS } from "@/constants";
 import { UserProfileCard } from "@/entities/user";
+import { DeleteMyAccountForm } from "@/features/user";
 
 export interface MyProfileViewProps {
   result: Result<UserDetailResponse, AppError>;
@@ -42,6 +44,8 @@ export default function MyProfileView({ result }: MyProfileViewProps) {
           </LinkButton>
         }
       />
+
+      <DeleteMyAccountForm action={deleteMyAccountAction} />
     </main>
   );
 }

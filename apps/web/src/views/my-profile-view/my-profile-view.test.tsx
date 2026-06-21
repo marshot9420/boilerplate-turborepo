@@ -1,11 +1,25 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import type { AppError } from "@repo/core/errors";
 import type { Result } from "@repo/core/result";
 import type { UserDetailResponse } from "@repo/domain/user/client";
 
 import MyProfileView from "./my-profile-view";
+
+const actionMock = vi.hoisted(() => ({
+  deleteMyAccountAction: vi.fn(),
+}));
+
+vi.mock("@/actions/user", () => actionMock);
+
+vi.mock("@/features/user", () => ({
+  DeleteMyAccountForm: ({ action }: { action: unknown }) => (
+    <section aria-label="회원 탈퇴 폼">
+      <p>{typeof action}</p>
+    </section>
+  ),
+}));
 
 const user = {
   id: "user-1",
@@ -22,7 +36,7 @@ const user = {
 } satisfies UserDetailResponse;
 
 describe("MyProfileView", () => {
-  it("내 정보 조회에 성공하면 프로필 화면과 수정 링크를 표시한다", () => {
+  it("내 정보 조회에 성공하면 프로필 화면, 수정 링크, 회원 탈퇴 폼을 표시한다", () => {
     const result = {
       ok: true,
       data: user,
@@ -40,6 +54,7 @@ describe("MyProfileView", () => {
     expect(screen.getAllByText(user.email)).toHaveLength(2);
 
     expect(screen.getByRole("link", { name: "프로필 수정" })).toHaveAttribute("href", "/me/edit");
+    expect(screen.getByRole("region", { name: "회원 탈퇴 폼" })).toBeInTheDocument();
   });
 
   it("내 정보 조회에 실패하면 에러 알림을 표시한다", () => {
@@ -61,5 +76,6 @@ describe("MyProfileView", () => {
     expect(screen.queryByRole("heading", { name: "내 정보" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: user.nickname })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "프로필 수정" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("region", { name: "회원 탈퇴 폼" })).not.toBeInTheDocument();
   });
 });
