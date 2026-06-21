@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import { USER } from "../user.constant";
-import { UpdateUserProfileRequest, UserIdParam } from "../user.schema";
+import {
+  FindOrCreateOAuthUserRequest,
+  UpdateUserProfileRequest,
+  UserIdParam,
+  UserListQuerySchema,
+} from "../user.schema";
 
 describe("user.schema", () => {
   describe("UserIdParam", () => {
@@ -23,6 +28,142 @@ describe("user.schema", () => {
       if (!result.success) {
         expect(result.error.issues[0]?.message).toBe(USER.ID.INVALID_MESSAGE);
       }
+    });
+  });
+
+  describe("UserListQuerySchema", () => {
+    it("빈 query를 허용한다", () => {
+      const result = UserListQuerySchema.safeParse({});
+
+      expect(result.success).toBe(true);
+
+      if (result.success) {
+        expect(result.data).toEqual({});
+      }
+    });
+
+    it("page와 limit을 숫자로 변환한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        page: "2",
+        limit: "30",
+      });
+
+      expect(result.success).toBe(true);
+
+      if (result.success) {
+        expect(result.data.page).toBe(2);
+        expect(result.data.limit).toBe(30);
+      }
+    });
+
+    it("keyword 앞뒤 공백을 제거한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        keyword: "  gildong  ",
+      });
+
+      expect(result.success).toBe(true);
+
+      if (result.success) {
+        expect(result.data.keyword).toBe("gildong");
+      }
+    });
+
+    it("빈 keyword 문자열을 허용한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        keyword: "   ",
+      });
+
+      expect(result.success).toBe(true);
+
+      if (result.success) {
+        expect(result.data.keyword).toBe("");
+      }
+    });
+
+    it("role 필터를 허용한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        role: "ADMIN",
+      });
+
+      expect(result.success).toBe(true);
+
+      if (result.success) {
+        expect(result.data.role).toBe("ADMIN");
+      }
+    });
+
+    it("status 필터를 허용한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        status: "SUSPENDED",
+      });
+
+      expect(result.success).toBe(true);
+
+      if (result.success) {
+        expect(result.data.status).toBe("SUSPENDED");
+      }
+    });
+
+    it("sortKey와 sortDirection을 허용한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        sortKey: "LAST_LOGIN_AT",
+        sortDirection: "asc",
+      });
+
+      expect(result.success).toBe(true);
+
+      if (result.success) {
+        expect(result.data.sortKey).toBe("LAST_LOGIN_AT");
+        expect(result.data.sortDirection).toBe("asc");
+      }
+    });
+
+    it("허용되지 않는 role을 거부한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        role: "SUPER_ADMIN",
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("허용되지 않는 status를 거부한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        status: "PENDING",
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("허용되지 않는 sortKey를 거부한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        sortKey: "ID",
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("허용되지 않는 sortDirection을 거부한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        sortDirection: "ascending",
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("page가 1보다 작으면 실패한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        page: "0",
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("limit이 100보다 크면 실패한다", () => {
+      const result = UserListQuerySchema.safeParse({
+        limit: "101",
+      });
+
+      expect(result.success).toBe(false);
     });
   });
 
@@ -146,6 +287,93 @@ describe("user.schema", () => {
 
       if (!result.success) {
         expect(result.error.issues[0]?.message).toBe(USER.NICKNAME.INVALID_MESSAGE);
+      }
+    });
+  });
+
+  describe("FindOrCreateOAuthUserRequest", () => {
+    it("올바른 OAuth 사용자 입력값을 허용한다", () => {
+      const result = FindOrCreateOAuthUserRequest.safeParse({
+        provider: "GOOGLE",
+        providerUserId: "google-user-id",
+        email: "user@example.com",
+        name: "Google User",
+        avatarUrl: "https://example.com/avatar.png",
+      });
+
+      expect(result.success).toBe(true);
+    });
+
+    it("name과 avatarUrl은 null을 허용한다", () => {
+      const result = FindOrCreateOAuthUserRequest.safeParse({
+        provider: "NAVER",
+        providerUserId: "naver-user-id",
+        email: "user@example.com",
+        name: null,
+        avatarUrl: null,
+      });
+
+      expect(result.success).toBe(true);
+
+      if (result.success) {
+        expect(result.data.name).toBeNull();
+        expect(result.data.avatarUrl).toBeNull();
+      }
+    });
+
+    it("허용되지 않는 provider를 거부한다", () => {
+      const result = FindOrCreateOAuthUserRequest.safeParse({
+        provider: "FACEBOOK",
+        providerUserId: "facebook-user-id",
+        email: "user@example.com",
+        name: null,
+        avatarUrl: null,
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("providerUserId가 비어 있으면 실패한다", () => {
+      const result = FindOrCreateOAuthUserRequest.safeParse({
+        provider: "GOOGLE",
+        providerUserId: "",
+        email: "user@example.com",
+        name: null,
+        avatarUrl: null,
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it("email 형식이 올바르지 않으면 실패한다", () => {
+      const result = FindOrCreateOAuthUserRequest.safeParse({
+        provider: "GOOGLE",
+        providerUserId: "google-user-id",
+        email: "invalid-email",
+        name: null,
+        avatarUrl: null,
+      });
+
+      expect(result.success).toBe(false);
+
+      if (!result.success) {
+        expect(result.error.issues[0]?.message).toBe(USER.EMAIL.INVALID_MESSAGE);
+      }
+    });
+
+    it("avatarUrl 형식이 올바르지 않으면 실패한다", () => {
+      const result = FindOrCreateOAuthUserRequest.safeParse({
+        provider: "GOOGLE",
+        providerUserId: "google-user-id",
+        email: "user@example.com",
+        name: null,
+        avatarUrl: "invalid-url",
+      });
+
+      expect(result.success).toBe(false);
+
+      if (!result.success) {
+        expect(result.error.issues[0]?.message).toBe(USER.AVATAR_URL.INVALID_MESSAGE);
       }
     });
   });

@@ -14,6 +14,44 @@ export const USER_ERROR_CODE = {
 
 export type UserErrorCode = (typeof USER_ERROR_CODE)[keyof typeof USER_ERROR_CODE];
 
+export function createUserNotFoundError(): AppError {
+  return {
+    code: USER_ERROR_CODE.NOT_FOUND,
+    message: "사용자를 찾을 수 없습니다.",
+  };
+}
+
+export function createUserForbiddenError(message = "사용자 권한이 없습니다."): AppError {
+  return {
+    code: USER_ERROR_CODE.FORBIDDEN,
+    message,
+  };
+}
+
+export function createUserSuspendedError(message = "정지된 사용자입니다."): AppError {
+  return {
+    code: USER_ERROR_CODE.SUSPENDED,
+    message,
+  };
+}
+
+export function createUserBannedError(message = "차단된 사용자입니다."): AppError {
+  return {
+    code: USER_ERROR_CODE.BANNED,
+    message,
+  };
+}
+
+export function createUserNicknameDuplicatedError(): AppError {
+  return {
+    code: USER_ERROR_CODE.NICKNAME_DUPLICATED,
+    message: "이미 사용 중인 닉네임입니다.",
+    fieldErrors: {
+      nickname: ["이미 사용 중인 닉네임입니다."],
+    },
+  };
+}
+
 export function createOAuthUserBlockedError(): AppError {
   return {
     code: USER_ERROR_CODE.OAUTH_USER_BLOCKED,

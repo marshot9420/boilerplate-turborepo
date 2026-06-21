@@ -2,12 +2,14 @@ import { createHash } from "node:crypto";
 
 import type { AppError } from "@repo/core/errors";
 import { logger } from "@repo/core/logger";
+import { createPagination, createPaginationMeta } from "@repo/core/pagination";
 import { failure, success, type Result } from "@repo/core/result";
 import {
   createUserRepository,
   findUserByEmailRepository,
   findUserByIdRepository,
   findUserByNicknameRepository,
+  findUsersAndCountRepository,
   softDeleteUserRepository,
   updateUserRepository,
 } from "@repo/database/user";
@@ -16,18 +18,66 @@ import {
   findUserOAuthAccountWithUserRepository,
 } from "@repo/database/user-oauth-account";
 
-import type { UserDetailResponse, UserResponse } from "./user.dto";
+import type { UserDetailResponse, UserListResponse, UserResponse } from "./user.dto";
 import {
   createOAuthLoginFailedError,
   createOAuthUserBlockedError,
-  USER_ERROR_CODE,
+  createUserBannedError,
+  createUserForbiddenError,
+  createUserNicknameDuplicatedError,
+  createUserNotFoundError,
+  createUserSuspendedError,
 } from "./user.error";
-import { toUserDetailResponse, toUserResponse } from "./user.mapper";
-import { canAuthenticateUser } from "./user.permission";
+import { toUserDetailResponse, toUserListItemResponse, toUserResponse } from "./user.mapper";
+import { canAuthenticateUser, canManageUsers, type UserPermissionActor } from "./user.permission";
 import type {
   FindOrCreateOAuthUserRequestInput,
   UpdateUserProfileRequestInput,
+  UserListQueryInput,
 } from "./user.schema";
+
+export async function getUsersService(
+  actor: UserPermissionActor,
+  query: UserListQueryInput,
+): Promise<Result<UserListResponse, AppError>> {
+  try {
+    if (!canManageUsers(actor)) {
+      return failure(createUserForbiddenError("사용자 목록을 조회할 권한이 없습니다."));
+    }
+
+    const pagination = createPagination({
+      page: query.page,
+      limit: query.limit,
+    });
+
+    const result = await findUsersAndCountRepository({
+      keyword: query.keyword,
+      role: query.role,
+      status: query.status,
+      sortKey: query.sortKey,
+      sortDirection: query.sortDirection,
+      skip: pagination.skip,
+      take: pagination.take,
+    });
+
+    return success({
+      items: result.users.map(toUserListItemResponse),
+      meta: createPaginationMeta({
+        page: pagination.page,
+        limit: pagination.limit,
+        totalCount: result.totalElements,
+      }),
+    });
+  } catch (error) {
+    logger.error("user.get_list.failed", {
+      actorId: actor.id,
+      query,
+      error,
+    });
+
+    return failure(error as AppError);
+  }
+}
 
 export async function getUserByIdService(
   userId: string,
@@ -36,10 +86,7 @@ export async function getUserByIdService(
     const user = await findUserByIdRepository(userId);
 
     if (!user || user.status === "DELETED") {
-      return failure({
-        code: USER_ERROR_CODE.NOT_FOUND,
-        message: "사용자를 찾을 수 없습니다.",
-      });
+      return failure(createUserNotFoundError());
     }
 
     return success(toUserDetailResponse(user));
@@ -61,37 +108,22 @@ export async function updateUserProfileService(
     const user = await findUserByIdRepository(userId);
 
     if (!user || user.status === "DELETED") {
-      return failure({
-        code: USER_ERROR_CODE.NOT_FOUND,
-        message: "사용자를 찾을 수 없습니다.",
-      });
+      return failure(createUserNotFoundError());
     }
 
     if (user.status === "SUSPENDED") {
-      return failure({
-        code: USER_ERROR_CODE.SUSPENDED,
-        message: "정지된 사용자는 프로필을 수정할 수 없습니다.",
-      });
+      return failure(createUserSuspendedError("정지된 사용자는 프로필을 수정할 수 없습니다."));
     }
 
     if (user.status === "BANNED") {
-      return failure({
-        code: USER_ERROR_CODE.BANNED,
-        message: "차단된 사용자는 프로필을 수정할 수 없습니다.",
-      });
+      return failure(createUserBannedError("차단된 사용자는 프로필을 수정할 수 없습니다."));
     }
 
     if (input.nickname !== user.nickname) {
       const duplicatedUser = await findUserByNicknameRepository(input.nickname);
 
       if (duplicatedUser) {
-        return failure({
-          code: USER_ERROR_CODE.NICKNAME_DUPLICATED,
-          message: "이미 사용 중인 닉네임입니다.",
-          fieldErrors: {
-            nickname: ["이미 사용 중인 닉네임입니다."],
-          },
-        });
+        return failure(createUserNicknameDuplicatedError());
       }
     }
 
@@ -123,10 +155,7 @@ export async function softDeleteUserService(
     const user = await findUserByIdRepository(userId);
 
     if (!user || user.status === "DELETED") {
-      return failure({
-        code: USER_ERROR_CODE.NOT_FOUND,
-        message: "사용자를 찾을 수 없습니다.",
-      });
+      return failure(createUserNotFoundError());
     }
 
     const deletedUser = await softDeleteUserRepository(userId);

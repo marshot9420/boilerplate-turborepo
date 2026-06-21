@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  canAuthenticateUser,
   canManageUsers,
   canReadUser,
   canUpdateUser,
@@ -111,6 +112,61 @@ describe("user.permission", () => {
       });
 
       expect(canManageUsers(actor)).toBe(false);
+    });
+  });
+
+  describe("canAuthenticateUser", () => {
+    it("ACTIVE 상태이고 deletedAt이 없으면 인증할 수 있다", () => {
+      expect(
+        canAuthenticateUser({
+          status: "ACTIVE",
+          deletedAt: null,
+        }),
+      ).toBe(true);
+    });
+
+    it("ACTIVE 상태이고 deletedAt이 undefined여도 인증할 수 있다", () => {
+      expect(
+        canAuthenticateUser({
+          status: "ACTIVE",
+        }),
+      ).toBe(true);
+    });
+
+    it("SUSPENDED 상태이면 인증할 수 없다", () => {
+      expect(
+        canAuthenticateUser({
+          status: "SUSPENDED",
+          deletedAt: null,
+        }),
+      ).toBe(false);
+    });
+
+    it("BANNED 상태이면 인증할 수 없다", () => {
+      expect(
+        canAuthenticateUser({
+          status: "BANNED",
+          deletedAt: null,
+        }),
+      ).toBe(false);
+    });
+
+    it("DELETED 상태이면 인증할 수 없다", () => {
+      expect(
+        canAuthenticateUser({
+          status: "DELETED",
+          deletedAt: new Date("2026-01-01T00:00:00.000Z"),
+        }),
+      ).toBe(false);
+    });
+
+    it("ACTIVE 상태여도 deletedAt이 있으면 인증할 수 없다", () => {
+      expect(
+        canAuthenticateUser({
+          status: "ACTIVE",
+          deletedAt: new Date("2026-01-01T00:00:00.000Z"),
+        }),
+      ).toBe(false);
     });
   });
 });

@@ -6,6 +6,7 @@ import type { AppError } from "@repo/core/errors";
 import {
   findOrCreateOAuthUserService,
   getUserByIdService,
+  getUsersService,
   softDeleteUserService,
   updateUserProfileService,
 } from "../user.service";
@@ -15,6 +16,7 @@ const repositoryMock = vi.hoisted(() => ({
   findUserByEmailRepository: vi.fn(),
   findUserByIdRepository: vi.fn(),
   findUserByNicknameRepository: vi.fn(),
+  findUsersAndCountRepository: vi.fn(),
   softDeleteUserRepository: vi.fn(),
   updateUserRepository: vi.fn(),
 }));
@@ -82,6 +84,224 @@ function createDatabaseError(): AppError {
 describe("user.service", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  describe("getUsersService", () => {
+    it("관리자가 사용자 목록을 조회하면 UserListResponse를 반환한다", async () => {
+      const users = [
+        createMockUser({
+          id: "user-1",
+          email: "alpha@example.com",
+          name: "알파",
+          nickname: "alpha",
+          role: "USER",
+          status: "ACTIVE",
+          createdAt: new Date("2026-01-01T00:00:00.000Z"),
+          lastLoginAt: new Date("2026-01-03T00:00:00.000Z"),
+        }),
+        createMockUser({
+          id: "user-2",
+          email: "bravo@example.com",
+          name: "브라보",
+          nickname: "bravo",
+          role: "ADMIN",
+          status: "ACTIVE",
+          createdAt: new Date("2026-01-02T00:00:00.000Z"),
+          lastLoginAt: null,
+        }),
+      ];
+
+      repositoryMock.findUsersAndCountRepository.mockResolvedValue({
+        users,
+        totalElements: 2,
+      });
+
+      const result = await getUsersService(
+        {
+          id: "admin-id",
+          role: "ADMIN",
+          status: "ACTIVE",
+        },
+        {
+          page: 1,
+          limit: 10,
+          keyword: "alpha",
+          role: "USER",
+          status: "ACTIVE",
+          sortKey: "EMAIL",
+          sortDirection: "asc",
+        },
+      );
+
+      expect(repositoryMock.findUsersAndCountRepository).toHaveBeenCalledWith({
+        keyword: "alpha",
+        role: "USER",
+        status: "ACTIVE",
+        sortKey: "EMAIL",
+        sortDirection: "asc",
+        skip: 0,
+        take: 10,
+      });
+
+      expect(result).toEqual({
+        ok: true,
+        data: {
+          items: [
+            {
+              id: "user-1",
+              email: "alpha@example.com",
+              name: "알파",
+              avatarUrl: null,
+              nickname: "alpha",
+              role: "USER",
+              status: "ACTIVE",
+              createdAt: "2026-01-01T00:00:00.000Z",
+              lastLoginAt: "2026-01-03T00:00:00.000Z",
+            },
+            {
+              id: "user-2",
+              email: "bravo@example.com",
+              name: "브라보",
+              avatarUrl: null,
+              nickname: "bravo",
+              role: "ADMIN",
+              status: "ACTIVE",
+              createdAt: "2026-01-02T00:00:00.000Z",
+              lastLoginAt: null,
+            },
+          ],
+          meta: {
+            page: 1,
+            limit: 10,
+            totalCount: 2,
+            totalPages: 1,
+            hasNextPage: false,
+            hasPreviousPage: false,
+          },
+        },
+      });
+    });
+
+    it("page와 limit이 없으면 기본 pagination으로 사용자 목록을 조회한다", async () => {
+      repositoryMock.findUsersAndCountRepository.mockResolvedValue({
+        users: [],
+        totalElements: 0,
+      });
+
+      const result = await getUsersService(
+        {
+          id: "admin-id",
+          role: "ADMIN",
+          status: "ACTIVE",
+        },
+        {},
+      );
+
+      expect(repositoryMock.findUsersAndCountRepository).toHaveBeenCalledWith({
+        keyword: undefined,
+        role: undefined,
+        status: undefined,
+        sortKey: undefined,
+        sortDirection: undefined,
+        skip: 0,
+        take: 20,
+      });
+
+      expect(result).toEqual({
+        ok: true,
+        data: {
+          items: [],
+          meta: {
+            page: 1,
+            limit: 20,
+            totalCount: 0,
+            totalPages: 1,
+            hasNextPage: false,
+            hasPreviousPage: false,
+          },
+        },
+      });
+    });
+
+    it("관리자가 아니면 USER_FORBIDDEN 실패 Result를 반환한다", async () => {
+      const result = await getUsersService(
+        {
+          id: "user-id",
+          role: "USER",
+          status: "ACTIVE",
+        },
+        {
+          page: 1,
+          limit: 10,
+        },
+      );
+
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          code: "USER_FORBIDDEN",
+          message: "사용자 목록을 조회할 권한이 없습니다.",
+        },
+      });
+
+      expect(repositoryMock.findUsersAndCountRepository).not.toHaveBeenCalled();
+    });
+
+    it("관리자여도 ACTIVE 상태가 아니면 USER_FORBIDDEN 실패 Result를 반환한다", async () => {
+      const result = await getUsersService(
+        {
+          id: "admin-id",
+          role: "ADMIN",
+          status: "SUSPENDED",
+        },
+        {
+          page: 1,
+          limit: 10,
+        },
+      );
+
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          code: "USER_FORBIDDEN",
+          message: "사용자 목록을 조회할 권한이 없습니다.",
+        },
+      });
+
+      expect(repositoryMock.findUsersAndCountRepository).not.toHaveBeenCalled();
+    });
+
+    it("repository 에러가 발생하면 실패 Result를 반환하고 로그를 남긴다", async () => {
+      const error = createDatabaseError();
+
+      repositoryMock.findUsersAndCountRepository.mockRejectedValue(error);
+
+      const result = await getUsersService(
+        {
+          id: "admin-id",
+          role: "ADMIN",
+          status: "ACTIVE",
+        },
+        {
+          page: 1,
+          limit: 10,
+        },
+      );
+
+      expect(result).toEqual({
+        ok: false,
+        error,
+      });
+
+      expect(loggerMock.error).toHaveBeenCalledWith("user.get_list.failed", {
+        actorId: "admin-id",
+        query: {
+          page: 1,
+          limit: 10,
+        },
+        error,
+      });
+    });
   });
 
   describe("getUserByIdService", () => {

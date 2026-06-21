@@ -1,4 +1,4 @@
-import { AuthProvider } from "@prisma/client";
+import { AuthProvider, UserRole, UserStatus } from "@prisma/client";
 import { z } from "zod";
 
 import type { ListQuery } from "@repo/core/types";
@@ -28,6 +28,24 @@ export interface UserListQuery extends ListQuery<UserListSortKey> {
   role?: "USER" | "ADMIN";
   status?: "ACTIVE" | "SUSPENDED" | "BANNED" | "DELETED";
 }
+
+export const UserListQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).optional(),
+
+  limit: z.coerce.number().int().min(1).max(100).optional(),
+
+  keyword: z.string().trim().optional(),
+
+  role: z.enum(UserRole).optional(),
+
+  status: z.enum(UserStatus).optional(),
+
+  sortKey: z.enum(UserListSortKeys).optional(),
+
+  sortDirection: z.enum(["asc", "desc"]).optional(),
+});
+
+export type UserListQueryInput = z.infer<typeof UserListQuerySchema>;
 
 export const UpdateUserProfileRequest = z.object({
   name: zNullableString().pipe(
