@@ -4,7 +4,6 @@ export const URLS = {
     LOGIN: "/login",
     CONTENTS: "/contents",
     USERS: "/users",
-    SETTINGS: "/settings",
   },
 
   API: {
