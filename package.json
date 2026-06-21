@@ -34,7 +34,7 @@
     "typescript": "5.9.2",
     "vitest": "^4.1.8"
   },
-  "packageManager": "pnpm@11.7.0",
+  "packageManager": "pnpm@11.8.0",
   "engines": {
     "node": ">=24.16.0 <25",
     "pnpm": ">=11.6.0 <12"
