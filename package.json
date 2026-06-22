@@ -23,6 +23,9 @@
     "db:migrate": "pnpm --filter @repo/database db:migrate",
     "db:seed": "pnpm --filter @repo/scripts run seed",
     "db:studio": "pnpm --filter @repo/database db:studio",
+    "db:test:push": "pnpm --filter @repo/database db:test:push",
+    "db:test:generate": "pnpm --filter @repo/database db:test:generate",
+    "db:test:migrate": "pnpm --filter @repo/database db:test:migrate",
     "scripts:clean": "pnpm --filter @repo/scripts run clean",
     "generate": "pnpm --filter @repo/generators generate"
   },
