@@ -12,6 +12,6 @@ export default mergeConfig(reactIntegrationConfig, {
   },
 
   test: {
-    setupFiles: ["./vitest.setup.ts"],
+    setupFiles: ["@repo/vitest-config/setup/load-test-env", "./vitest.setup.ts"],
   },
 });
