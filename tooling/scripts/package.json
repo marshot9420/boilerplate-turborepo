@@ -10,6 +10,7 @@
     "init-project": "tsx src/init-project.ts",
     "setup:scope": "tsx src/setup-scope.ts",
     "seed": "tsx src/seed.ts",
+    "seed:e2e": "tsx src/seed-e2e.ts",
     "clean": "tsx src/clean.ts",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
