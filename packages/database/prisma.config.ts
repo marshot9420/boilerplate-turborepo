@@ -7,7 +7,11 @@ import { defineConfig, env } from "prisma/config";
 const workspaceRoot = path.resolve(process.cwd(), "../..");
 
 const envFiles =
-  process.env.NODE_ENV === "test" ? [".env.test", ".env.test.local"] : [".env", ".env.local"];
+  process.env.E2E === "true"
+    ? [".env", ".env.local", ".env.e2e.local"]
+    : process.env.NODE_ENV === "test"
+      ? [".env.test", ".env.test.local"]
+      : [".env", ".env.local"];
 
 for (const envFile of envFiles) {
   const envPath = path.join(workspaceRoot, envFile);

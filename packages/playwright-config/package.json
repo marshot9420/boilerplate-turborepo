@@ -1,0 +1,26 @@
+{
+  "name": "@repo/playwright-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf node_modules .turbo"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "dotenv": "^17.4.2",
+    "eslint": "^9.39.1",
+    "typescript": "5.9.2"
+  },
+  "peerDependencies": {
+    "@playwright/test": "^1.0.0"
+  }
+}

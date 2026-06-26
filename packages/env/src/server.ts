@@ -16,6 +16,8 @@ export const serverEnvSchema = sharedEnvSchema.extend({
   WEB_APP_URL: httpUrl,
   ADMIN_APP_URL: httpUrl,
 
+  E2E_AUTH_SECRET: z.string().min(32, "E2E_AUTH_SECRET must be at least 32 characters").optional(),
+
   AUTH_SESSION_COOKIE_NAME: z.string().min(1, "AUTH_SESSION_COOKIE_NAME is required"),
   AUTH_SESSION_MAX_AGE_SECONDS: z.coerce
     .number()
@@ -42,6 +44,8 @@ export const serverEnv = serverEnvSchema.parse({
 
   WEB_APP_URL: process.env.WEB_APP_URL,
   ADMIN_APP_URL: process.env.ADMIN_APP_URL,
+
+  E2E_AUTH_SECRET: process.env.E2E_AUTH_SECRET,
 
   AUTH_SESSION_COOKIE_NAME: process.env.AUTH_SESSION_COOKIE_NAME,
   AUTH_SESSION_MAX_AGE_SECONDS: process.env.AUTH_SESSION_MAX_AGE_SECONDS,

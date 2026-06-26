@@ -7,6 +7,12 @@ dist
 build
 coverage
 
+playwright-report
+test-results
+apps/*/playwright-report
+apps/*/test-results
+apps/*/e2e/.auth
+
 storybook-static
 .vercel
 
@@ -14,5 +20,7 @@ storybook-static
 .env
 .env.*
 !.env.example
+!.env.test.example
+!.env.e2e.example
 
 pnpm-lock.yaml

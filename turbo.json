@@ -2,12 +2,19 @@
   "$schema": "https://v2-9-18.turborepo.dev/schema.json",
   "ui": "tui",
   "globalEnv": [
+    "CI",
+    "E2E",
     "NODE_ENV",
     "NEXT_PUBLIC_APP_URL",
     "WEB_APP_URL",
     "ADMIN_APP_URL",
     "DATABASE_URL",
     "DIRECT_URL",
+    "WEB_E2E_PORT",
+    "WEB_E2E_BASE_URL",
+    "ADMIN_E2E_PORT",
+    "ADMIN_E2E_BASE_URL",
+    "E2E_AUTH_SECRET",
     "AUTH_SESSION_COOKIE_NAME",
     "AUTH_SESSION_MAX_AGE_SECONDS",
     "GOOGLE_CLIENT_ID",
@@ -51,6 +58,18 @@
     "test:integration:watch": {
       "cache": false,
       "persistent": true
+    },
+    "test:e2e": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "outputs": ["playwright-report/**", "test-results/**"]
+    },
+    "test:e2e:ui": {
+      "cache": false,
+      "persistent": true
+    },
+    "test:e2e:headed": {
+      "cache": false
     },
     "clean": {
       "cache": false
