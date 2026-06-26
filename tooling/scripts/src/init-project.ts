@@ -5,6 +5,7 @@ import { createInterface } from "node:readline/promises";
 
 const DEFAULT_FROM_SCOPE_NAME = "repo";
 const DEFAULT_FROM_PROJECT_NAME = "boilerplate-turborepo";
+const DEFAULT_FROM_SESSION_COOKIE_NAME = "boilerplate_session";
 
 const ignoredDirectories = new Set([
   ".git",
@@ -43,6 +44,12 @@ const targetFilenames = new Set([
   ".env.local",
   ".env.production",
   ".env.development",
+  ".env.test",
+  ".env.test.example",
+  ".env.test.local",
+  ".env.e2e",
+  ".env.e2e.example",
+  ".env.e2e.local",
   ".npmrc",
   ".nvmrc",
   "Dockerfile",
@@ -100,6 +107,11 @@ Options:
   --dry-run                       Print changes without writing files.
   --remove-git                    Remove .git without asking.
   --keep-git                      Keep .git without asking.
+
+Generated env files:
+  .env.local                       Created from .env.example if missing.
+  .env.test.local                  Created from .env.test.example if missing.
+  .env.e2e.local                   Created from .env.e2e.example if missing.
 `);
 }
 
@@ -117,6 +129,14 @@ function normalizeProjectName(value: string): string {
 
 function toScope(scopeName: string): string {
   return `@${scopeName}`;
+}
+
+function toSnakeProjectName(projectName: string): string {
+  return projectName.replaceAll("-", "_");
+}
+
+function toSessionCookieName(projectName: string): string {
+  return `${toSnakeProjectName(projectName)}_session`;
 }
 
 function validateProjectName(projectName: string): void {
@@ -323,9 +343,15 @@ function replaceProjectValues(params: {
 }): string {
   const { content, fromProjectName, projectName, fromScopeName, toScopeName } = params;
 
+  const fromSnakeProjectName = toSnakeProjectName(fromProjectName);
+  const snakeProjectName = toSnakeProjectName(projectName);
+  const sessionCookieName = toSessionCookieName(projectName);
+
   return content
     .replaceAll(toScope(fromScopeName), toScope(toScopeName))
-    .replaceAll(fromProjectName, projectName);
+    .replaceAll(fromProjectName, projectName)
+    .replaceAll(fromSnakeProjectName, snakeProjectName)
+    .replaceAll(DEFAULT_FROM_SESSION_COOKIE_NAME, sessionCookieName);
 }
 
 async function exists(filePath: string): Promise<boolean> {
@@ -429,27 +455,62 @@ async function findRepositoryRoot(startPath: string): Promise<string> {
   }
 }
 
-async function ensureEnvExample(params: { rootPath: string; dryRun: boolean }): Promise<string[]> {
-  const { rootPath, dryRun } = params;
-  const envExamplePath = path.join(rootPath, ".env.example");
+async function ensureLocalEnvFiles(params: {
+  rootPath: string;
+  fromProjectName: string;
+  projectName: string;
+  fromScopeName: string;
+  toScopeName: string;
+  dryRun: boolean;
+}): Promise<string[]> {
+  const { rootPath, fromProjectName, projectName, fromScopeName, toScopeName, dryRun } = params;
 
-  if (await exists(envExamplePath)) {
-    return [];
+  const envFilePairs = [
+    {
+      source: ".env.example",
+      target: ".env.local",
+    },
+    {
+      source: ".env.test.example",
+      target: ".env.test.local",
+    },
+    {
+      source: ".env.e2e.example",
+      target: ".env.e2e.local",
+    },
+  ];
+
+  const createdFiles: string[] = [];
+
+  for (const pair of envFilePairs) {
+    const sourcePath = path.join(rootPath, pair.source);
+    const targetPath = path.join(rootPath, pair.target);
+
+    if (!(await exists(sourcePath))) {
+      continue;
+    }
+
+    if (await exists(targetPath)) {
+      continue;
+    }
+
+    const sourceContent = await readFile(sourcePath, "utf8");
+    const nextContent = replaceProjectValues({
+      content: sourceContent,
+      fromProjectName,
+      projectName,
+      fromScopeName,
+      toScopeName,
+    });
+
+    if (!dryRun) {
+      await writeFile(targetPath, nextContent);
+    }
+
+    createdFiles.push(pair.target);
   }
 
-  const content = [
-    "NODE_ENV=development",
-    "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/app",
-    "NEXT_PUBLIC_WEB_APP_URL=http://localhost:3000",
-    "NEXT_PUBLIC_ADMIN_APP_URL=http://localhost:3001",
-    "",
-  ].join("\n");
-
-  if (!dryRun) {
-    await writeFile(envExamplePath, content);
-  }
-
-  return [".env.example"];
+  return createdFiles;
 }
 
 async function cleanupGeneratedDirectories(params: {
@@ -579,8 +640,12 @@ async function initProject(options: InitProjectOptions): Promise<InitProjectResu
     }
   }
 
-  const createdFiles = await ensureEnvExample({
+  const createdFiles = await ensureLocalEnvFiles({
     rootPath,
+    fromProjectName,
+    projectName,
+    fromScopeName,
+    toScopeName,
     dryRun,
   });
 
@@ -604,6 +669,7 @@ async function initProject(options: InitProjectOptions): Promise<InitProjectResu
     : false;
 
   changedFiles.sort((a, b) => a.localeCompare(b));
+  createdFiles.sort((a, b) => a.localeCompare(b));
 
   return {
     checkedFileCount: files.length,
@@ -631,6 +697,8 @@ function printResult(params: {
       title,
       `project: ${fromProjectName} -> ${projectName}`,
       `scope: ${toScope(fromScopeName)} -> ${toScope(toScopeName)}`,
+      `database prefix: ${toSnakeProjectName(fromProjectName)} -> ${toSnakeProjectName(projectName)}`,
+      `session cookie: ${DEFAULT_FROM_SESSION_COOKIE_NAME} -> ${toSessionCookieName(projectName)}`,
       `checked files: ${result.checkedFileCount}`,
       `changed files: ${result.changedFileCount}`,
       `created files: ${result.createdFiles.length}`,
