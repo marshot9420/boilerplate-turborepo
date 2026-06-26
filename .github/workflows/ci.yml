@@ -1,0 +1,313 @@
+name: CI
+
+on:
+    pull_request:
+        branches:
+            - main
+            - develop
+    push:
+        branches:
+            - main
+            - develop
+    workflow_dispatch:
+
+concurrency:
+    group: ci-${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+env:
+    NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+    quality:
+        name: Quality
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+
+        env:
+            WEB_APP_URL: "http://localhost:3000"
+            ADMIN_APP_URL: "http://localhost:3001"
+            NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+
+            DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_ci?schema=public"
+            DIRECT_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_ci?schema=public"
+
+            AUTH_SESSION_COOKIE_NAME: "boilerplate_session"
+            AUTH_SESSION_MAX_AGE_SECONDS: "2592000"
+
+            GOOGLE_CLIENT_ID: "dummy-google-client-id"
+            GOOGLE_CLIENT_SECRET: "dummy-google-client-secret"
+
+            NAVER_CLIENT_ID: "dummy-naver-client-id"
+            NAVER_CLIENT_SECRET: "dummy-naver-client-secret"
+
+            KAKAO_CLIENT_ID: "dummy-kakao-client-id"
+            KAKAO_CLIENT_SECRET: "dummy-kakao-client-secret"
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 24.16.0
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Generate Prisma client
+              run: pnpm db:generate
+
+            - name: Lint
+              run: pnpm lint
+
+            - name: Check types
+              run: pnpm check-types
+
+            - name: Check format
+              run: pnpm format:check
+
+            - name: Unit and component tests
+              run: pnpm test
+
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+
+        services:
+            postgres:
+                image: postgres:17
+                env:
+                    POSTGRES_USER: postgres
+                    POSTGRES_PASSWORD: postgres
+                    POSTGRES_DB: boilerplate_turborepo_ci
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd "pg_isready -U postgres -d boilerplate_turborepo_ci"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+
+        env:
+            WEB_APP_URL: "http://localhost:3000"
+            ADMIN_APP_URL: "http://localhost:3001"
+            NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+
+            DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_ci?schema=public"
+            DIRECT_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_ci?schema=public"
+
+            AUTH_SESSION_COOKIE_NAME: "boilerplate_session"
+            AUTH_SESSION_MAX_AGE_SECONDS: "2592000"
+
+            GOOGLE_CLIENT_ID: "dummy-google-client-id"
+            GOOGLE_CLIENT_SECRET: "dummy-google-client-secret"
+
+            NAVER_CLIENT_ID: "dummy-naver-client-id"
+            NAVER_CLIENT_SECRET: "dummy-naver-client-secret"
+
+            KAKAO_CLIENT_ID: "dummy-kakao-client-id"
+            KAKAO_CLIENT_SECRET: "dummy-kakao-client-secret"
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 24.16.0
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Generate Prisma client
+              run: pnpm db:generate
+
+            - name: Push database schema
+              run: pnpm db:push
+
+            - name: Build
+              run: pnpm build
+
+    integration:
+        name: Integration Tests
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+
+        services:
+            postgres:
+                image: postgres:17
+                env:
+                    POSTGRES_USER: postgres
+                    POSTGRES_PASSWORD: postgres
+                    POSTGRES_DB: boilerplate_turborepo_test
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd "pg_isready -U postgres -d boilerplate_turborepo_test"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+
+        env:
+            NODE_ENV: "test"
+
+            WEB_APP_URL: "http://localhost:3000"
+            ADMIN_APP_URL: "http://localhost:3001"
+            NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+
+            DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_test?schema=public"
+            DIRECT_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_test?schema=public"
+
+            AUTH_SESSION_COOKIE_NAME: "boilerplate_session"
+            AUTH_SESSION_MAX_AGE_SECONDS: "2592000"
+
+            GOOGLE_CLIENT_ID: "dummy-google-client-id"
+            GOOGLE_CLIENT_SECRET: "dummy-google-client-secret"
+
+            NAVER_CLIENT_ID: "dummy-naver-client-id"
+            NAVER_CLIENT_SECRET: "dummy-naver-client-secret"
+
+            KAKAO_CLIENT_ID: "dummy-kakao-client-id"
+            KAKAO_CLIENT_SECRET: "dummy-kakao-client-secret"
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 24.16.0
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Generate test Prisma client
+              run: pnpm db:test:generate
+
+            - name: Push test database schema
+              run: pnpm db:test:push
+
+            - name: Run integration tests
+              run: pnpm test:integration
+
+    e2e:
+        name: E2E Tests
+        runs-on: ubuntu-latest
+        timeout-minutes: 45
+
+        services:
+            postgres:
+                image: postgres:17
+                env:
+                    POSTGRES_USER: postgres
+                    POSTGRES_PASSWORD: postgres
+                    POSTGRES_DB: boilerplate_turborepo_e2e
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd "pg_isready -U postgres -d boilerplate_turborepo_e2e"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+
+        env:
+            WEB_APP_URL: "http://localhost:3100"
+            ADMIN_APP_URL: "http://localhost:3101"
+            NEXT_PUBLIC_APP_URL: "http://localhost:3100"
+
+            DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_e2e?schema=public"
+            DIRECT_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_e2e?schema=public"
+
+            WEB_E2E_PORT: "3100"
+            WEB_E2E_BASE_URL: "http://localhost:3100"
+
+            ADMIN_E2E_PORT: "3101"
+            ADMIN_E2E_BASE_URL: "http://localhost:3101"
+
+            E2E_AUTH_SECRET: "ci-e2e-auth-secret-for-boilerplate-tests-000000"
+
+            AUTH_SESSION_COOKIE_NAME: "boilerplate_session"
+            AUTH_SESSION_MAX_AGE_SECONDS: "2592000"
+
+            GOOGLE_CLIENT_ID: "dummy-google-client-id"
+            GOOGLE_CLIENT_SECRET: "dummy-google-client-secret"
+
+            NAVER_CLIENT_ID: "dummy-naver-client-id"
+            NAVER_CLIENT_SECRET: "dummy-naver-client-secret"
+
+            KAKAO_CLIENT_ID: "dummy-kakao-client-id"
+            KAKAO_CLIENT_SECRET: "dummy-kakao-client-secret"
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v6
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 24.16.0
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Install Playwright Chromium
+              run: pnpm exec playwright install chromium --with-deps
+
+            - name: Generate E2E Prisma client
+              run: pnpm db:e2e:generate
+
+            - name: Run E2E tests
+              run: pnpm test:e2e
+
+            - name: Upload web Playwright report
+              if: ${{ !cancelled() }}
+              uses: actions/upload-artifact@v7
+              with:
+                  name: web-playwright-report
+                  path: apps/web/playwright-report/
+                  if-no-files-found: ignore
+                  retention-days: 7
+
+            - name: Upload admin Playwright report
+              if: ${{ !cancelled() }}
+              uses: actions/upload-artifact@v7
+              with:
+                  name: admin-playwright-report
+                  path: apps/admin/playwright-report/
+                  if-no-files-found: ignore
+                  retention-days: 7
+
+            - name: Upload Playwright test results
+              if: ${{ !cancelled() }}
+              uses: actions/upload-artifact@v7
+              with:
+                  name: playwright-test-results
+                  path: |
+                      apps/web/test-results/
+                      apps/admin/test-results/
+                  if-no-files-found: ignore
+                  retention-days: 7
