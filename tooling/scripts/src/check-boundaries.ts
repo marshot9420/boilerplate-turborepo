@@ -39,17 +39,40 @@ const FORBIDDEN_RUNTIME_DEPENDENCIES: Record<string, string[]> = {
     "@repo/database",
     "@repo/domain",
     "@repo/auth-next",
+    "@repo/storage",
     "@repo/design-system",
     "@repo/env",
   ],
 
-  "@repo/env": ["@repo/database", "@repo/domain", "@repo/auth-next", "@repo/design-system"],
+  "@repo/env": [
+    "@repo/database",
+    "@repo/domain",
+    "@repo/auth-next",
+    "@repo/storage",
+    "@repo/design-system",
+  ],
 
-  "@repo/database": ["@repo/domain", "@repo/auth-next", "@repo/design-system"],
+  "@repo/database": ["@repo/domain", "@repo/auth-next", "@repo/storage", "@repo/design-system"],
 
-  "@repo/domain": ["@repo/auth-next", "@repo/design-system"],
+  "@repo/domain": ["@repo/auth-next", "@repo/storage", "@repo/design-system"],
 
-  "@repo/design-system": ["@repo/database", "@repo/domain", "@repo/auth-next", "@repo/env"],
+  "@repo/auth-next": ["@repo/storage", "@repo/design-system"],
+
+  "@repo/storage": [
+    "@repo/database",
+    "@repo/domain",
+    "@repo/auth-next",
+    "@repo/design-system",
+    "@repo/env",
+  ],
+
+  "@repo/design-system": [
+    "@repo/database",
+    "@repo/domain",
+    "@repo/auth-next",
+    "@repo/storage",
+    "@repo/env",
+  ],
 };
 
 const PACKAGE_ALLOWED_RUNTIME_DEPENDENCIES: Record<string, string[]> = {
@@ -62,6 +85,8 @@ const PACKAGE_ALLOWED_RUNTIME_DEPENDENCIES: Record<string, string[]> = {
   "@repo/domain": ["@repo/core", "@repo/database"],
 
   "@repo/auth-next": ["@repo/core", "@repo/database", "@repo/domain"],
+
+  "@repo/storage": ["@repo/core"],
 
   "@repo/design-system": ["@repo/core"],
 };

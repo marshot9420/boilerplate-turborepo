@@ -22,6 +22,11 @@ export default [
               regex: "^(?:@/|apps/|(?:\\.\\./)+apps/)",
               message: "packages/database에서 apps 내부 코드를 import할 수 없습니다.",
             },
+            {
+              regex: "^@repo/(auth|auth-next|design-system|domain|storage)(?:/|$)",
+              message:
+                "packages/database는 DB 접근 계층이므로 auth, domain, design-system, storage를 import할 수 없습니다.",
+            },
           ],
         },
       ],
