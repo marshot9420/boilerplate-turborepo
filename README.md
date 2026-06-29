@@ -52,7 +52,7 @@ pnpm >= 11.6.0 < 12
 현재 루트 설정은 다음 버전을 기준으로 합니다.
 
 ```txt
-pnpm 11.8.0
+pnpm 11.9.0
 TypeScript 5.9.2
 Turborepo 2.9.18
 Vitest 4.1.8
@@ -807,3 +807,15 @@ pnpm test:e2e
 
 현재 이 저장소는 private boilerplate입니다.
 라이선스 정책이 필요하다면 프로젝트 배포 방식에 맞게 별도로 추가하세요.
+
+TODO:
+
+1. 조회 기능은 이상적인 RSC 조회 흐름 기준 상 서버 액션 제거
+2. 에러 코드 객체 상수화, 문자열 상수화, `user.role === "ADMIN"` 같은 것들도 `user.role === UserRole.ADMIN`으로 수정
+3. 각종 테스트 코드 및 여러 번 반복되는 문자열들 상수로 한 곳에서 관리
+4. 요청/응답 DTO 정책 통일, 이때 input validation 에러와 서버 에러를 어떻게 다룰 것인지에 대해서도 정리
+   - 요청 스키마 객체: ID 파라미터, 정렬 값, 필터링 쿼리(필드 뿐만 아니라 검색어까지), 생성/수정 등에 쓰일 Form 입력 객체 등. 여기에 `normalize`가 적용된 `zod-helper` 함수 적용
+   - 응답: `[domain].dto.ts`에 TypeScript interface로 처리
+   - 위 2개는 한 곳에서 관리되어야 하며, 서비스 계층부터 컴포넌트까지 재사용 되어야 함
+5. 위 1~4 부분들도 문서에 명시
+6. Pagination 변경?
