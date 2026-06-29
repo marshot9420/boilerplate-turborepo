@@ -54,7 +54,7 @@ pnpm >= 11.6.0 < 12
 ```txt
 pnpm 11.9.0
 TypeScript 5.9.2
-Turborepo 2.9.18
+Turborepo 2.10.0
 Vitest 4.1.8
 Playwright 1.61.1
 Prettier 3.7.4

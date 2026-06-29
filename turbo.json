@@ -15,7 +15,9 @@
         "DATABASE_URL",
         "DIRECT_URL",
         "AUTH_SESSION_COOKIE_NAME",
-        "AUTH_SESSION_MAX_AGE_SECONDS"
+        "AUTH_SESSION_MAX_AGE_SECONDS",
+        "MAIL_PROVIDER",
+        "MAIL_FROM"
       ],
       "passThroughEnv": [
         "GOOGLE_CLIENT_ID",
@@ -23,7 +25,8 @@
         "NAVER_CLIENT_ID",
         "NAVER_CLIENT_SECRET",
         "KAKAO_CLIENT_ID",
-        "KAKAO_CLIENT_SECRET"
+        "KAKAO_CLIENT_SECRET",
+        "RESEND_API_KEY"
       ]
     },
 
@@ -51,7 +54,9 @@
         "DATABASE_URL",
         "DIRECT_URL",
         "AUTH_SESSION_COOKIE_NAME",
-        "AUTH_SESSION_MAX_AGE_SECONDS"
+        "AUTH_SESSION_MAX_AGE_SECONDS",
+        "MAIL_PROVIDER",
+        "MAIL_FROM"
       ],
       "passThroughEnv": [
         "GOOGLE_CLIENT_ID",
@@ -59,7 +64,8 @@
         "NAVER_CLIENT_ID",
         "NAVER_CLIENT_SECRET",
         "KAKAO_CLIENT_ID",
-        "KAKAO_CLIENT_SECRET"
+        "KAKAO_CLIENT_SECRET",
+        "RESEND_API_KEY"
       ]
     },
 
@@ -79,7 +85,9 @@
         "DATABASE_URL",
         "DIRECT_URL",
         "AUTH_SESSION_COOKIE_NAME",
-        "AUTH_SESSION_MAX_AGE_SECONDS"
+        "AUTH_SESSION_MAX_AGE_SECONDS",
+        "MAIL_PROVIDER",
+        "MAIL_FROM"
       ],
       "passThroughEnv": [
         "GOOGLE_CLIENT_ID",
@@ -87,7 +95,8 @@
         "NAVER_CLIENT_ID",
         "NAVER_CLIENT_SECRET",
         "KAKAO_CLIENT_ID",
-        "KAKAO_CLIENT_SECRET"
+        "KAKAO_CLIENT_SECRET",
+        "RESEND_API_KEY"
       ]
     },
 
@@ -101,7 +110,9 @@
         "DATABASE_URL",
         "DIRECT_URL",
         "AUTH_SESSION_COOKIE_NAME",
-        "AUTH_SESSION_MAX_AGE_SECONDS"
+        "AUTH_SESSION_MAX_AGE_SECONDS",
+        "MAIL_PROVIDER",
+        "MAIL_FROM"
       ],
       "passThroughEnv": [
         "GOOGLE_CLIENT_ID",
@@ -109,7 +120,8 @@
         "NAVER_CLIENT_ID",
         "NAVER_CLIENT_SECRET",
         "KAKAO_CLIENT_ID",
-        "KAKAO_CLIENT_SECRET"
+        "KAKAO_CLIENT_SECRET",
+        "RESEND_API_KEY"
       ]
     },
 
@@ -136,7 +148,9 @@
         "DATABASE_URL",
         "DIRECT_URL",
         "AUTH_SESSION_COOKIE_NAME",
-        "AUTH_SESSION_MAX_AGE_SECONDS"
+        "AUTH_SESSION_MAX_AGE_SECONDS",
+        "MAIL_PROVIDER",
+        "MAIL_FROM"
       ],
       "passThroughEnv": [
         "GOOGLE_CLIENT_ID",
@@ -144,7 +158,8 @@
         "NAVER_CLIENT_ID",
         "NAVER_CLIENT_SECRET",
         "KAKAO_CLIENT_ID",
-        "KAKAO_CLIENT_SECRET"
+        "KAKAO_CLIENT_SECRET",
+        "RESEND_API_KEY"
       ]
     },
 

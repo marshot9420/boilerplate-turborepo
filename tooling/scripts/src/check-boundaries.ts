@@ -38,8 +38,9 @@ const FORBIDDEN_RUNTIME_DEPENDENCIES: Record<string, string[]> = {
   "@repo/core": [
     "@repo/database",
     "@repo/domain",
-    "@repo/auth-next",
+    "@repo/auth",
     "@repo/storage",
+    "@repo/mailer",
     "@repo/design-system",
     "@repo/env",
   ],
@@ -47,21 +48,38 @@ const FORBIDDEN_RUNTIME_DEPENDENCIES: Record<string, string[]> = {
   "@repo/env": [
     "@repo/database",
     "@repo/domain",
-    "@repo/auth-next",
+    "@repo/auth",
     "@repo/storage",
+    "@repo/mailer",
     "@repo/design-system",
   ],
 
-  "@repo/database": ["@repo/domain", "@repo/auth-next", "@repo/storage", "@repo/design-system"],
+  "@repo/database": [
+    "@repo/domain",
+    "@repo/auth",
+    "@repo/storage",
+    "@repo/mailer",
+    "@repo/design-system",
+  ],
 
-  "@repo/domain": ["@repo/auth-next", "@repo/storage", "@repo/design-system"],
+  "@repo/domain": ["@repo/auth", "@repo/storage", "@repo/mailer", "@repo/design-system"],
 
-  "@repo/auth-next": ["@repo/storage", "@repo/design-system"],
+  "@repo/auth": ["@repo/storage", "@repo/mailer", "@repo/design-system"],
 
   "@repo/storage": [
     "@repo/database",
     "@repo/domain",
-    "@repo/auth-next",
+    "@repo/auth",
+    "@repo/mailer",
+    "@repo/design-system",
+    "@repo/env",
+  ],
+
+  "@repo/mailer": [
+    "@repo/database",
+    "@repo/domain",
+    "@repo/auth",
+    "@repo/storage",
     "@repo/design-system",
     "@repo/env",
   ],
@@ -69,8 +87,9 @@ const FORBIDDEN_RUNTIME_DEPENDENCIES: Record<string, string[]> = {
   "@repo/design-system": [
     "@repo/database",
     "@repo/domain",
-    "@repo/auth-next",
+    "@repo/auth",
     "@repo/storage",
+    "@repo/mailer",
     "@repo/env",
   ],
 };
@@ -84,9 +103,11 @@ const PACKAGE_ALLOWED_RUNTIME_DEPENDENCIES: Record<string, string[]> = {
 
   "@repo/domain": ["@repo/core", "@repo/database"],
 
-  "@repo/auth-next": ["@repo/core", "@repo/database", "@repo/domain"],
+  "@repo/auth": ["@repo/core", "@repo/database", "@repo/domain", "@repo/env"],
 
   "@repo/storage": ["@repo/core"],
+
+  "@repo/mailer": ["@repo/core"],
 
   "@repo/design-system": ["@repo/core"],
 };
@@ -107,6 +128,7 @@ async function main() {
 
   const workspacePackageNames = new Set(projects.map((project) => project.name));
   const apps = projects.filter((project) => project.kind === "app");
+
   const violations = findBoundaryViolations({
     projects,
     workspacePackageNames,

@@ -11,9 +11,9 @@ export default [
         {
           patterns: [
             {
-              regex: "^@repo/(database|domain|auth-next|env)(?:/|$)",
+              regex: "^@repo/(database|domain|auth|env|mailer)(?:/|$)",
               message:
-                "packages/design-system은 범용 UI 계층이므로 database, domain, auth-next, env를 import할 수 없습니다.",
+                "packages/design-system은 범용 UI 계층이므로 database, domain, auth, env, mailer를 import할 수 없습니다.",
             },
             {
               regex: "^(?:@/|apps/|(?:\\.\\./)+apps/)",
