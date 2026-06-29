@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 import type { ReactNode } from "react";
 
@@ -8,10 +8,39 @@ import { ToastProvider } from "@repo/design-system/toast";
 import { clientEnv } from "@repo/env/client";
 import { serverEnv } from "@repo/env/server";
 
+const APP_NAME = "Admin";
+
 export const metadata: Metadata = {
   metadataBase: new URL(clientEnv.NEXT_PUBLIC_APP_URL),
-  title: "Admin",
+  applicationName: APP_NAME,
+
+  title: {
+    default: APP_NAME,
+    template: `%s | ${APP_NAME}`,
+  },
+
   description: "Admin application",
+
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+      "max-video-preview": 0,
+      "max-image-preview": "none",
+      "max-snippet": 0,
+    },
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  colorScheme: "light",
+  themeColor: "#ffffff",
 };
 
 interface RootLayoutProps {
