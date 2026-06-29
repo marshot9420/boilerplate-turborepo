@@ -44,3 +44,7 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Claude
+CLAUDE.local.md
+.claude/settings.local.json
