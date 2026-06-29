@@ -9,7 +9,7 @@ import {
   normalizeOptionalIntInput,
   normalizeOptionalNumberInput,
   normalizeOptionalStringInput,
-} from "../normalize";
+} from "../normalizer";
 
 export function zRequiredString(message = "필수 입력값입니다.") {
   return z.string().trim().min(1, message);

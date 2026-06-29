@@ -7,7 +7,7 @@
     "./action": "./src/action/index.ts",
     "./errors": "./src/errors/index.ts",
     "./logger": "./src/logger/index.ts",
-    "./normalize": "./src/normalize/index.ts",
+    "./normalizer": "./src/normalizer/index.ts",
     "./pagination": "./src/pagination/index.ts",
     "./result": "./src/result/index.ts",
     "./search-params": "./src/search-params/index.ts",

@@ -20,11 +20,6 @@ const navigationItems = [
     label: "사용자",
     description: "사용자 관리",
   },
-  {
-    href: URLS.CLIENT.SETTINGS,
-    label: "설정",
-    description: "관리자 설정",
-  },
 ] as const;
 
 const meta = {
