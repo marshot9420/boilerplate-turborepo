@@ -4,7 +4,6 @@ about: 리팩토링 이슈 템플릿
 title: "\U0001F6E0️ [REFACTOR] "
 labels: 리팩토링
 assignees: marshot9420
-
 ---
 
 # 🛠️ 설명

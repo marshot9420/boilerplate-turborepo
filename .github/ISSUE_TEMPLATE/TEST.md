@@ -4,7 +4,6 @@ about: 테스트 코드 추가 / 수정 이슈 템플릿
 title: "\U0001F9EA [TEST] "
 labels: 테스트
 assignees: marshot9420
-
 ---
 
 # 🧪 목적

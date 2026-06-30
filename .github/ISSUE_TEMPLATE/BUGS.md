@@ -4,7 +4,6 @@ about: 버그 이슈 템플릿
 title: "\U0001F41E [BUG] "
 labels: 버그
 assignees: marshot9420
-
 ---
 
 # 🐞 버그 설명

@@ -4,7 +4,6 @@ about: 환경 및 인프라 설정 관련 이슈 템플릿
 title: "⚙️ [ENV]"
 labels: 환경 설정
 assignees: marshot9420
-
 ---
 
 # ⚙️ 목적

@@ -4,7 +4,6 @@ about: 디자인 관련 이슈 템플릿
 title: "\U0001F3A8 [DESIGN] "
 labels: 디자인
 assignees: marshot9420
-
 ---
 
 # 🎨 목적

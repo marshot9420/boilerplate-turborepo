@@ -2,9 +2,8 @@
 name: "✨ 새로운 기능 추가"
 about: 새로운 기능 추가 이슈 템플릿
 title: "✨ [FEATURE] "
-labels: ''
+labels: ""
 assignees: marshot9420
-
 ---
 
 # 📝 설명
