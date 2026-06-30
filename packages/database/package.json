@@ -7,6 +7,7 @@
     "./client": "./src/client.ts",
     "./content": "./src/content/index.ts",
     "./errors": "./src/errors/index.ts",
+    "./script-client": "./src/script-client.ts",
     "./transaction": "./src/transaction.ts",
     "./user": "./src/user/index.ts",
     "./user-oauth-account": "./src/user-oauth-account/index.ts",
@@ -20,10 +21,15 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:integration:watch": "vitest --config vitest.integration.config.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:test:push": "NODE_ENV=test prisma db push",
+    "db:test:generate": "NODE_ENV=test prisma generate",
+    "db:test:migrate": "NODE_ENV=test prisma migrate"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",

@@ -1,4 +1,4 @@
-import { AuthProvider } from "@prisma/client";
+import { AuthProvider, UserRole, UserStatus } from "@prisma/client";
 import { z } from "zod";
 
 import type { ListQuery } from "@repo/core/types";
@@ -28,6 +28,24 @@ export interface UserListQuery extends ListQuery<UserListSortKey> {
   role?: "USER" | "ADMIN";
   status?: "ACTIVE" | "SUSPENDED" | "BANNED" | "DELETED";
 }
+
+export const UserListQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).optional(),
+
+  limit: z.coerce.number().int().min(1).max(100).optional(),
+
+  keyword: z.string().trim().optional(),
+
+  role: z.enum(UserRole).optional(),
+
+  status: z.enum(UserStatus).optional(),
+
+  sortKey: z.enum(UserListSortKeys).optional(),
+
+  sortDirection: z.enum(["asc", "desc"]).optional(),
+});
+
+export type UserListQueryInput = z.infer<typeof UserListQuerySchema>;
 
 export const UpdateUserProfileRequest = z.object({
   name: zNullableString().pipe(
@@ -61,3 +79,14 @@ export const FindOrCreateOAuthUserRequest = z.object({
 });
 
 export type FindOrCreateOAuthUserRequestInput = z.infer<typeof FindOrCreateOAuthUserRequest>;
+
+export const DeleteMyAccountRequest = z.object({
+  confirmation: z
+    .string()
+    .trim()
+    .refine((value) => value === "회원탈퇴", {
+      message: "회원탈퇴를 입력해 주세요.",
+    }),
+});
+
+export type DeleteMyAccountRequestInput = z.infer<typeof DeleteMyAccountRequest>;

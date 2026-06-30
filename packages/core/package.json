@@ -7,6 +7,7 @@
     "./action": "./src/action/index.ts",
     "./errors": "./src/errors/index.ts",
     "./logger": "./src/logger/index.ts",
+    "./normalizer": "./src/normalizer/index.ts",
     "./pagination": "./src/pagination/index.ts",
     "./result": "./src/result/index.ts",
     "./search-params": "./src/search-params/index.ts",
@@ -15,12 +16,13 @@
     "./validation": "./src/validation/index.ts"
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf .turbo node_modules",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "zod": "^4.4.3"
@@ -30,6 +32,6 @@
     "@repo/typescript-config": "workspace:*",
     "@repo/vitest-config": "workspace:*",
     "eslint": "^9.39.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.2"
   }
 }

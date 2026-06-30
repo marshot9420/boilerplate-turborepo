@@ -7,11 +7,19 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "init-project": "tsx src/init-project.ts",
     "setup:scope": "tsx src/setup-scope.ts",
+    "seed": "tsx src/seed.ts",
+    "seed:e2e": "tsx src/seed-e2e.ts",
     "clean": "tsx src/clean.ts",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "check:boundaries": "tsx src/check-boundaries.ts"
+  },
+  "dependencies": {
+    "@repo/database": "workspace:*",
+    "dotenv": "^17.4.2"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

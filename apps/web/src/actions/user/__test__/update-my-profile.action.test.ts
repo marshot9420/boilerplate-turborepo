@@ -1,16 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { AppError } from "@repo/core/errors";
+import { UpdateUserProfileRequest } from "@repo/domain/user/client";
 
 import { updateMyProfileAction } from "../update-my-profile.action";
-
-interface CreateActionParams<TInput> {
-  actionName: string;
-  schema: unknown;
-  formData: FormData;
-  handler: (input: TInput) => Promise<unknown>;
-  successMessage?: string;
-}
 
 const authMock = vi.hoisted(() => ({
   requireUser: vi.fn(),
@@ -20,12 +12,12 @@ const actionMock = vi.hoisted(() => ({
   createAction: vi.fn(),
 }));
 
-const userServiceMock = vi.hoisted(() => ({
-  updateUserProfileService: vi.fn(),
+const cacheMock = vi.hoisted(() => ({
+  revalidatePath: vi.fn(),
 }));
 
-const nextCacheMock = vi.hoisted(() => ({
-  revalidatePath: vi.fn(),
+const userServiceMock = vi.hoisted(() => ({
+  updateUserProfileService: vi.fn(),
 }));
 
 vi.mock("@repo/auth/server", () => authMock);
@@ -34,16 +26,24 @@ vi.mock("@repo/core/action", () => actionMock);
 
 vi.mock("@repo/domain/user/server", () => userServiceMock);
 
-vi.mock("next/cache", () => nextCacheMock);
+vi.mock("next/cache", () => cacheMock);
 
-function createSession() {
-  return {
-    user: {
-      id: "user-id",
-      role: "USER",
-      status: "ACTIVE",
+vi.mock("@/constants", () => ({
+  URLS: {
+    CLIENT: {
+      MY_PAGE: "/me",
     },
-  };
+  },
+}));
+
+function createFormData() {
+  const formData = new FormData();
+
+  formData.set("name", "수정된 이름");
+  formData.set("avatarUrl", "https://example.com/avatar.png");
+  formData.set("nickname", "new_nickname");
+
+  return formData;
 }
 
 describe("updateMyProfileAction", () => {
@@ -51,17 +51,17 @@ describe("updateMyProfileAction", () => {
     vi.clearAllMocks();
   });
 
-  it("현재 사용자의 프로필을 수정하고 MY_PAGE를 revalidate 한다", async () => {
-    const formData = new FormData();
+  it("내 프로필 수정 Action을 생성하고 성공하면 마이페이지를 revalidate 한다", async () => {
+    const formData = createFormData();
 
     const serviceResult = {
       ok: true,
       data: {
         id: "user-id",
         email: "user@example.com",
-        name: "테스트 사용자",
-        avatarUrl: null,
-        nickname: "tester",
+        name: "수정된 이름",
+        avatarUrl: "https://example.com/avatar.png",
+        nickname: "new_nickname",
         role: "USER",
         status: "ACTIVE",
         createdAt: "2026-01-01T00:00:00.000Z",
@@ -77,74 +77,57 @@ describe("updateMyProfileAction", () => {
       message: "프로필이 수정되었습니다.",
     };
 
-    authMock.requireUser.mockResolvedValue(createSession());
+    authMock.requireUser.mockResolvedValue({
+      user: {
+        id: "user-id",
+      },
+    });
+
     userServiceMock.updateUserProfileService.mockResolvedValue(serviceResult);
 
-    actionMock.createAction.mockImplementationOnce(
-      async (
-        params: CreateActionParams<{
-          name?: string | null;
-          avatarUrl?: string | null;
-          nickname: string;
-        }>,
-      ) => {
-        await params.handler({
-          name: "테스트 사용자",
-          avatarUrl: null,
-          nickname: "tester",
-        });
+    actionMock.createAction.mockImplementation(async (params) => {
+      const handlerResult = await params.handler({
+        name: "수정된 이름",
+        avatarUrl: "https://example.com/avatar.png",
+        nickname: "new_nickname",
+      });
 
-        return actionResult;
-      },
-    );
+      expect(handlerResult).toEqual(serviceResult);
+
+      return actionResult;
+    });
 
     const result = await updateMyProfileAction(null, formData);
 
-    expect(authMock.requireUser).toHaveBeenCalledOnce();
+    expect(authMock.requireUser).toHaveBeenCalledTimes(1);
 
-    expect(actionMock.createAction).toHaveBeenCalledWith(
-      expect.objectContaining({
-        actionName: "user.update_my_profile",
-        formData,
-        successMessage: "프로필이 수정되었습니다.",
-      }),
-    );
+    expect(actionMock.createAction).toHaveBeenCalledTimes(1);
 
-    expect(userServiceMock.updateUserProfileService).toHaveBeenCalledWith("user-id", {
-      name: "테스트 사용자",
-      avatarUrl: null,
-      nickname: "tester",
+    const createActionParams = actionMock.createAction.mock.calls[0]?.[0];
+
+    expect(createActionParams).toMatchObject({
+      actionName: "user.update_my_profile",
+      schema: UpdateUserProfileRequest,
+      formData,
+      successMessage: "프로필이 수정되었습니다.",
     });
 
-    expect(nextCacheMock.revalidatePath).toHaveBeenCalledWith("/me");
+    expect(userServiceMock.updateUserProfileService).toHaveBeenCalledWith("user-id", {
+      name: "수정된 이름",
+      avatarUrl: "https://example.com/avatar.png",
+      nickname: "new_nickname",
+    });
+
+    expect(cacheMock.revalidatePath).toHaveBeenCalledWith("/me");
+
     expect(result).toEqual(actionResult);
   });
 
-  it("액션 결과가 실패하면 revalidatePath를 호출하지 않는다", async () => {
-    const formData = new FormData();
+  it("내 프로필 수정 Action이 실패하면 마이페이지를 revalidate 하지 않는다", async () => {
+    const formData = createFormData();
 
     const actionResult = {
       ok: false,
-      code: "VALIDATION_ERROR",
-      message: "입력값을 확인해 주세요.",
-      fieldErrors: {
-        nickname: ["닉네임을 입력해 주세요."],
-      },
-    };
-
-    authMock.requireUser.mockResolvedValue(createSession());
-    actionMock.createAction.mockResolvedValue(actionResult);
-
-    const result = await updateMyProfileAction(null, formData);
-
-    expect(nextCacheMock.revalidatePath).not.toHaveBeenCalled();
-    expect(result).toEqual(actionResult);
-  });
-
-  it("서비스가 실패 Result를 반환해도 createAction의 결과를 그대로 반환한다", async () => {
-    const formData = new FormData();
-
-    const serviceError: AppError = {
       code: "USER_NICKNAME_DUPLICATED",
       message: "이미 사용 중인 닉네임입니다.",
       fieldErrors: {
@@ -152,48 +135,35 @@ describe("updateMyProfileAction", () => {
       },
     };
 
-    const serviceResult = {
-      ok: false,
-      error: serviceError,
-    };
-
-    const actionResult = {
-      ok: false,
-      code: serviceError.code,
-      message: serviceError.message,
-      fieldErrors: serviceError.fieldErrors,
-    };
-
-    authMock.requireUser.mockResolvedValue(createSession());
-    userServiceMock.updateUserProfileService.mockResolvedValue(serviceResult);
-
-    actionMock.createAction.mockImplementationOnce(
-      async (
-        params: CreateActionParams<{
-          name?: string | null;
-          avatarUrl?: string | null;
-          nickname: string;
-        }>,
-      ) => {
-        await params.handler({
-          name: "테스트 사용자",
-          avatarUrl: null,
-          nickname: "duplicated",
-        });
-
-        return actionResult;
+    authMock.requireUser.mockResolvedValue({
+      user: {
+        id: "user-id",
       },
-    );
+    });
+
+    actionMock.createAction.mockResolvedValue(actionResult);
 
     const result = await updateMyProfileAction(null, formData);
 
-    expect(userServiceMock.updateUserProfileService).toHaveBeenCalledWith("user-id", {
-      name: "테스트 사용자",
-      avatarUrl: null,
-      nickname: "duplicated",
-    });
+    expect(authMock.requireUser).toHaveBeenCalledTimes(1);
 
-    expect(nextCacheMock.revalidatePath).not.toHaveBeenCalled();
+    expect(actionMock.createAction).toHaveBeenCalledTimes(1);
+
+    expect(cacheMock.revalidatePath).not.toHaveBeenCalled();
+
     expect(result).toEqual(actionResult);
+  });
+
+  it("인증에 실패하면 createAction을 호출하지 않는다", async () => {
+    const formData = createFormData();
+    const error = new Error("UNAUTHORIZED");
+
+    authMock.requireUser.mockRejectedValue(error);
+
+    await expect(updateMyProfileAction(null, formData)).rejects.toThrow("UNAUTHORIZED");
+
+    expect(actionMock.createAction).not.toHaveBeenCalled();
+    expect(userServiceMock.updateUserProfileService).not.toHaveBeenCalled();
+    expect(cacheMock.revalidatePath).not.toHaveBeenCalled();
   });
 });

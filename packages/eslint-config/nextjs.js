@@ -41,6 +41,27 @@ export const nextJsConfig = [
   },
 
   {
+    files: [
+      "next.config.js",
+      "next.config.mjs",
+      "next.config.ts",
+      "postcss.config.js",
+      "postcss.config.mjs",
+      "tailwind.config.js",
+      "tailwind.config.ts",
+      "vitest.config.ts",
+      "vitest.integration.config.ts",
+      "eslint.config.js",
+    ],
+
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+
+  {
     plugins: {
       "@next/next": pluginNext,
     },

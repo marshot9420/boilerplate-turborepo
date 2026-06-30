@@ -1,0 +1,44 @@
+{
+  "autoMemoryEnabled": false,
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/.env)",
+      "Read(./**/.env.*)",
+      "Read(./secrets/**)",
+      "Read(./.vercel/**)",
+      "Edit(./pnpm-lock.yaml)",
+      "Edit(./packages/database/prisma/migrations/**)",
+      "Bash(rm -rf *)",
+      "Bash(git push *)",
+      "Bash(git push --force*)",
+      "Bash(pnpm publish *)",
+      "Bash(npm publish *)"
+    ],
+    "ask": [
+      "Bash(pnpm install *)",
+      "Bash(pnpm add *)",
+      "Bash(pnpm remove *)",
+      "Bash(pnpm db:migrate *)",
+      "Bash(pnpm db:push *)",
+      "Bash(git commit *)"
+    ],
+    "allow": [
+      "Read(./**)",
+      "Edit(./apps/**)",
+      "Edit(./packages/**)",
+      "Edit(./tooling/**)",
+      "Edit(./docs/**)",
+      "Edit(./README.md)",
+      "Bash(pnpm check)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm check-types)",
+      "Bash(pnpm format:check)",
+      "Bash(pnpm --filter * test)",
+      "Bash(git status)",
+      "Bash(git diff *)"
+    ]
+  }
+}

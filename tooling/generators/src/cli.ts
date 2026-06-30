@@ -2,6 +2,7 @@ import {
   availableGenerators,
   generateComponent,
   generateDomain,
+  generateFeature,
   isGeneratorType,
 } from "./generators";
 
@@ -17,6 +18,11 @@ Examples:
   pnpm generate component phone-input --target primitive --category inputs
   pnpm generate component phone-input --target web --category inputs --primitive phone-input
   pnpm generate component phone-input --target admin --category inputs --primitive phone-input
+
+  pnpm generate feature content-status --app admin
+  pnpm generate feature update-profile --app web
+  pnpm generate feature admin content-status
+  pnpm generate feature web update-profile
 
 Available generators:
   ${availableGenerators.join(", ")}
@@ -46,6 +52,14 @@ async function main() {
 
   if (type === "component") {
     await generateComponent({
+      name,
+      args,
+    });
+    return;
+  }
+
+  if (type === "feature") {
+    await generateFeature({
       name,
       args,
     });

@@ -11,7 +11,7 @@ import {
   updateContentRepository,
 } from "@repo/database/content";
 
-import type { ContentDetailResponse, ContentResponse } from "./content.dto";
+import type { ContentDetailResponse, ContentListResponse } from "./content.dto";
 import { CONTENT_ERROR_CODE } from "./content.error";
 import { toContentDetailResponse, toContentResponse } from "./content.mapper";
 import {
@@ -23,7 +23,7 @@ import {
   type ContentPermissionActor,
 } from "./content.permission";
 import type {
-  ContentListQuery,
+  ContentListQueryInput,
   CreateContentRequestInput,
   UpdateContentRequestInput,
   UpdateContentStatusRequestInput,
@@ -108,15 +108,9 @@ export async function getContentByIdService(
   }
 }
 
-export async function getContentsService(query: ContentListQuery = {}): Promise<
-  Result<
-    {
-      items: ContentResponse[];
-      meta: ReturnType<typeof createPaginationMeta>;
-    },
-    AppError
-  >
-> {
+export async function getContentsService(
+  query: ContentListQueryInput = {},
+): Promise<Result<ContentListResponse, AppError>> {
   try {
     const pagination = createPagination({
       page: query.page,

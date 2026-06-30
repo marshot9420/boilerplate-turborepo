@@ -1,7 +1,7 @@
 import type { User } from "@prisma/client";
 import { describe, expect, it } from "vitest";
 
-import { toUserDetailResponse, toUserResponse } from "../user.mapper";
+import { toUserDetailResponse, toUserListItemResponse, toUserResponse } from "../user.mapper";
 
 function createMockUser(overrides: Partial<User> = {}): User {
   return {
@@ -87,6 +87,60 @@ describe("user.mapper", () => {
       const result = toUserResponse(user);
 
       expect(result.lastLoginAt).toBeNull();
+    });
+  });
+
+  describe("toUserListItemResponse", () => {
+    it("User를 UserListItemResponse로 변환한다", () => {
+      const user = createMockUser({
+        id: "user-list-id",
+        email: "list@example.com",
+        name: "목록 사용자",
+        avatarUrl: "https://example.com/avatar.png",
+        nickname: "list_user",
+        role: "ADMIN",
+        status: "ACTIVE",
+        createdAt: new Date("2026-01-05T00:00:00.000Z"),
+        updatedAt: new Date("2026-01-06T00:00:00.000Z"),
+        lastLoginAt: new Date("2026-01-07T00:00:00.000Z"),
+        deletedAt: new Date("2026-01-08T00:00:00.000Z"),
+      });
+
+      const result = toUserListItemResponse(user);
+
+      expect(result).toEqual({
+        id: "user-list-id",
+        email: "list@example.com",
+        name: "목록 사용자",
+        avatarUrl: "https://example.com/avatar.png",
+        nickname: "list_user",
+        role: "ADMIN",
+        status: "ACTIVE",
+        createdAt: "2026-01-05T00:00:00.000Z",
+        lastLoginAt: "2026-01-07T00:00:00.000Z",
+      });
+    });
+
+    it("lastLoginAt이 null이면 null로 변환한다", () => {
+      const user = createMockUser({
+        lastLoginAt: null,
+      });
+
+      const result = toUserListItemResponse(user);
+
+      expect(result.lastLoginAt).toBeNull();
+    });
+
+    it("목록 응답에는 updatedAt과 deletedAt을 포함하지 않는다", () => {
+      const user = createMockUser({
+        updatedAt: new Date("2026-01-06T00:00:00.000Z"),
+        deletedAt: new Date("2026-01-07T00:00:00.000Z"),
+      });
+
+      const result = toUserListItemResponse(user);
+
+      expect(result).not.toHaveProperty("updatedAt");
+      expect(result).not.toHaveProperty("deletedAt");
     });
   });
 });

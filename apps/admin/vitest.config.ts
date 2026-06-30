@@ -10,4 +10,8 @@ export default mergeConfig(reactConfig, {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+
+  test: {
+    setupFiles: ["./vitest.setup.ts"],
+  },
 });

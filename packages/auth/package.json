@@ -13,7 +13,10 @@
     "check-types": "tsc --noEmit",
     "clean": "rm -rf node_modules .turbo",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:integration:watch": "vitest --config vitest.integration.config.ts"
   },
   "dependencies": {
     "@repo/core": "workspace:*",
