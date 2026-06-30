@@ -37,7 +37,6 @@ const securityHeaders = [
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
-  typedRoutes: true,
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
 
