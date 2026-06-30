@@ -7,12 +7,13 @@ import type { Result } from "../result";
 import { mapZodErrorToFieldErrors } from "../validation";
 import type { ActionResult } from "./action-result";
 
-export interface CreateActionParams<TInput, TData> {
+interface CreateActionParams<TInput, TData> {
   actionName: string;
   schema: z.ZodType<TInput>;
   formData: FormData;
   handler: (input: TInput) => Promise<Result<TData, AppError>>;
   successMessage?: string;
+  parseFormData?: (formData: FormData) => unknown;
 }
 
 export async function createAction<TInput, TData>({
@@ -21,9 +22,11 @@ export async function createAction<TInput, TData>({
   formData,
   handler,
   successMessage,
+  parseFormData,
 }: CreateActionParams<TInput, TData>): Promise<ActionResult<TData>> {
   try {
-    const raw = Object.fromEntries(formData.entries());
+    const raw = parseFormData ? parseFormData(formData) : Object.fromEntries(formData.entries());
+
     const parsed = schema.safeParse(raw);
 
     if (!parsed.success) {
