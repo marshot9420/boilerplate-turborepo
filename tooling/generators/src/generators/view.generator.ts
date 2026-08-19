@@ -156,7 +156,7 @@ async function validateApp(params: { workspaceRoot: string; app: string }): Prom
 function createViewTemplate(params: { componentName: string }): string {
   const { componentName } = params;
 
-  return `export function ${componentName}() {
+  return `export default function ${componentName}() {
   return <div>${componentName}</div>;
 }
 `;
@@ -165,7 +165,7 @@ function createViewTemplate(params: { componentName: string }): string {
 function createUiIndexTemplate(params: { componentName: string; viewName: string }): string {
   const { componentName, viewName } = params;
 
-  return `export { ${componentName} } from "./${viewName}";
+  return `export { default as ${componentName} } from "./${viewName}";
 `;
 }
 

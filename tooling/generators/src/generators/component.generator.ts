@@ -49,7 +49,6 @@ function parseFlag(value: string, nextValue: string | undefined): ParsedFlag {
   }
 
   const normalized = value.slice(2);
-
   const [key, inlineValue] = normalized.split("=");
 
   if (!key) {
@@ -100,7 +99,6 @@ function parseOptions(params: GenerateComponentParams): ComponentGeneratorOption
     }
 
     const next = args[index + 1];
-
     const parsed = parseFlag(current, next);
 
     flags.set(parsed.key, parsed.value);
@@ -192,7 +190,7 @@ import { cn } from "../../../utils";
 
 type ${componentName}Props = ComponentPropsWithRef<"div">;
 
-export function ${componentName}({
+export default function ${componentName}({
   className,
   ...props
 }: ${componentName}Props) {
@@ -205,8 +203,9 @@ function createComponentTestTemplate(params: ComponentTemplateParams): string {
   const { componentName, kebabName } = params;
 
   return `import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 
-import { ${componentName} } from "./${kebabName}";
+import ${componentName} from "./${kebabName}";
 
 describe("${componentName}", () => {
   it("children을 렌더링한다", () => {
@@ -236,7 +235,7 @@ function createComponentStoryTemplate(params: StoryTemplateParams): string {
 
   return `import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { ${componentName} } from "./${kebabName}";
+import ${componentName} from "./${kebabName}";
 
 const meta: Meta<typeof ${componentName}> = {
   title: "${storyTarget}/${storyCategory}/${componentName}",
@@ -257,7 +256,7 @@ export const Default: Story = {};
 function createComponentIndexTemplate(params: ComponentTemplateParams): string {
   const { componentName, kebabName } = params;
 
-  return `export { ${componentName} } from "./${kebabName}";
+  return `export { default as ${componentName} } from "./${kebabName}";
 `;
 }
 

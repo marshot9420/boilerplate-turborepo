@@ -186,7 +186,7 @@ function createComponentTemplate(params: { componentName: string }): string {
 
 type ${componentName}Props = HTMLAttributes<HTMLDivElement>;
 
-export function ${componentName}({
+export default function ${componentName}({
   children,
   ...props
 }: ${componentName}Props) {
@@ -201,7 +201,7 @@ function createTestTemplate(params: { componentName: string; uiName: string }): 
   return `import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { ${componentName} } from "./${uiName}";
+import ${componentName} from "./${uiName}";
 
 describe("${componentName}", () => {
   it("children을 렌더링한다", () => {
@@ -236,7 +236,7 @@ function createStoryTemplate(params: {
 
   return `import type { Meta, StoryObj } from "@repo/storybook-config/nextjs";
 
-import { ${componentName} } from "./${uiName}";
+import ${componentName} from "./${uiName}";
 
 const meta: Meta<typeof ${componentName}> = {
   title: "Features/${domainName}/${featureTitle}/${componentName}",
@@ -257,7 +257,7 @@ export const Default: Story = {};
 function createComponentIndexTemplate(params: { componentName: string; uiName: string }): string {
   const { componentName, uiName } = params;
 
-  return `export { ${componentName} } from "./${uiName}";
+  return `export { default as ${componentName} } from "./${uiName}";
 `;
 }
 
@@ -315,6 +315,7 @@ async function syncFeatureUiIndex(uiDirectory: string): Promise<void> {
     }
 
     const content = await readFile(componentIndexPath, "utf8");
+
     const exportNames = extractRuntimeExportNames(content);
 
     if (exportNames.length === 0) {
@@ -337,9 +338,11 @@ async function syncFeatureIndex(params: { featureDirectory: string }): Promise<v
   const { featureDirectory } = params;
 
   const uiIndexPath = path.join(featureDirectory, "ui", "index.ts");
+
   const featureIndexPath = path.join(featureDirectory, "index.ts");
 
   const uiIndexContent = await readFile(uiIndexPath, "utf8");
+
   const exportNames = extractRuntimeExportNames(uiIndexContent);
 
   if (exportNames.length === 0) {
@@ -398,6 +401,7 @@ async function syncFeatureDomainIndex(params: { domainDirectory: string }): Prom
     }
 
     const content = await readFile(featureIndexPath, "utf8");
+
     const exportNames = extractRuntimeExportNames(content);
 
     if (exportNames.length === 0) {

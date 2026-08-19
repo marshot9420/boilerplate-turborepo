@@ -74,7 +74,6 @@ function parseOptions(params: GenerateEntityParams): EntityGeneratorOptions {
     }
 
     const next = args[index + 1];
-
     const parsed = parseFlag(current, next);
 
     flags.set(parsed.key, parsed.value);
@@ -180,33 +179,36 @@ async function syncEntityUiIndex(uiDirectory: string): Promise<void> {
     withFileTypes: true,
   });
 
+  const componentDirectories = entries
+    .filter((entry) => entry.isDirectory())
+    .sort((a, b) => a.name.localeCompare(b.name));
+
   const lines: string[] = [];
 
-  for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
-    if (!entry.isDirectory()) {
-      continue;
-    }
-
-    const componentIndexPath = path.join(uiDirectory, entry.name, "index.ts");
+  for (const componentDirectory of componentDirectories) {
+    const componentIndexPath = path.join(uiDirectory, componentDirectory.name, "index.ts");
 
     if (!(await exists(componentIndexPath))) {
       continue;
     }
 
     const componentIndexContent = await readFile(componentIndexPath, "utf8");
+
     const exportNames = extractRuntimeExportNames(componentIndexContent);
 
     if (exportNames.length === 0) {
       continue;
     }
 
-    lines.push(createNamedExportStatement(exportNames, `./${entry.name}`));
+    lines.push(createNamedExportStatement(exportNames, `./${componentDirectory.name}`));
   }
 
-  await writeFile(path.join(uiDirectory, "index.ts"), `${lines.join("\n")}\n`);
+  const uiIndexPath = path.join(uiDirectory, "index.ts");
+
+  await writeFile(uiIndexPath, `${lines.join("\n")}\n`);
 
   logger.info("entity.ui_export.updated", {
-    path: path.join(uiDirectory, "index.ts"),
+    path: uiIndexPath,
   });
 }
 
@@ -217,6 +219,7 @@ async function syncEntityDomainIndex(params: {
   const { domainIndexPath, uiIndexPath } = params;
 
   const uiIndexContent = await readFile(uiIndexPath, "utf8");
+
   const exportNames = extractRuntimeExportNames(uiIndexContent);
 
   if (exportNames.length === 0) {
@@ -224,6 +227,7 @@ async function syncEntityDomainIndex(params: {
   }
 
   const exportStatement = createNamedExportStatement(exportNames, "./ui");
+
   const existingContent = await readTextFileOrEmpty(domainIndexPath);
 
   const uiExportPattern = /export\s+(?:\*\s+|\{[\s\S]*?\}\s+)from\s*["']\.\/ui["'];?/g;
@@ -260,7 +264,7 @@ function createComponentTemplate(params: { componentName: string }): string {
 
 type ${componentName}Props = HTMLAttributes<HTMLDivElement>;
 
-export function ${componentName}({
+export default function ${componentName}({
   children,
   ...props
 }: ${componentName}Props) {
@@ -275,7 +279,7 @@ function createTestTemplate(params: { componentName: string; entityName: string 
   return `import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { ${componentName} } from "./${entityName}";
+import ${componentName} from "./${entityName}";
 
 describe("${componentName}", () => {
   it("children을 렌더링한다", () => {
@@ -308,7 +312,7 @@ function createStoryTemplate(params: {
 
   return `import type { Meta, StoryObj } from "@repo/storybook-config/nextjs";
 
-import { ${componentName} } from "./${entityName}";
+import ${componentName} from "./${entityName}";
 
 const meta: Meta<typeof ${componentName}> = {
   title: "Entities/${domainName}/${componentName}",
@@ -329,7 +333,7 @@ export const Default: Story = {};
 function createLocalIndexTemplate(params: { componentName: string; entityName: string }): string {
   const { componentName, entityName } = params;
 
-  return `export { ${componentName} } from "./${entityName}";
+  return `export { default as ${componentName} } from "./${entityName}";
 `;
 }
 
