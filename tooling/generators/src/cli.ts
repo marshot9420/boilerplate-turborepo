@@ -4,6 +4,7 @@ import {
   generateDomain,
   generateEntity,
   generateFeature,
+  generateView,
   isGeneratorType,
 } from "./generators";
 
@@ -23,8 +24,12 @@ Examples:
   pnpm generate entity product-card --app web --domain product
 
   pnpm generate feature update-profile --app web --domain user --ui update-profile-form
-  pnpm generate feature cancel-order --app web --domain order --ui cancel-order-dialog
+  pnpm generate feature register-order --app web --domain order --ui register-order-dialog
   pnpm generate feature logout --app admin --domain auth --ui logout-button
+
+  pnpm generate view order-list-view --app admin --domain order
+  pnpm generate view order-detail-view --app admin --domain order
+  pnpm generate view my-profile-view --app web --domain user
 
 Available generators:
   ${availableGenerators.join(", ")}
@@ -79,6 +84,15 @@ async function main() {
 
   if (type === "feature") {
     await generateFeature({
+      name,
+      args,
+    });
+
+    return;
+  }
+
+  if (type === "view") {
+    await generateView({
       name,
       args,
     });
