@@ -17,14 +17,14 @@
     "clean": "rm -rf node_modules .turbo coverage"
   },
   "dependencies": {
-    "server-only": "^0.0.1"
+    "server-only": "catalog:"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@repo/vitest-config": "workspace:*",
-    "eslint": "^9.39.1",
-    "typescript": "5.9.2",
-    "vitest": "^4.1.8"
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

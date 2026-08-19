@@ -20,16 +20,16 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
-    "@vitejs/plugin-react": "^6.0.2",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
     "@vitest/coverage-v8": "^4.1.8",
-    "dotenv": "^17.4.2",
-    "eslint": "^9.39.1",
-    "jsdom": "^29.1.1",
-    "typescript": "5.9.2",
-    "vitest": "^4.1.8"
+    "dotenv": "catalog:",
+    "eslint": "catalog:",
+    "jsdom": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "@testing-library/jest-dom": "^6.0.0",
