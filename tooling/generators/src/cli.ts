@@ -2,7 +2,9 @@ import {
   availableGenerators,
   generateComponent,
   generateDomain,
+  generateEntity,
   generateFeature,
+  generateView,
   isGeneratorType,
 } from "./generators";
 
@@ -15,14 +17,19 @@ Examples:
   pnpm generate domain content
 
   pnpm generate component empty-state --target all --category feedback
-  pnpm generate component phone-input --target primitive --category inputs
-  pnpm generate component phone-input --target web --category inputs --primitive phone-input
-  pnpm generate component phone-input --target admin --category inputs --primitive phone-input
+  pnpm generate component phone-input --target web --category inputs
+  pnpm generate component field --target admin --category form
 
-  pnpm generate feature content-status --app admin
-  pnpm generate feature update-profile --app web
-  pnpm generate feature admin content-status
-  pnpm generate feature web update-profile
+  pnpm generate entity order-status-badge --app admin --domain order
+  pnpm generate entity product-card --app web --domain product
+
+  pnpm generate feature update-profile --app web --domain user --ui update-profile-form
+  pnpm generate feature register-order --app web --domain order --ui register-order-dialog
+  pnpm generate feature logout --app admin --domain auth --ui logout-button
+
+  pnpm generate view order-list-view --app admin --domain order
+  pnpm generate view order-detail-view --app admin --domain order
+  pnpm generate view my-profile-view --app web --domain user
 
 Available generators:
   ${availableGenerators.join(", ")}
@@ -35,18 +42,25 @@ async function main() {
   if (!type || !name) {
     printHelp();
     process.exitCode = 1;
+
     return;
   }
 
   if (!isGeneratorType(type)) {
     console.error(`[generators] unsupported generator type: ${type}`);
+
     printHelp();
+
     process.exitCode = 1;
+
     return;
   }
 
   if (type === "domain") {
-    await generateDomain({ name });
+    await generateDomain({
+      name,
+    });
+
     return;
   }
 
@@ -55,6 +69,16 @@ async function main() {
       name,
       args,
     });
+
+    return;
+  }
+
+  if (type === "entity") {
+    await generateEntity({
+      name,
+      args,
+    });
+
     return;
   }
 
@@ -63,10 +87,21 @@ async function main() {
       name,
       args,
     });
+
+    return;
+  }
+
+  if (type === "view") {
+    await generateView({
+      name,
+      args,
+    });
+
     return;
   }
 
   console.error(`[generators] ${type} generator is not implemented yet.`);
+
   process.exitCode = 1;
 }
 
