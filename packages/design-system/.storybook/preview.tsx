@@ -1,5 +1,3 @@
-import type { Preview } from "@storybook/react-vite";
-
 import basePreview from "@repo/storybook-config/preview";
 
 import { ToastProvider } from "../src/toast";
@@ -12,7 +10,7 @@ const baseDecorators = Array.isArray(basePreview.decorators)
     ? [basePreview.decorators]
     : [];
 
-const preview: Preview = {
+const preview: typeof basePreview = {
   ...basePreview,
   decorators: [
     ...baseDecorators,

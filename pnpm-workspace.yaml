@@ -12,6 +12,7 @@ catalog:
   "@prisma/client": 7.8.0
   "@storybook/addon-a11y": ^10.4.2
   "@storybook/addon-docs": ^10.4.2
+  "@storybook/nextjs-vite": ^10.4.2
   "@storybook/react-vite": ^10.4.2
   "@tailwindcss/postcss": ^4
   "@testing-library/jest-dom": ^6.9.1
