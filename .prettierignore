@@ -24,3 +24,5 @@ storybook-static
 !.env.e2e.example
 
 pnpm-lock.yaml
+
+.github/ISSUE_TEMPLATE/*.md
