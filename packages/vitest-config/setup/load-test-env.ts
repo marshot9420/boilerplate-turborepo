@@ -31,19 +31,3 @@ for (const envFile of envFiles) {
     });
   }
 }
-
-if (!process.env.NEXT_PUBLIC_APP_URL) {
-  const packageJsonPath = path.join(process.cwd(), "package.json");
-
-  if (fs.existsSync(packageJsonPath)) {
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8")) as {
-      name?: string;
-    };
-
-    if (packageJson.name === "admin") {
-      process.env.NEXT_PUBLIC_APP_URL = process.env.ADMIN_APP_URL;
-    } else {
-      process.env.NEXT_PUBLIC_APP_URL = process.env.WEB_APP_URL;
-    }
-  }
-}

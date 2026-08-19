@@ -5,13 +5,14 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 import { ToastProvider } from "@repo/design-system/toast";
-import { clientEnv } from "@repo/env/client";
-import { serverEnv } from "@repo/env/server";
+
+import { serverEnv } from "@/config/server-env";
 
 const APP_NAME = "Admin";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(clientEnv.NEXT_PUBLIC_APP_URL),
+  metadataBase: new URL(serverEnv.ADMIN_APP_URL),
+
   applicationName: APP_NAME,
 
   title: {
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
     index: false,
     follow: false,
     nocache: true,
+
     googleBot: {
       index: false,
       follow: false,
@@ -56,6 +58,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         {...(isDev ? { suppressHydrationWarning: true } : {})} // Brave 브라우저에서 발생하는 개발 환경 문제 (`cz-shortcut-listen="true"` 주입 문제)
       >
         {children}
+
         <ToastProvider />
       </body>
     </html>

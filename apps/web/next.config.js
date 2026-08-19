@@ -6,8 +6,6 @@ dotenv.config({
   path: path.resolve(process.cwd(), "../../.env.local"),
 });
 
-process.env.NEXT_PUBLIC_APP_URL = process.env.WEB_APP_URL ?? process.env.NEXT_PUBLIC_APP_URL;
-
 const securityHeaders = [
   {
     key: "X-DNS-Prefetch-Control",
