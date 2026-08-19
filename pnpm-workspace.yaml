@@ -3,15 +3,46 @@ packages:
   - packages/*
   - tooling/*
 
+engineStrict: true
+autoInstallPeers: true
+strictPeerDependencies: false
+
+catalog:
+  "@playwright/test": ^1.61.1
+  "@prisma/client": 7.8.0
+  "@storybook/addon-a11y": ^10.4.2
+  "@storybook/addon-docs": ^10.4.2
+  "@storybook/react-vite": ^10.4.2
+  "@tailwindcss/postcss": ^4
+  "@testing-library/jest-dom": ^6.9.1
+  "@testing-library/react": ^16.3.2
+  "@testing-library/user-event": ^14.6.1
+  "@types/react": 19.2.2
+  "@types/react-dom": 19.2.2
+  "@vitejs/plugin-react": ^6.0.2
+  clsx: ^2.1.1
+  dotenv: ^17.4.2
+  eslint: ^9.39.1
+  jsdom: ^29.1.1
+  next: 16.2.0
+  prisma: 7.8.0
+  react: ^19.2.0
+  react-dom: ^19.2.0
+  server-only: ^0.0.1
+  storybook: ^10.4.2
+  tailwind-merge: ^3.6.0
+  tailwindcss: ^4.3.1
+  tsx: ^4.22.4
+  typescript: 5.9.2
+  vitest: ^4.1.8
+  zod: ^4.4.3
+
 allowBuilds:
   "@prisma/engines": true
   esbuild: true
   prisma: true
   sharp: true
   unrs-resolver: true
-
-ignoredBuiltDependencies:
-  - sharp
 
 minimumReleaseAgeExclude:
   - "@turbo/darwin-64@2.9.17"
@@ -21,7 +52,3 @@ minimumReleaseAgeExclude:
   - "@turbo/windows-64@2.9.17"
   - "@turbo/windows-arm64@2.9.17"
   - turbo@2.9.17
-
-onlyBuiltDependencies:
-  - "@prisma/engines"
-  - prisma

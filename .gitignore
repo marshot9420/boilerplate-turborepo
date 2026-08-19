@@ -48,3 +48,5 @@ yarn-error.log*
 # Claude
 CLAUDE.local.md
 .claude/settings.local.json
+
+/MEMO.md

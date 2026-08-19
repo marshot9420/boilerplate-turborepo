@@ -7,7 +7,7 @@ import type { Result } from "../result";
 import { mapZodErrorToFieldErrors } from "../validation";
 import type { ActionResult } from "./action-result";
 
-interface CreateActionParams<TInput, TData> {
+export interface CreateActionParams<TInput, TData> {
   actionName: string;
   schema: z.ZodType<TInput>;
   formData: FormData;
