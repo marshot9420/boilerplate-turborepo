@@ -22,12 +22,9 @@ Examples:
   pnpm generate entity order-status-badge --app admin --domain order
   pnpm generate entity product-card --app web --domain product
 
-  pnpm generate feature content-status --app admin
-  pnpm generate feature update-profile --app web
-
-Entity options:
-  --app <name>       Target application under apps/*
-  --domain <name>    Entity domain Slice
+  pnpm generate feature update-profile --app web --domain user --ui update-profile-form
+  pnpm generate feature cancel-order --app web --domain order --ui cancel-order-dialog
+  pnpm generate feature logout --app admin --domain auth --ui logout-button
 
 Available generators:
   ${availableGenerators.join(", ")}
