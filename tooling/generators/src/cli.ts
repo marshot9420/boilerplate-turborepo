@@ -2,6 +2,7 @@ import {
   availableGenerators,
   generateComponent,
   generateDomain,
+  generateEntity,
   generateFeature,
   isGeneratorType,
 } from "./generators";
@@ -17,10 +18,16 @@ Examples:
   pnpm generate component empty-state --target all --category feedback
   pnpm generate component phone-input --target web --category inputs
   pnpm generate component field --target admin --category form
-  pnpm generate component navigation-item --target web --category navigation
+
+  pnpm generate entity order-status-badge --app admin --domain order
+  pnpm generate entity product-card --app web --domain product
 
   pnpm generate feature content-status --app admin
   pnpm generate feature update-profile --app web
+
+Entity options:
+  --app <name>       Target application under apps/*
+  --domain <name>    Entity domain Slice
 
 Available generators:
   ${availableGenerators.join(", ")}
@@ -48,13 +55,24 @@ async function main() {
   }
 
   if (type === "domain") {
-    await generateDomain({ name });
+    await generateDomain({
+      name,
+    });
 
     return;
   }
 
   if (type === "component") {
     await generateComponent({
+      name,
+      args,
+    });
+
+    return;
+  }
+
+  if (type === "entity") {
+    await generateEntity({
       name,
       args,
     });
