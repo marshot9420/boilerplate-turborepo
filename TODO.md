@@ -40,3 +40,5 @@ docs/
   - 예를 들어, `@repo`를 `@mars`로 바꿔도 각 문서 별로 `boilerplate-turborepo`는 남음.
 
 - 디자인 시스템 컴포넌트 전부 제거, Primitives 컴포넌트는 제거하고, Admin과 Web 디자인 시스템 컴포넌트만 남겨두고, 이것도 다시 재구축
+
+- `core` 패키지 재구성 및 필수 유틸 함수 추가
