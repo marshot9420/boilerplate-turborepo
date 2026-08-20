@@ -150,7 +150,7 @@ Domain
   → docs/08_도메인_레이어.md
 
 Server Action
-  → docs/09_Server_Actions.md
+  → docs/09_서버_액션.md
 
 App Structure
   → docs/10_앱_구조.md
@@ -819,7 +819,7 @@ Claude Code는 현재 작업 종류에 따라 필요한 전문 문서를 선택�
 08_도메인_레이어.md
   Domain
 
-09_Server_Actions.md
+09_서버_액션.md
   Server Action
 
 10_앱_구조.md
