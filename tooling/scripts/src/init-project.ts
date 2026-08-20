@@ -1,61 +1,32 @@
-import { readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { stdin as input, stdout as output } from "node:process";
 import { createInterface } from "node:readline/promises";
 
-const DEFAULT_FROM_SCOPE_NAME = "repo";
-const DEFAULT_FROM_PROJECT_NAME = "boilerplate-turborepo";
-const DEFAULT_FROM_SESSION_COOKIE_NAME = "boilerplate_session";
+import {
+  exists,
+  findRepositoryRoot,
+  normalizeProjectName,
+  normalizeScopeName,
+  readCurrentProjectName,
+  readCurrentScopeName,
+  replaceProjectText,
+  toScope,
+  toSnakeProjectName,
+  validateProjectName,
+  validateScopeName,
+} from "./project-setup.ts";
 
-const ignoredDirectories = new Set([
-  ".git",
-  ".next",
-  ".turbo",
-  "coverage",
-  "dist",
+const LEGACY_SESSION_COOKIE_NAME = "boilerplate_session";
+
+const cleanupDirectoryNames = new Set([
   "node_modules",
+  ".turbo",
+  ".next",
+  "dist",
+  "coverage",
   "out",
 ]);
-
-const ignoredFilenames = new Set(["pnpm-lock.yaml"]);
-
-const targetExtensions = new Set([
-  ".cjs",
-  ".css",
-  ".cts",
-  ".js",
-  ".json",
-  ".jsx",
-  ".md",
-  ".mdx",
-  ".mjs",
-  ".mts",
-  ".prisma",
-  ".ts",
-  ".tsx",
-  ".txt",
-  ".yaml",
-  ".yml",
-]);
-
-const targetFilenames = new Set([
-  ".env",
-  ".env.example",
-  ".env.local",
-  ".env.production",
-  ".env.development",
-  ".env.test",
-  ".env.test.example",
-  ".env.test.local",
-  ".env.e2e",
-  ".env.e2e.example",
-  ".env.e2e.local",
-  ".npmrc",
-  ".nvmrc",
-  "Dockerfile",
-]);
-
-const cleanupDirectoryNames = ["node_modules", ".turbo", ".next", "dist", "coverage"];
 
 interface InitProjectOptions {
   projectName: string;
@@ -70,8 +41,8 @@ interface InitProjectOptions {
 
 interface ParsedArgs {
   projectName: string;
-  fromProjectName: string;
-  fromScopeName: string;
+  fromProjectName?: string;
+  fromScopeName?: string;
   toScopeName: string;
   dryRun: boolean;
   removeGit: boolean;
@@ -84,7 +55,7 @@ interface InitProjectResult {
   changedFiles: string[];
   createdFiles: string[];
   removedPaths: string[];
-  gitRemoved: boolean;
+  gitRemoval: boolean;
 }
 
 function printHelp() {
@@ -94,85 +65,51 @@ Usage:
 
 Examples:
   pnpm init-project mars
-  pnpm init-project mars --dry-run
-  pnpm init-project mars --scope eten
-  pnpm init-project mars --from-scope repo --scope eten
-  pnpm init-project mars --remove-git
-  pnpm init-project mars --keep-git
+  pnpm init-project athena-doctrine --scope athena
+  pnpm init-project athena-doctrine --scope athena --dry-run
+  pnpm init-project athena-doctrine --scope athena --remove-git
 
 Options:
-  --scope <scope-name>             Target package scope. Default: project name.
-  --from-scope <scope-name>        Existing package scope. Default: repo.
-  --from-name <project-name>       Existing project name. Default: boilerplate-turborepo.
-  --dry-run                       Print changes without writing files.
-  --remove-git                    Remove .git without asking.
-  --keep-git                      Keep .git without asking.
+  --scope <scope-name>
+    Target workspace package scope.
+    Default: project name.
+
+  --from-scope <scope-name>
+    Existing workspace package scope.
+    Default: automatically detected from tooling/scripts/package.json.
+
+  --from-name <project-name>
+    Existing project name.
+    Default: automatically detected from the root package.json.
+
+  --dry-run
+    Print changes without writing files.
+
+  --remove-git
+    Remove the existing .git directory without asking.
+
+  --keep-git
+    Keep the existing .git directory without asking.
 
 Generated env files:
-  .env.local                       Created from .env.example if missing.
-  .env.test.local                  Created from .env.test.example if missing.
-  .env.e2e.local                   Created from .env.e2e.example if missing.
+  .env.local
+    Created from .env.example if missing.
+
+  .env.test.local
+    Created from .env.test.example if missing.
+
+  .env.e2e.local
+    Created from .env.e2e.example if missing.
 `);
-}
-
-function isNodeError(error: unknown): error is NodeJS.ErrnoException {
-  return error instanceof Error && "code" in error;
-}
-
-function normalizeScopeName(value: string): string {
-  return value.trim().replace(/^@/, "");
-}
-
-function normalizeProjectName(value: string): string {
-  return value.trim().toLowerCase();
-}
-
-function toScope(scopeName: string): string {
-  return `@${scopeName}`;
-}
-
-function toSnakeProjectName(projectName: string): string {
-  return projectName.replaceAll("-", "_");
 }
 
 function toSessionCookieName(projectName: string): string {
   return `${toSnakeProjectName(projectName)}_session`;
 }
 
-function validateProjectName(projectName: string): void {
-  if (!projectName) {
-    throw new Error("[init-project] project name is required.");
-  }
-
-  if (!/^[a-z0-9][a-z0-9-]*$/.test(projectName)) {
-    throw new Error(
-      [
-        `[init-project] invalid project name: ${projectName}`,
-        "Use lowercase letters, numbers, and hyphens only.",
-        "Example: mars, eten-studio, my-company",
-      ].join("\n"),
-    );
-  }
-}
-
-function validateScopeName(scopeName: string): void {
-  if (!scopeName) {
-    throw new Error("[init-project] scope name is required.");
-  }
-
-  if (!/^[a-z0-9][a-z0-9-]*$/.test(scopeName)) {
-    throw new Error(
-      [
-        `[init-project] invalid scope name: ${scopeName}`,
-        "Use lowercase letters, numbers, and hyphens only.",
-        "Example: mars, eten, my-company",
-      ].join("\n"),
-    );
-  }
-}
-
 function readOptionValue(params: { args: string[]; index: number; optionName: string }): string {
   const { args, index, optionName } = params;
+
   const value = args[index + 1];
 
   if (!value || value.startsWith("--")) {
@@ -190,9 +127,11 @@ function parseArgs(argv: string[]): ParsedArgs {
   }
 
   const projectName = normalizeProjectName(rawProjectName);
-  let fromProjectName = DEFAULT_FROM_PROJECT_NAME;
-  let fromScopeName = DEFAULT_FROM_SCOPE_NAME;
+
+  let fromProjectName: string | undefined;
+  let fromScopeName: string | undefined;
   let toScopeName = projectName;
+
   let dryRun = false;
   let removeGit = false;
   let keepGit = false;
@@ -288,6 +227,7 @@ function parseArgs(argv: string[]): ParsedArgs {
       }
 
       fromProjectName = normalizeProjectName(value);
+
       continue;
     }
 
@@ -295,9 +235,15 @@ function parseArgs(argv: string[]): ParsedArgs {
   }
 
   validateProjectName(projectName);
-  validateProjectName(fromProjectName);
-  validateScopeName(fromScopeName);
   validateScopeName(toScopeName);
+
+  if (fromProjectName) {
+    validateProjectName(fromProjectName);
+  }
+
+  if (fromScopeName) {
+    validateScopeName(fromScopeName);
+  }
 
   if (removeGit && keepGit) {
     throw new Error("[init-project] --remove-git and --keep-git cannot be used together.");
@@ -314,26 +260,6 @@ function parseArgs(argv: string[]): ParsedArgs {
   };
 }
 
-function shouldIgnoreDirectory(directoryName: string): boolean {
-  return ignoredDirectories.has(directoryName);
-}
-
-function shouldProcessFile(filePath: string): boolean {
-  const fileName = path.basename(filePath);
-
-  if (ignoredFilenames.has(fileName)) {
-    return false;
-  }
-
-  if (targetFilenames.has(fileName)) {
-    return true;
-  }
-
-  const extension = path.extname(filePath);
-
-  return targetExtensions.has(extension);
-}
-
 function replaceProjectValues(params: {
   content: string;
   fromProjectName: string;
@@ -344,115 +270,16 @@ function replaceProjectValues(params: {
   const { content, fromProjectName, projectName, fromScopeName, toScopeName } = params;
 
   const fromSnakeProjectName = toSnakeProjectName(fromProjectName);
+
   const snakeProjectName = toSnakeProjectName(projectName);
+
   const sessionCookieName = toSessionCookieName(projectName);
 
   return content
     .replaceAll(toScope(fromScopeName), toScope(toScopeName))
     .replaceAll(fromProjectName, projectName)
     .replaceAll(fromSnakeProjectName, snakeProjectName)
-    .replaceAll(DEFAULT_FROM_SESSION_COOKIE_NAME, sessionCookieName);
-}
-
-async function exists(filePath: string): Promise<boolean> {
-  try {
-    await stat(filePath);
-    return true;
-  } catch (error) {
-    if (isNodeError(error) && error.code === "ENOENT") {
-      return false;
-    }
-
-    throw error;
-  }
-}
-
-async function collectTargetFiles(directoryPath: string): Promise<string[]> {
-  const entries = await readdir(directoryPath, {
-    withFileTypes: true,
-  });
-
-  const files: string[] = [];
-
-  for (const entry of entries) {
-    const entryPath = path.join(directoryPath, entry.name);
-
-    if (entry.isDirectory()) {
-      if (shouldIgnoreDirectory(entry.name)) {
-        continue;
-      }
-
-      files.push(...(await collectTargetFiles(entryPath)));
-      continue;
-    }
-
-    if (!entry.isFile()) {
-      continue;
-    }
-
-    if (!shouldProcessFile(entryPath)) {
-      continue;
-    }
-
-    files.push(entryPath);
-  }
-
-  return files;
-}
-
-async function replaceProjectValuesInFile(params: {
-  filePath: string;
-  fromProjectName: string;
-  projectName: string;
-  fromScopeName: string;
-  toScopeName: string;
-  dryRun: boolean;
-}): Promise<boolean> {
-  const { filePath, fromProjectName, projectName, fromScopeName, toScopeName, dryRun } = params;
-
-  const content = await readFile(filePath, "utf8");
-  const nextContent = replaceProjectValues({
-    content,
-    fromProjectName,
-    projectName,
-    fromScopeName,
-    toScopeName,
-  });
-
-  if (content === nextContent) {
-    return false;
-  }
-
-  if (!dryRun) {
-    await writeFile(filePath, nextContent);
-  }
-
-  return true;
-}
-
-async function findRepositoryRoot(startPath: string): Promise<string> {
-  let currentPath = startPath;
-
-  while (true) {
-    const workspaceFilePath = path.join(currentPath, "pnpm-workspace.yaml");
-
-    try {
-      await stat(workspaceFilePath);
-      return currentPath;
-    } catch (error) {
-      if (!isNodeError(error) || error.code !== "ENOENT") {
-        throw error;
-      }
-    }
-
-    const parentPath = path.dirname(currentPath);
-
-    if (parentPath === currentPath) {
-      throw new Error("[init-project] failed to find repository root.");
-    }
-
-    currentPath = parentPath;
-  }
+    .replaceAll(LEGACY_SESSION_COOKIE_NAME, sessionCookieName);
 }
 
 async function ensureLocalEnvFiles(params: {
@@ -484,6 +311,7 @@ async function ensureLocalEnvFiles(params: {
 
   for (const pair of envFilePairs) {
     const sourcePath = path.join(rootPath, pair.source);
+
     const targetPath = path.join(rootPath, pair.target);
 
     if (!(await exists(sourcePath))) {
@@ -495,6 +323,7 @@ async function ensureLocalEnvFiles(params: {
     }
 
     const sourceContent = await readFile(sourcePath, "utf8");
+
     const nextContent = replaceProjectValues({
       content: sourceContent,
       fromProjectName,
@@ -518,6 +347,7 @@ async function cleanupGeneratedDirectories(params: {
   dryRun: boolean;
 }): Promise<string[]> {
   const { rootPath, dryRun } = params;
+
   const removedPaths: string[] = [];
 
   async function cleanup(directoryPath: string): Promise<void> {
@@ -532,7 +362,7 @@ async function cleanupGeneratedDirectories(params: {
         continue;
       }
 
-      if (cleanupDirectoryNames.includes(entry.name)) {
+      if (cleanupDirectoryNames.has(entry.name)) {
         removedPaths.push(path.relative(rootPath, entryPath));
 
         if (!dryRun) {
@@ -567,6 +397,7 @@ async function shouldRemoveGit(params: {
   dryRun: boolean;
 }): Promise<boolean> {
   const { rootPath, removeGit, keepGit, dryRun } = params;
+
   const gitPath = path.join(rootPath, ".git");
 
   if (!(await exists(gitPath))) {
@@ -590,14 +421,18 @@ async function shouldRemoveGit(params: {
     output,
   });
 
-  const answer = await readline.question("Remove existing .git directory? (y/N) ");
-  readline.close();
+  try {
+    const answer = await readline.question("Remove existing .git directory? (y/N) ");
 
-  return answer.trim().toLowerCase() === "y";
+    return answer.trim().toLowerCase() === "y";
+  } finally {
+    readline.close();
+  }
 }
 
 async function removeGitDirectory(params: { rootPath: string; dryRun: boolean }): Promise<boolean> {
   const { rootPath, dryRun } = params;
+
   const gitPath = path.join(rootPath, ".git");
 
   if (!(await exists(gitPath))) {
@@ -616,29 +451,19 @@ async function removeGitDirectory(params: { rootPath: string; dryRun: boolean })
 
 async function initProject(options: InitProjectOptions): Promise<InitProjectResult> {
   const { rootPath, fromProjectName, projectName, fromScopeName, toScopeName, dryRun } = options;
-  const rootStat = await stat(rootPath);
 
-  if (!rootStat.isDirectory()) {
-    throw new Error(`[init-project] root path is not a directory: ${rootPath}`);
-  }
-
-  const files = await collectTargetFiles(rootPath);
-  const changedFiles: string[] = [];
-
-  for (const filePath of files) {
-    const changed = await replaceProjectValuesInFile({
-      filePath,
-      fromProjectName,
-      projectName,
-      fromScopeName,
-      toScopeName,
-      dryRun,
-    });
-
-    if (changed) {
-      changedFiles.push(path.relative(rootPath, filePath));
-    }
-  }
+  const replaceResult = await replaceProjectText({
+    rootPath,
+    dryRun,
+    transform: (content) =>
+      replaceProjectValues({
+        content,
+        fromProjectName,
+        projectName,
+        fromScopeName,
+        toScopeName,
+      }),
+  });
 
   const createdFiles = await ensureLocalEnvFiles({
     rootPath,
@@ -654,30 +479,29 @@ async function initProject(options: InitProjectOptions): Promise<InitProjectResu
     dryRun,
   });
 
-  const shouldRemoveExistingGit = await shouldRemoveGit({
+  const gitRemovalRequested = await shouldRemoveGit({
     rootPath,
     removeGit: options.removeGit,
     keepGit: options.keepGit,
     dryRun,
   });
 
-  const gitRemoved = shouldRemoveExistingGit
+  const gitRemoval = gitRemovalRequested
     ? await removeGitDirectory({
         rootPath,
         dryRun,
       })
     : false;
 
-  changedFiles.sort((a, b) => a.localeCompare(b));
   createdFiles.sort((a, b) => a.localeCompare(b));
 
   return {
-    checkedFileCount: files.length,
-    changedFileCount: changedFiles.length,
-    changedFiles,
+    checkedFileCount: replaceResult.checkedFileCount,
+    changedFileCount: replaceResult.changedFileCount,
+    changedFiles: replaceResult.changedFiles,
     createdFiles,
     removedPaths,
-    gitRemoved,
+    gitRemoval,
   };
 }
 
@@ -690,7 +514,10 @@ function printResult(params: {
   dryRun: boolean;
 }): void {
   const { result, projectName, fromProjectName, fromScopeName, toScopeName, dryRun } = params;
+
   const title = dryRun ? "[init-project] dry run completed" : "[init-project] completed";
+
+  const gitLabel = dryRun ? "git to remove" : "git removed";
 
   console.info(
     [
@@ -698,12 +525,12 @@ function printResult(params: {
       `project: ${fromProjectName} -> ${projectName}`,
       `scope: ${toScope(fromScopeName)} -> ${toScope(toScopeName)}`,
       `database prefix: ${toSnakeProjectName(fromProjectName)} -> ${toSnakeProjectName(projectName)}`,
-      `session cookie: ${DEFAULT_FROM_SESSION_COOKIE_NAME} -> ${toSessionCookieName(projectName)}`,
+      `session cookie: ${LEGACY_SESSION_COOKIE_NAME} -> ${toSessionCookieName(projectName)}`,
       `checked files: ${result.checkedFileCount}`,
       `changed files: ${result.changedFileCount}`,
       `created files: ${result.createdFiles.length}`,
       `removed paths: ${result.removedPaths.length}`,
-      `git removed: ${result.gitRemoved ? "yes" : "no"}`,
+      `${gitLabel}: ${result.gitRemoval ? "yes" : "no"}`,
     ].join("\n"),
   );
 
@@ -741,6 +568,7 @@ function printResult(params: {
     console.info(
       ["", "No files were written.", "Run without --dry-run to apply these changes."].join("\n"),
     );
+
     return;
   }
 
@@ -749,13 +577,17 @@ function printResult(params: {
       "",
       "Next steps:",
       "  pnpm install",
-      "  pnpm format",
+      "  configure .env.local",
+      "  pnpm db:generate",
+      "  pnpm db:push",
+      "  pnpm db:seed",
       "  pnpm check",
+      "  pnpm dev",
       "",
       "Optional:",
       "  git init",
       "  git add .",
-      '  git commit -m "chore: initialize project"',
+      '  git commit -m "chore: 프로젝트 초기화"',
     ].join("\n"),
   );
 }
@@ -763,13 +595,22 @@ function printResult(params: {
 async function main() {
   try {
     const parsedArgs = parseArgs(process.argv.slice(2));
+
     const rootPath = await findRepositoryRoot(process.cwd());
+
+    const fromProjectName = parsedArgs.fromProjectName ?? (await readCurrentProjectName(rootPath));
+
+    const fromScopeName = parsedArgs.fromScopeName ?? (await readCurrentScopeName(rootPath));
+
+    validateProjectName(fromProjectName);
+
+    validateScopeName(fromScopeName);
 
     const result = await initProject({
       rootPath,
       projectName: parsedArgs.projectName,
-      fromProjectName: parsedArgs.fromProjectName,
-      fromScopeName: parsedArgs.fromScopeName,
+      fromProjectName,
+      fromScopeName,
       toScopeName: parsedArgs.toScopeName,
       dryRun: parsedArgs.dryRun,
       removeGit: parsedArgs.removeGit,
@@ -779,8 +620,8 @@ async function main() {
     printResult({
       result,
       projectName: parsedArgs.projectName,
-      fromProjectName: parsedArgs.fromProjectName,
-      fromScopeName: parsedArgs.fromScopeName,
+      fromProjectName,
+      fromScopeName,
       toScopeName: parsedArgs.toScopeName,
       dryRun: parsedArgs.dryRun,
     });
@@ -789,6 +630,7 @@ async function main() {
       console.error(error.message);
       printHelp();
       process.exitCode = 1;
+
       return;
     }
 
