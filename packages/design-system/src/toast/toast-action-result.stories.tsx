@@ -3,7 +3,6 @@
 import type { ActionResult } from "@repo/core/action";
 import type { Meta, StoryObj } from "@repo/storybook-config/react";
 
-
 import { toastActionResult } from "./toast-action-result";
 import ToastProvider from "./toast-provider";
 

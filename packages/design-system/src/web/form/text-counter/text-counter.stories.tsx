@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import type { Meta, StoryObj } from "@repo/storybook-config/react";
 
-
 import TextCounter from "./text-counter";
 
 function TextCounterFieldDemo() {
