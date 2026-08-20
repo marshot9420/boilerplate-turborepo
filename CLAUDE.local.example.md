@@ -1,25 +1,61 @@
-# 2. `CLAUDE.local.example.md`
+# CLAUDE.local.md
 
-개인 취향이나 로컬 환경은 커밋하면 안 됩니다. 대신 예시 파일만 둡니다.
-
-```md
-# CLAUDE.local.example.md
-
-Copy this file to `CLAUDE.local.md` for personal Claude Code preferences.
+Copy `CLAUDE.local.example.md` to `CLAUDE.local.md` when personal project-specific instructions are needed.
 
 Do not commit `CLAUDE.local.md`.
 
-## Personal Local Notes
+Do not store secrets, credentials, tokens, passwords, or private environment values in this file.
 
-- My local database name:
-- My preferred test command:
-- My preferred development app:
-- Local ports:
-  - web:
-  - admin:
+Project architecture and conventions remain defined by `CLAUDE.md` and `docs/*`.
 
-## Personal Working Preferences
+Personal instructions should not redefine project-wide architecture or conventions.
 
-- Ask before installing new dependencies.
-- Prefer explaining architectural impact before applying large refactors.
+## Local Environment
+
+Preferred development app:
+
+```txt
+web:
+admin:
 ```
+
+Local ports:
+
+```txt
+web:
+admin:
+```
+
+Preferred test command:
+
+```txt
+pnpm test
+```
+
+Other local notes:
+
+```txt
+
+```
+
+## Working Preferences
+
+Example personal preferences:
+
+```txt
+Ask before installing or removing dependencies.
+
+Explain the architectural impact before applying large structural refactors.
+
+Prefer running targeted tests during implementation and repository-wide validation after completion.
+```
+
+## Local Claude Code Settings
+
+Personal Claude Code permissions and machine-specific settings belong in:
+
+```txt
+.claude/settings.local.json
+```
+
+Use `.claude/settings.local.example.json` as the starting point when needed.

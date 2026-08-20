@@ -9,9 +9,9 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*", "apps/*/.env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
       "env": [
-        "NEXT_PUBLIC_*",
         "WEB_APP_URL",
         "ADMIN_APP_URL",
+        "VERCEL_PROJECT_PRODUCTION_URL",
         "DATABASE_URL",
         "DIRECT_URL",
         "AUTH_SESSION_COOKIE_NAME",
@@ -48,7 +48,6 @@
       "inputs": ["$TURBO_DEFAULT$", ".env.test", ".env.test.local"],
       "outputs": [],
       "env": [
-        "NEXT_PUBLIC_*",
         "WEB_APP_URL",
         "ADMIN_APP_URL",
         "DATABASE_URL",
@@ -79,7 +78,6 @@
       "inputs": ["$TURBO_DEFAULT$", ".env.test", ".env.test.local"],
       "outputs": ["coverage/**"],
       "env": [
-        "NEXT_PUBLIC_*",
         "WEB_APP_URL",
         "ADMIN_APP_URL",
         "DATABASE_URL",
@@ -104,7 +102,6 @@
       "cache": false,
       "inputs": ["$TURBO_DEFAULT$", ".env.test", ".env.test.local"],
       "env": [
-        "NEXT_PUBLIC_*",
         "WEB_APP_URL",
         "ADMIN_APP_URL",
         "DATABASE_URL",
@@ -137,7 +134,6 @@
       "outputs": ["playwright-report/**", "test-results/**"],
       "env": [
         "E2E",
-        "NEXT_PUBLIC_APP_URL",
         "WEB_APP_URL",
         "ADMIN_APP_URL",
         "WEB_E2E_PORT",

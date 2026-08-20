@@ -4,11 +4,6 @@ import { z } from "zod";
 
 import { sharedEnvSchema } from "./shared";
 
-const httpUrl = z.url({
-  protocol: /^https?$/,
-  error: "Must be a valid HTTP URL",
-});
-
 const optionalNonEmptyString = z.preprocess(
   (value) => (value === "" ? undefined : value),
   z.string().min(1).optional(),
@@ -24,15 +19,13 @@ export const serverEnvSchema = sharedEnvSchema
     DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
     DIRECT_URL: z.string().min(1, "DIRECT_URL is required"),
 
-    WEB_APP_URL: httpUrl,
-    ADMIN_APP_URL: httpUrl,
-
     E2E_AUTH_SECRET: z
       .string()
       .min(32, "E2E_AUTH_SECRET must be at least 32 characters")
       .optional(),
 
     AUTH_SESSION_COOKIE_NAME: z.string().min(1, "AUTH_SESSION_COOKIE_NAME is required"),
+
     AUTH_SESSION_MAX_AGE_SECONDS: z.coerce
       .number()
       .int()
@@ -80,9 +73,6 @@ export const serverEnv = serverEnvSchema.parse({
 
   DATABASE_URL: process.env.DATABASE_URL,
   DIRECT_URL: process.env.DIRECT_URL,
-
-  WEB_APP_URL: process.env.WEB_APP_URL,
-  ADMIN_APP_URL: process.env.ADMIN_APP_URL,
 
   E2E_AUTH_SECRET: process.env.E2E_AUTH_SECRET,
 

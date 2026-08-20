@@ -8,7 +8,7 @@ const webAppUrl = vi.hoisted(() => "https://web.example.com");
 
 const revokeCurrentAuthSessionMock = vi.hoisted(() => vi.fn());
 
-vi.mock("@repo/env/server", () => ({
+vi.mock("@/config/server-env", () => ({
   serverEnv: {
     WEB_APP_URL: webAppUrl,
   },

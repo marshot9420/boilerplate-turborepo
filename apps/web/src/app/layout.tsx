@@ -5,13 +5,12 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { ToastProvider } from "@repo/design-system/toast";
-import { clientEnv } from "@repo/env/client";
-import { serverEnv } from "@repo/env/server";
 
+import { serverEnv } from "@/config/server-env";
 import { Shell } from "@/shared/layout";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(clientEnv.NEXT_PUBLIC_APP_URL),
+  metadataBase: new URL(serverEnv.WEB_APP_URL),
   title: "Web",
   description: "Service application",
 };
@@ -29,6 +28,7 @@ export default function RootLayout({
         {...(isDev ? { suppressHydrationWarning: true } : {})} // Brave 브라우저에서 발생하는 개발 환경 문제 (`cz-shortcut-listen="true"` 주입 문제)
       >
         <Shell>{children}</Shell>
+
         <ToastProvider />
       </body>
     </html>

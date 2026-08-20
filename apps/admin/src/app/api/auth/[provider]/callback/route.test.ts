@@ -11,7 +11,7 @@ const adminAppUrl = vi.hoisted(() => "https://admin.example.com");
 const handleOAuthCallbackMock = vi.hoisted(() => vi.fn());
 const parseOAuthProviderIdMock = vi.hoisted(() => vi.fn());
 
-vi.mock("@repo/env/server", () => ({
+vi.mock("@/config/server-env", () => ({
   serverEnv: {
     ADMIN_APP_URL: adminAppUrl,
   },
@@ -34,6 +34,7 @@ describe("Admin OAuth Callback Route", () => {
     const request = new NextRequest(
       `${adminAppUrl}/api/auth/unknown/callback?code=code&state=state`,
     );
+
     const response = await GET(request, {
       params: Promise.resolve({
         provider: "unknown",
@@ -49,7 +50,7 @@ describe("Admin OAuth Callback Route", () => {
     );
   });
 
-  it("callback 처리가 성공하면 마이페이지로 redirect한다", async () => {
+  it("callback 처리가 성공하면 관리자 홈으로 redirect한다", async () => {
     parseOAuthProviderIdMock.mockReturnValue("google");
     handleOAuthCallbackMock.mockResolvedValue(undefined);
 
@@ -123,6 +124,7 @@ describe("Admin OAuth Callback Route", () => {
     const request = new NextRequest(
       `${adminAppUrl}${URLS.API.AUTH.KAKAO_CALLBACK}?code=test-code&state=test-state`,
     );
+
     const response = await GET(request, {
       params: Promise.resolve({
         provider: "kakao",
@@ -142,6 +144,7 @@ describe("Admin OAuth Callback Route", () => {
     handleOAuthCallbackMock.mockResolvedValue(undefined);
 
     const request = new NextRequest(`${adminAppUrl}${URLS.API.AUTH.GOOGLE_CALLBACK}`);
+
     await GET(request, {
       params: Promise.resolve({
         provider: "google",

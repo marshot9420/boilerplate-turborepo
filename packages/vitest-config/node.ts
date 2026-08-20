@@ -18,14 +18,14 @@ export default defineConfig({
     environment: "node",
 
     setupFiles: [loadTestEnvPath],
-
     include: ["src/**/*.test.ts"],
-
     exclude: [
       ...coverageConfigDefaults.exclude,
       "src/**/*.integration.test.ts",
       "src/**/*.spec.ts",
     ],
+
+    passWithNoTests: true,
 
     coverage: {
       provider: "v8",

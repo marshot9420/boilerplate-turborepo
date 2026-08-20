@@ -1,146 +1,168 @@
 # CLAUDE.md
 
-## Project
+## Purpose
 
-This repository is a Turborepo boilerplate using:
+This file is the entry point for Claude Code when working in this repository.
 
-- Next.js App Router
-- TypeScript
-- pnpm workspace
-- Turborepo
-- Prisma
-- Vitest
-- Playwright
-- Storybook
-- Server Actions
-- DDD-style backend layering
-- Relaxed FSD for apps
+Do not treat this file as a second architecture or convention document.
 
-Read these documents before making architectural changes:
+The source of truth for project architecture, conventions, workflows, testing, security, and tooling is under `docs/`.
 
-- @docs/01\_아키텍처.md
-- @docs/02\_기본설정.md
+When this file and a detailed document appear to overlap, follow the detailed document.
 
-## Package Roles
+If the current implementation and documentation disagree, inspect both and report the mismatch instead of silently inventing a new rule.
 
-- `apps/web`: user-facing service app
-- `apps/admin`: admin app
-- `packages/core`: pure shared primitives such as Result, AppError, validation, zod-helper, logger, pagination, normalizer, list data query type
-- `packages/domain`: domain schemas, DTOs, services, mappers, permissions, errors
-- `packages/database`: Prisma, repositories, transactions, database error mapping
-- `packages/auth`: OAuth, session, auth guards
-- `packages/design-system`: primitives, app UI wrappers, form helpers, toast helpers
-- `packages/env`: environment variable validation
-- `tooling/generators`: project generators
-- `tooling/scripts`: setup, seed, clean, scripts
+## Before Working
 
-## Dependency Direction
+Before changing code:
 
-Allowed direction:
+1. Inspect the existing files near the target code.
+2. Read `docs/00_문서_가이드.md`.
+3. Read the documents relevant to the requested change.
+4. Follow existing local patterns unless the task explicitly changes them.
+5. Keep the change limited to the responsibility required by the task.
+
+Do not introduce speculative abstractions, packages, layers, helpers, or dependencies for hypothetical future use.
+
+## Documentation Map
+
+Use the following documents according to the task.
 
 ```txt
-apps/* -> domain -> database -> core
-apps/* -> auth
-apps/* -> design-system
-apps/* -> env
-domain -> core
-database -> core
-auth -> core/database/domain
-design-system -> core
+Architecture
+  docs/01_아키텍처.md
+
+Project setup and dependency versions
+  docs/02_기본설정.md
+
+Repository structure
+  docs/03_프로젝트_구조.md
+
+Workspace package responsibilities
+  docs/04_패키지_구조.md
+
+Dependency boundaries
+  docs/05_의존성_경계.md
+
+Environment variables
+  docs/06_환경변수.md
+
+Database / Prisma / Repository
+  docs/07_데이터베이스.md
+
+Domain Layer
+  docs/08_도메인_레이어.md
+
+Server Actions
+  docs/09_Server_Actions.md
+
+App structure / Entity / Feature / View
+  docs/10_앱_구조.md
+
+Design System
+  docs/11_디자인_시스템.md
+
+Testing
+  docs/12_테스트_전략.md
+
+Storybook
+  docs/13_스토리북.md
+
+Code generators
+  docs/14_코드_생성기.md
+
+Project initialization
+  docs/15_프로젝트_초기화.md
+
+Development workflow
+  docs/16_개발_워크플로우.md
+
+Security and operations
+  docs/17_보안_및_운영_기본정책.md
+
+Naming / Import / Export / Commit conventions
+  docs/18_컨벤션.md
+
+Project extension
+  docs/19_확장_가이드.md
 ```
 
-Never introduce these directions:
+Read only the documents relevant to the current task after checking `docs/00_문서_가이드.md`.
+
+## Working Rules
+
+Use `pnpm`.
+
+Do not install or remove dependencies without permission.
+
+Do not manually edit `pnpm-lock.yaml`.
+
+Do not manually edit generated Prisma migration files.
+
+Do not read secret environment files.
+
+Example environment files such as the following may be inspected:
 
 ```txt
-core -> domain
-core -> database
-core -> auth
-database -> domain
-design-system -> domain
-design-system -> database
-packages/* -> apps/*
+.env.example
+.env.test.example
+.env.e2e.example
 ```
 
-## Coding Rules
+Actual local or deployed environment files must not be read.
 
-- Use TypeScript strictly.
-- Use pnpm, not npm or yarn.
-- Do not introduce new libraries unless clearly necessary.
-- Do not access Prisma directly from apps.
-- Do not put business logic in React components.
-- Do not put business logic in Server Actions.
-- Server Actions should parse FormData, check auth, validate input, call service, then revalidate or redirect.
-- Domain services should return Result.
-- Repositories should only handle database access.
-- Repository functions should not return UI/API DTOs.
-- DTO mapping belongs in domain mappers.
-- Use existing error/result/action patterns before creating new ones.
+Do not run destructive Git commands, push commits, publish packages, or perform database schema mutations without the permissions defined in `.claude/settings.json`.
 
-## File Rules
+Do not create a new Workspace Package merely to remove local duplication.
 
-- Use kebab-case for filenames(use camelCase for custom hooks).
-- Use PascalCase for components and types.
-- Use camelCase for functions.
-- Use uppercase objects for domain constants.
-- Prefer one component per file.
-- Prefer one Server Action function per file.
-- Do not create broad `apps/*/src/actions/index.ts`.
-- Domain action exports should be grouped by domain directory only.
+Do not move code to a higher shared scope until the sharing and responsibility justify the promotion.
 
-## Test Rules
+Prefer colocating code with its actual consumer.
 
-- Add or update tests when changing behavior.
-- Use Vitest for unit, integration, and component tests.
-- Use Playwright for E2E tests.
-- App/component unit tests must explicitly import Vitest globals:
+## Implementation Workflow
 
-```ts
-import { describe, expect, it } from "vitest";
-```
+For feature work, follow `docs/16_개발_워크플로우.md`.
 
-- Storybook story type imports should use:
-
-```ts
-import type { Meta, StoryObj } from "@repo/storybook-config/nextjs";
-```
-
-## Design System Rules
-
-- Primitives should not contain app-specific business logic.
-- `web` and `admin` wrappers may contain app-specific styling.
-- Primitives do not need Storybook stories by default.
-- `web` and `admin` wrappers should have stories.
-- Do not encode app context into internal component names.
-- Component names can stay neutral, such as `Button`, `Card`, `Badge`.
-
-## Commands
-
-Use these commands when relevant:
+Use the existing generators when they reduce repetitive scaffold work.
 
 ```bash
-pnpm install
-pnpm dev
-pnpm check
-pnpm lint
-pnpm check-types
-pnpm format:check
-pnpm db:generate
-pnpm db:migrate
-pnpm db:studio
-pnpm --filter web test
-pnpm --filter admin test
-pnpm --filter @repo/domain test
-pnpm --filter @repo/database test
-pnpm --filter @repo/design-system test
+pnpm generate
 ```
 
-## Working Style
+Generator output is a starting point.
 
-Before editing code:
+Modify generated code for the actual use case and remove files that are not needed.
 
-1. Inspect the existing nearby files.
-2. Follow the current local convention.
-3. Prefer minimal, cohesive changes.
-4. Avoid speculative abstraction.
-5. Do not extract tiny helpers unless there is clear reuse or separation-of-concerns value.
-6. After changes, mention which tests should be run.
+## Validation
+
+Run validation appropriate to the change.
+
+The standard static validation command is:
+
+```bash
+pnpm check
+```
+
+The standard test command is:
+
+```bash
+pnpm test
+```
+
+Add Integration, Build, or E2E validation when required by `docs/12_테스트_전략.md` and `docs/16_개발_워크플로우.md`.
+
+Do not claim a command passed unless it was actually executed successfully.
+
+## Documentation Changes
+
+When architecture, commands, project structure, conventions, generators, security policy, or workflows change, check whether the corresponding document under `docs/` must also change.
+
+Do not duplicate detailed project policy in:
+
+```txt
+CLAUDE.md
+.claude/agents/*
+.claude/skills/*
+```
+
+These files should point Claude Code to the relevant project documents instead.

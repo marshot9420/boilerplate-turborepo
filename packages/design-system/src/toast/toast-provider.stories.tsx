@@ -1,7 +1,8 @@
 "use client";
 
-import type { Meta, StoryObj } from "@storybook/react-vite";
 import { toast } from "sonner";
+
+import type { Meta, StoryObj } from "@repo/storybook-config/react";
 
 import ToastProvider from "./toast-provider";
 

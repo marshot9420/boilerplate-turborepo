@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import type { PaginationMeta } from "@repo/core/pagination";
+import type { Meta, StoryObj } from "@repo/storybook-config/react";
 
 import Pagination, {
   PaginationButton,

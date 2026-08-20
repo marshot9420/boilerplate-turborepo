@@ -1,8 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 import { createOAuthAuthorizeUrl, parseOAuthProviderId } from "@repo/auth/server";
-import { serverEnv } from "@repo/env/server";
 
+import { serverEnv } from "@/config/server-env";
 import { URLS } from "@/constants";
 
 export const runtime = "nodejs";

@@ -14,16 +14,27 @@ const config: StorybookConfig = {
 
     const existingAlias = resolvedConfig.resolve?.alias;
 
+    const normalizedAlias = Array.isArray(existingAlias)
+      ? existingAlias
+      : Object.entries(existingAlias ?? {}).map(([find, replacement]) => ({
+          find,
+          replacement,
+        }));
+
+    const aliasesWithoutAppAlias = normalizedAlias.filter((alias) => alias.find !== "@");
+
     return {
       ...resolvedConfig,
+
       resolve: {
         ...resolvedConfig.resolve,
-        alias: Array.isArray(existingAlias)
-          ? [{ find: "@", replacement: srcPath }, ...existingAlias]
-          : {
-              ...existingAlias,
-              "@": srcPath,
-            },
+        alias: [
+          ...aliasesWithoutAppAlias,
+          {
+            find: "@",
+            replacement: srcPath,
+          },
+        ],
       },
     };
   },

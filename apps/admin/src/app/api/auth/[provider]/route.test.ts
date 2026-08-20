@@ -11,7 +11,7 @@ const adminAppUrl = vi.hoisted(() => "https://admin.example.com");
 const createOAuthAuthorizeUrlMock = vi.hoisted(() => vi.fn());
 const parseOAuthProviderIdMock = vi.hoisted(() => vi.fn());
 
-vi.mock("@repo/env/server", () => ({
+vi.mock("@/config/server-env", () => ({
   serverEnv: {
     ADMIN_APP_URL: adminAppUrl,
   },
@@ -32,6 +32,7 @@ describe("Admin OAuth Start Route", () => {
     parseOAuthProviderIdMock.mockReturnValue(null);
 
     const request = new NextRequest(`${adminAppUrl}/api/auth/unknown`);
+
     const response = await GET(request, {
       params: Promise.resolve({
         provider: "unknown",
@@ -54,6 +55,7 @@ describe("Admin OAuth Start Route", () => {
     createOAuthAuthorizeUrlMock.mockResolvedValue(authorizeUrl);
 
     const request = new NextRequest(`${adminAppUrl}/api/auth/google`);
+
     const response = await GET(request, {
       params: Promise.resolve({
         provider: "google",

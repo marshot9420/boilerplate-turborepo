@@ -7,8 +7,8 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "init-project": "tsx src/init-project.ts",
-    "setup:scope": "tsx src/setup-scope.ts",
+    "init-project": "node src/init-project.ts",
+    "setup:scope": "node src/setup-scope.ts",
     "seed": "tsx src/seed.ts",
     "seed:e2e": "tsx src/seed-e2e.ts",
     "clean": "tsx src/clean.ts",
@@ -19,13 +19,13 @@
   },
   "dependencies": {
     "@repo/database": "workspace:*",
-    "dotenv": "^17.4.2"
+    "dotenv": "catalog:"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "eslint": "^9.39.1",
-    "tsx": "^4.22.4",
-    "typescript": "5.9.2"
+    "eslint": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
   }
 }

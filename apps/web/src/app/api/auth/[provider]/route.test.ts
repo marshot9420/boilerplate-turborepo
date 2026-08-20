@@ -11,7 +11,7 @@ const webAppUrl = vi.hoisted(() => "https://web.example.com");
 const createOAuthAuthorizeUrlMock = vi.hoisted(() => vi.fn());
 const parseOAuthProviderIdMock = vi.hoisted(() => vi.fn());
 
-vi.mock("@repo/env/server", () => ({
+vi.mock("@/config/server-env", () => ({
   serverEnv: {
     WEB_APP_URL: webAppUrl,
   },
@@ -32,6 +32,7 @@ describe("Web OAuth Start Route", () => {
     parseOAuthProviderIdMock.mockReturnValue(null);
 
     const request = new NextRequest(`${webAppUrl}/api/auth/unknown`);
+
     const response = await GET(request, {
       params: Promise.resolve({
         provider: "unknown",
@@ -54,6 +55,7 @@ describe("Web OAuth Start Route", () => {
     createOAuthAuthorizeUrlMock.mockResolvedValue(authorizeUrl);
 
     const request = new NextRequest(`${webAppUrl}/api/auth/google`);
+
     const response = await GET(request, {
       params: Promise.resolve({
         provider: "google",

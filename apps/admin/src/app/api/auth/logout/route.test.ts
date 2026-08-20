@@ -8,7 +8,7 @@ const adminAppUrl = vi.hoisted(() => "https://admin.example.com");
 
 const revokeCurrentAuthSessionMock = vi.hoisted(() => vi.fn());
 
-vi.mock("@repo/env/server", () => ({
+vi.mock("@/config/server-env", () => ({
   serverEnv: {
     ADMIN_APP_URL: adminAppUrl,
   },

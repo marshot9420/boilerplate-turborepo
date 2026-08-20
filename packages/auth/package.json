@@ -23,7 +23,7 @@
     "@repo/database": "workspace:*",
     "@repo/domain": "workspace:*",
     "@repo/env": "workspace:*",
-    "server-only": "^0.0.1"
+    "server-only": "catalog:"
   },
   "peerDependencies": {
     "next": "^16.0.0",
@@ -33,7 +33,7 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@repo/vitest-config": "workspace:*",
-    "eslint": "^9.39.1",
-    "typescript": "5.9.2"
+    "eslint": "catalog:",
+    "typescript": "catalog:"
   }
 }

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useId, useState } from "react";
 
 import type { ActionResult } from "@repo/core/action";
-import { getFieldError, getFormError, hasFieldError } from "@repo/design-system/form";
+import { getFieldError, getFormError } from "@repo/design-system/form";
 import { toastActionResult } from "@repo/design-system/toast";
 import {
   Alert,
@@ -101,7 +101,7 @@ export default function UpdateMyProfileForm({ user, action, className }: UpdateM
               maxLength={USER.NICKNAME.MAX_LENGTH}
               pattern={USER.NICKNAME.PATTERN.source}
               required
-              hasError={hasFieldError(state, "nickname")}
+              hasError={Boolean(nicknameError)}
               aria-describedby={
                 nicknameError
                   ? `${nicknameDescriptionId} ${nicknameErrorId}`
@@ -131,7 +131,7 @@ export default function UpdateMyProfileForm({ user, action, className }: UpdateM
               name="name"
               value={name}
               maxLength={USER.NAME.MAX_LENGTH}
-              hasError={hasFieldError(state, "name")}
+              hasError={Boolean(nameError)}
               aria-describedby={
                 nameError ? `${nameDescriptionId} ${nameErrorId}` : nameDescriptionId
               }
@@ -154,7 +154,7 @@ export default function UpdateMyProfileForm({ user, action, className }: UpdateM
               type="url"
               value={avatarUrl}
               placeholder="https://example.com/avatar.png"
-              hasError={hasFieldError(state, "avatarUrl")}
+              hasError={Boolean(avatarUrlError)}
               aria-describedby={
                 avatarUrlError
                   ? `${avatarUrlDescriptionId} ${avatarUrlErrorId}`

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
 import { revokeCurrentAuthSession } from "@repo/auth/server";
-import { serverEnv } from "@repo/env/server";
 
+import { serverEnv } from "@/config/server-env";
 import { URLS } from "@/constants";
 
 export const runtime = "nodejs";

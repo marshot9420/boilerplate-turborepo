@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - develop
+
   push:
     branches:
       - main
       - develop
+
   workflow_dispatch:
 
 concurrency:
@@ -32,7 +34,6 @@ jobs:
     env:
       WEB_APP_URL: "http://localhost:3000"
       ADMIN_APP_URL: "http://localhost:3001"
-      NEXT_PUBLIC_APP_URL: "http://localhost:3000"
 
       DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_ci?schema=public"
       DIRECT_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_ci?schema=public"
@@ -106,7 +107,6 @@ jobs:
     env:
       WEB_APP_URL: "http://localhost:3000"
       ADMIN_APP_URL: "http://localhost:3001"
-      NEXT_PUBLIC_APP_URL: "http://localhost:3000"
 
       DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_ci?schema=public"
       DIRECT_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_ci?schema=public"
@@ -173,7 +173,6 @@ jobs:
 
       WEB_APP_URL: "http://localhost:3000"
       ADMIN_APP_URL: "http://localhost:3001"
-      NEXT_PUBLIC_APP_URL: "http://localhost:3000"
 
       DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_test?schema=public"
       DIRECT_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_test?schema=public"
@@ -238,7 +237,6 @@ jobs:
     env:
       WEB_APP_URL: "http://localhost:3100"
       ADMIN_APP_URL: "http://localhost:3101"
-      NEXT_PUBLIC_APP_URL: "http://localhost:3100"
 
       DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_e2e?schema=public"
       DIRECT_URL: "postgresql://postgres:postgres@localhost:5432/boilerplate_turborepo_e2e?schema=public"
