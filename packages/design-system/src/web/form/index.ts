@@ -1,5 +1,5 @@
-export * from "./field";
-export * from "./field-description";
-export * from "./field-error";
-export * from "./field-label";
-export * from "./text-counter";
+export { Field } from "./field";
+export { FieldDescription } from "./field-description";
+export { FieldError } from "./field-error";
+export { FieldLabel } from "./field-label";
+export { TextCounter } from "./text-counter";

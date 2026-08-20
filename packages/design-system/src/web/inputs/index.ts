@@ -1,9 +1,9 @@
-export * from "./checkbox";
-export * from "./file-input";
-export * from "./input";
-export * from "./number-input";
-export * from "./phone-input";
-export * from "./radio";
-export * from "./select";
-export * from "./switch";
-export * from "./textarea";
+export { Checkbox } from "./checkbox";
+export { FileInput } from "./file-input";
+export { Input } from "./input";
+export { NumberInput } from "./number-input";
+export { PhoneInput } from "./phone-input";
+export { Radio } from "./radio";
+export { Select } from "./select";
+export { Switch } from "./switch";
+export { Textarea } from "./textarea";
