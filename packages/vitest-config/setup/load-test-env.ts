@@ -5,29 +5,48 @@ import dotenv from "dotenv";
 
 process.env.NODE_ENV = "test";
 
-let currentDir = process.cwd();
-let workspaceRoot = currentDir;
+function resolveWorkspaceRoot(startDir: string): string {
+  let currentDir = startDir;
 
-while (currentDir !== path.dirname(currentDir)) {
-  const workspaceFile = path.join(currentDir, "pnpm-workspace.yaml");
+  while (true) {
+    const workspaceFile = path.join(currentDir, "pnpm-workspace.yaml");
 
-  if (fs.existsSync(workspaceFile)) {
-    workspaceRoot = currentDir;
-    break;
+    if (fs.existsSync(workspaceFile)) {
+      return currentDir;
+    }
+
+    const parentDir = path.dirname(currentDir);
+
+    if (parentDir === currentDir) {
+      throw new Error("pnpm-workspace.yaml을 찾을 수 없습니다.");
+    }
+
+    currentDir = parentDir;
   }
-
-  currentDir = path.dirname(currentDir);
 }
 
-const envFiles = [".env.test", ".env.test.local"];
+const workspaceRoot = resolveWorkspaceRoot(process.cwd());
 
-for (const envFile of envFiles) {
-  const envPath = path.join(workspaceRoot, envFile);
+const envFiles = [
+  {
+    fileName: ".env.test",
+    override: false,
+  },
+  {
+    fileName: ".env.test.local",
+    override: true,
+  },
+] as const;
 
-  if (fs.existsSync(envPath)) {
-    dotenv.config({
-      path: envPath,
-      override: true,
-    });
+for (const { fileName, override } of envFiles) {
+  const envPath = path.join(workspaceRoot, fileName);
+
+  if (!fs.existsSync(envPath)) {
+    continue;
   }
+
+  dotenv.config({
+    path: envPath,
+    override,
+  });
 }
