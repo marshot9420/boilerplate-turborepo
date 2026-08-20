@@ -1,19 +1,27 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "autoMemoryEnabled": false,
   "permissions": {
     "defaultMode": "acceptEdits",
     "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./**/.env)",
-      "Read(./**/.env.*)",
-      "Read(./secrets/**)",
-      "Read(./.vercel/**)",
-      "Edit(./pnpm-lock.yaml)",
-      "Edit(./packages/database/prisma/migrations/**)",
+      "Read(.env)",
+      "Read(.env.local)",
+      "Read(.env.development)",
+      "Read(.env.development.local)",
+      "Read(.env.production)",
+      "Read(.env.production.local)",
+      "Read(.env.test)",
+      "Read(.env.test.local)",
+      "Read(.env.e2e)",
+      "Read(.env.e2e.local)",
+      "Read(secrets/**)",
+      "Read(.vercel/**)",
+      "Edit(pnpm-lock.yaml)",
+      "Edit(packages/database/prisma/migrations/**)",
       "Bash(rm -rf *)",
       "Bash(git push *)",
-      "Bash(git push --force*)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean *)",
       "Bash(pnpm publish *)",
       "Bash(npm publish *)"
     ],
@@ -23,6 +31,7 @@
       "Bash(pnpm remove *)",
       "Bash(pnpm db:migrate *)",
       "Bash(pnpm db:push *)",
+      "Bash(pnpm db:seed *)",
       "Bash(git commit *)"
     ],
     "allow": [
@@ -36,8 +45,10 @@
       "Bash(pnpm lint)",
       "Bash(pnpm check-types)",
       "Bash(pnpm format:check)",
+      "Bash(pnpm test *)",
+      "Bash(pnpm test:integration *)",
       "Bash(pnpm --filter * test)",
-      "Bash(git status)",
+      "Bash(git status *)",
       "Bash(git diff *)"
     ]
   }
