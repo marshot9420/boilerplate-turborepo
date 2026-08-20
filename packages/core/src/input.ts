@@ -114,38 +114,40 @@ export function normalizeOptionalDateInput(value: unknown): unknown {
   return new Date(normalized);
 }
 
-export function zRequiredString(message = "필수 입력값입니다.") {
+export function requiredStringSchema(message = "필수 입력값입니다.") {
   return z.string().trim().min(1, message);
 }
 
-export function zOptionalString() {
+export function optionalStringSchema() {
   return z.preprocess(normalizeOptionalStringInput, z.string().optional());
 }
 
-export function zNullableString() {
+export function nullableStringSchema() {
   return z.preprocess(normalizeNullableStringInput, z.string().nullable().optional());
 }
 
-export function zOptionalNumber() {
+export function optionalNumberSchema() {
   return z.preprocess(normalizeOptionalNumberInput, z.number().optional());
 }
 
-export function zOptionalInt() {
+export function optionalIntegerSchema() {
   return z.preprocess(normalizeOptionalIntInput, z.number().int().optional());
 }
 
-export function zOptionalBoolean() {
+export function optionalBooleanSchema() {
   return z.preprocess(normalizeOptionalBooleanInput, z.boolean().optional());
 }
 
-export function zOptionalDate() {
+export function optionalDateSchema() {
   return z.preprocess(normalizeOptionalDateInput, z.date().optional());
 }
 
-export function zOptionalEnum<TValues extends readonly [string, ...string[]]>(values: TValues) {
+export function optionalEnumSchema<TValues extends readonly [string, ...string[]]>(
+  values: TValues,
+) {
   return z.preprocess(normalizeBlankStringToUndefined, z.enum(values).optional());
 }
 
-export function zFormBoolean() {
+export function formBooleanSchema() {
   return z.preprocess(normalizeFormBooleanInput, z.boolean());
 }

@@ -1,6 +1,11 @@
 import { z } from "zod";
 
-import { zOptionalEnum, zOptionalInt, zOptionalString, zRequiredString } from "@repo/core/input";
+import {
+  optionalEnumSchema,
+  optionalIntegerSchema,
+  optionalStringSchema,
+  requiredStringSchema,
+} from "@repo/core/input";
 
 import { CONTENT } from "./content.constant";
 
@@ -17,28 +22,28 @@ export const UpdatableContentStatuses = ["PUBLISHED", "HIDDEN"] as const;
 export const ContentListSortKeys = ["TITLE", "STATUS", "CREATED_AT", "UPDATED_AT"] as const;
 
 export const ContentListQuery = z.object({
-  page: zOptionalInt().pipe(z.number().min(1).optional()),
+  page: optionalIntegerSchema().pipe(z.number().min(1).optional()),
 
-  limit: zOptionalInt().pipe(z.number().min(1).max(100).optional()),
+  limit: optionalIntegerSchema().pipe(z.number().min(1).max(100).optional()),
 
-  status: zOptionalEnum(ContentStatuses),
+  status: optionalEnumSchema(ContentStatuses),
 
-  authorId: zOptionalString().pipe(z.uuid("작성자 식별자가 올바르지 않습니다.").optional()),
+  authorId: optionalStringSchema().pipe(z.uuid("작성자 식별자가 올바르지 않습니다.").optional()),
 
-  sort: zOptionalEnum(ContentListSortKeys),
+  sort: optionalEnumSchema(ContentListSortKeys),
 
-  order: zOptionalEnum(["asc", "desc"]),
+  order: optionalEnumSchema(["asc", "desc"]),
 });
 
 export type ContentListQueryInput = z.infer<typeof ContentListQuery>;
 
 export const CreateContentRequest = z.object({
-  title: zRequiredString(CONTENT.TITLE.REQUIRED_MESSAGE).max(
+  title: requiredStringSchema(CONTENT.TITLE.REQUIRED_MESSAGE).max(
     CONTENT.TITLE.MAX_LENGTH,
     CONTENT.TITLE.MAX_MESSAGE,
   ),
 
-  content: zRequiredString(CONTENT.BODY.REQUIRED_MESSAGE),
+  content: requiredStringSchema(CONTENT.BODY.REQUIRED_MESSAGE),
 });
 
 export type CreateContentRequestInput = z.infer<typeof CreateContentRequest>;
