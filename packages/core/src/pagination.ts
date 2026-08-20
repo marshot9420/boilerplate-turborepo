@@ -20,13 +20,16 @@ export interface PaginationMeta {
 }
 
 const DEFAULT_PAGE = 1;
+
 const DEFAULT_LIMIT = 20;
 
 const MIN_PAGE = 1;
+
 const MIN_LIMIT = 1;
+
 const MAX_LIMIT = 100;
 
-export function createPagination(input: PaginationInput = {}): PaginationResult {
+export function buildPagination(input: PaginationInput = {}): PaginationResult {
   const page = Math.max(input.page ?? DEFAULT_PAGE, MIN_PAGE);
 
   const limit = Math.min(Math.max(input.limit ?? DEFAULT_LIMIT, MIN_LIMIT), MAX_LIMIT);
@@ -41,7 +44,7 @@ export function createPagination(input: PaginationInput = {}): PaginationResult 
   };
 }
 
-export function createPaginationMeta(params: {
+export function buildPaginationMeta(params: {
   page: number;
   limit: number;
   totalCount: number;
