@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { getNumberSearchParam, getSearchParam } from "./query";
+import { getNumberSearchParam, getSearchParam } from "./search-params";
 
 describe("getSearchParam", () => {
   it("returns the search param value", () => {

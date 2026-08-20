@@ -6,12 +6,12 @@
   "exports": {
     "./action": "./src/action/index.ts",
     "./errors": "./src/errors/index.ts",
-    "./input": "./src/input.ts",
-    "./logger": "./src/logger.ts",
-    "./pagination": "./src/pagination.ts",
-    "./query": "./src/query.ts",
-    "./result": "./src/result.ts",
-    "./validation": "./src/validation.ts"
+    "./input": "./src/input/index.ts",
+    "./logger": "./src/logger/index.ts",
+    "./pagination": "./src/pagination/index.ts",
+    "./query": "./src/query/index.ts",
+    "./result": "./src/result/index.ts",
+    "./validation": "./src/validation/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

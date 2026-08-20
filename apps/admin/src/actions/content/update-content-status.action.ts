@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireAdmin } from "@repo/auth/server";
 import type { ActionResult } from "@repo/core/action";
-import { createAction } from "@repo/core/action";
+import { executeFormAction } from "@repo/core/action";
 import {
   type ContentDetailResponse,
   UpdateContentStatusByIdRequest,
@@ -19,7 +19,7 @@ export async function updateContentStatusAction(
 ) {
   const session = await requireAdmin();
 
-  const result = await createAction({
+  const result = await executeFormAction({
     actionName: "admin.content.update_status",
     schema: UpdateContentStatusByIdRequest,
     formData,
