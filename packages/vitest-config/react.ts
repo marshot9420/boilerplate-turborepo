@@ -19,10 +19,9 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
+
     setupFiles: [loadTestEnvPath, "@testing-library/jest-dom/vitest"],
-
     include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
-
     exclude: [
       ...coverageConfigDefaults.exclude,
       "src/**/*.integration.test.ts",
@@ -30,6 +29,8 @@ export default defineConfig({
       "src/**/*.spec.ts",
       "src/**/*.spec.tsx",
     ],
+
+    passWithNoTests: true,
 
     coverage: {
       provider: "v8",

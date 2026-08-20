@@ -2,7 +2,6 @@
 
 @import "./tokens.css";
 
-@source "../primitives";
 @source "../web";
 @source "../admin";
 
