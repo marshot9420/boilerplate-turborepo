@@ -78,4 +78,16 @@ describe("parseJsonFormDataValues", () => {
 
     expect(parseJsonFormDataValues(formData, "items")).toEqual(['{"invalid"']);
   });
+
+  it("keeps File values unchanged", () => {
+    const formData = new FormData();
+
+    const file = new File(["content"], "test.txt", {
+      type: "text/plain",
+    });
+
+    formData.set("attachment", file);
+
+    expect(parseJsonFormDataValue(formData, "attachment")).toBe(file);
+  });
 });

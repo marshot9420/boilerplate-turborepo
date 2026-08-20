@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { requireUser } from "@repo/auth/server";
-import { createAction } from "@repo/core/action";
+import { executeFormAction } from "@repo/core/action";
 import { UpdateUserProfileRequest } from "@repo/domain/user/client";
 import { updateUserProfileService } from "@repo/domain/user/server";
 
@@ -12,7 +12,7 @@ import { URLS } from "@/constants";
 export async function updateMyProfileAction(_prevState: unknown, formData: FormData) {
   const session = await requireUser();
 
-  const result = await createAction({
+  const result = await executeFormAction({
     actionName: "user.update_my_profile",
     schema: UpdateUserProfileRequest,
     formData,

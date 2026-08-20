@@ -4,7 +4,7 @@ import type { AppError } from "@repo/core/errors";
 
 import { createContentAction } from "../create-content.action";
 
-interface CreateActionParams<TInput> {
+interface ExecuteFormActionParams<TInput> {
   actionName: string;
   schema: unknown;
   formData: FormData;
@@ -17,7 +17,7 @@ const authMock = vi.hoisted(() => ({
 }));
 
 const actionMock = vi.hoisted(() => ({
-  createAction: vi.fn(),
+  executeFormAction: vi.fn(),
 }));
 
 const contentServiceMock = vi.hoisted(() => ({
@@ -82,9 +82,9 @@ describe("createContentAction", () => {
     authMock.requireUser.mockResolvedValue(createSession());
     contentServiceMock.createContentService.mockResolvedValue(serviceResult);
 
-    actionMock.createAction.mockImplementationOnce(
+    actionMock.executeFormAction.mockImplementationOnce(
       async (
-        params: CreateActionParams<{
+        params: ExecuteFormActionParams<{
           title: string;
           content: string;
         }>,
@@ -102,7 +102,7 @@ describe("createContentAction", () => {
 
     expect(authMock.requireUser).toHaveBeenCalledOnce();
 
-    expect(actionMock.createAction).toHaveBeenCalledWith(
+    expect(actionMock.executeFormAction).toHaveBeenCalledWith(
       expect.objectContaining({
         actionName: "content.create",
         formData,
@@ -140,7 +140,7 @@ describe("createContentAction", () => {
     };
 
     authMock.requireUser.mockResolvedValue(createSession());
-    actionMock.createAction.mockResolvedValue(actionResult);
+    actionMock.executeFormAction.mockResolvedValue(actionResult);
 
     const result = await createContentAction(null, formData);
 
@@ -148,7 +148,7 @@ describe("createContentAction", () => {
     expect(result).toEqual(actionResult);
   });
 
-  it("서비스가 실패 Result를 반환해도 createAction의 결과를 그대로 반환한다", async () => {
+  it("서비스가 실패 Result를 반환해도 executeFormAction의 결과를 그대로 반환한다", async () => {
     const formData = new FormData();
 
     const serviceError: AppError = {
@@ -170,9 +170,9 @@ describe("createContentAction", () => {
     authMock.requireUser.mockResolvedValue(createSession());
     contentServiceMock.createContentService.mockResolvedValue(serviceResult);
 
-    actionMock.createAction.mockImplementationOnce(
+    actionMock.executeFormAction.mockImplementationOnce(
       async (
-        params: CreateActionParams<{
+        params: ExecuteFormActionParams<{
           title: string;
           content: string;
         }>,

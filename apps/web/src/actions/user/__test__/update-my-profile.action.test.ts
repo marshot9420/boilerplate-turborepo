@@ -9,7 +9,7 @@ const authMock = vi.hoisted(() => ({
 }));
 
 const actionMock = vi.hoisted(() => ({
-  createAction: vi.fn(),
+  executeFormAction: vi.fn(),
 }));
 
 const cacheMock = vi.hoisted(() => ({
@@ -85,7 +85,7 @@ describe("updateMyProfileAction", () => {
 
     userServiceMock.updateUserProfileService.mockResolvedValue(serviceResult);
 
-    actionMock.createAction.mockImplementation(async (params) => {
+    actionMock.executeFormAction.mockImplementation(async (params) => {
       const handlerResult = await params.handler({
         name: "수정된 이름",
         avatarUrl: "https://example.com/avatar.png",
@@ -101,11 +101,11 @@ describe("updateMyProfileAction", () => {
 
     expect(authMock.requireUser).toHaveBeenCalledTimes(1);
 
-    expect(actionMock.createAction).toHaveBeenCalledTimes(1);
+    expect(actionMock.executeFormAction).toHaveBeenCalledTimes(1);
 
-    const createActionParams = actionMock.createAction.mock.calls[0]?.[0];
+    const executeFormActionParams = actionMock.executeFormAction.mock.calls[0]?.[0];
 
-    expect(createActionParams).toMatchObject({
+    expect(executeFormActionParams).toMatchObject({
       actionName: "user.update_my_profile",
       schema: UpdateUserProfileRequest,
       formData,
@@ -141,20 +141,20 @@ describe("updateMyProfileAction", () => {
       },
     });
 
-    actionMock.createAction.mockResolvedValue(actionResult);
+    actionMock.executeFormAction.mockResolvedValue(actionResult);
 
     const result = await updateMyProfileAction(null, formData);
 
     expect(authMock.requireUser).toHaveBeenCalledTimes(1);
 
-    expect(actionMock.createAction).toHaveBeenCalledTimes(1);
+    expect(actionMock.executeFormAction).toHaveBeenCalledTimes(1);
 
     expect(cacheMock.revalidatePath).not.toHaveBeenCalled();
 
     expect(result).toEqual(actionResult);
   });
 
-  it("인증에 실패하면 createAction을 호출하지 않는다", async () => {
+  it("인증에 실패하면 executeFormAction을 호출하지 않는다", async () => {
     const formData = createFormData();
     const error = new Error("UNAUTHORIZED");
 
@@ -162,7 +162,7 @@ describe("updateMyProfileAction", () => {
 
     await expect(updateMyProfileAction(null, formData)).rejects.toThrow("UNAUTHORIZED");
 
-    expect(actionMock.createAction).not.toHaveBeenCalled();
+    expect(actionMock.executeFormAction).not.toHaveBeenCalled();
     expect(userServiceMock.updateUserProfileService).not.toHaveBeenCalled();
     expect(cacheMock.revalidatePath).not.toHaveBeenCalled();
   });
