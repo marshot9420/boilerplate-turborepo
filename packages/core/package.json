@@ -6,10 +6,13 @@
   "exports": {
     "./action": "./src/action/index.ts",
     "./errors": "./src/errors/index.ts",
+    "./format": "./src/format/index.ts",
     "./input": "./src/input/index.ts",
     "./logger": "./src/logger/index.ts",
     "./pagination": "./src/pagination/index.ts",
+    "./parse": "./src/parse/index.ts",
     "./query": "./src/query/index.ts",
+    "./resolve": "./src/resolve/index.ts",
     "./result": "./src/result/index.ts",
     "./validation": "./src/validation/index.ts"
   },
