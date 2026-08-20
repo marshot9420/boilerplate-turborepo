@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireAdmin } from "@repo/auth/server";
 import type { ActionResult } from "@repo/core/action";
-import { createAction } from "@repo/core/action";
+import { executeFormAction } from "@repo/core/action";
 import { ContentIdParam, type ContentDetailResponse } from "@repo/domain/content/client";
 import { softDeleteContentService } from "@repo/domain/content/server";
 
@@ -16,7 +16,7 @@ export async function deleteContentAction(
 ) {
   const session = await requireAdmin();
 
-  const result = await createAction({
+  const result = await executeFormAction({
     actionName: "admin.content.delete",
     schema: ContentIdParam,
     formData,

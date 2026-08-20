@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireUser } from "@repo/auth/server";
 import type { ActionResult } from "@repo/core/action";
-import { createAction } from "@repo/core/action";
+import { executeFormAction } from "@repo/core/action";
 import { CreateContentRequest, type ContentDetailResponse } from "@repo/domain/content/client";
 import { createContentService } from "@repo/domain/content/server";
 
@@ -16,7 +16,7 @@ export async function createContentAction(
 ) {
   const session = await requireUser();
 
-  const result = await createAction({
+  const result = await executeFormAction({
     actionName: "content.create",
     schema: CreateContentRequest,
     formData,

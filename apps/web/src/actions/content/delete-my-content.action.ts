@@ -1,11 +1,10 @@
-// apps/web/src/actions/content/delete-my-content.action.ts
 "use server";
 
 import { revalidatePath } from "next/cache";
 
 import { requireUser } from "@repo/auth/server";
 import type { ActionResult } from "@repo/core/action";
-import { createAction } from "@repo/core/action";
+import { executeFormAction } from "@repo/core/action";
 import { ContentIdParam, type ContentDetailResponse } from "@repo/domain/content/client";
 import { softDeleteContentService } from "@repo/domain/content/server";
 
@@ -25,7 +24,7 @@ export async function deleteMyContentAction(
 ) {
   const session = await requireUser();
 
-  const result = await createAction({
+  const result = await executeFormAction({
     actionName: "content.delete_my_content",
     schema: ContentIdParam,
     formData,

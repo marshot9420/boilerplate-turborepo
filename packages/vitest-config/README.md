@@ -228,11 +228,11 @@ index.ts
 ```ts
 import { describe, expect, it } from "vitest";
 
-import { createPagination } from "./pagination";
+import { buildPagination } from "./pagination";
 
-describe("createPagination", () => {
+describe("buildPagination", () => {
   it("기본 페이지네이션 값을 생성한다", () => {
-    expect(createPagination()).toEqual({
+    expect(buildPagination()).toEqual({
       page: 1,
       limit: 20,
       skip: 0,

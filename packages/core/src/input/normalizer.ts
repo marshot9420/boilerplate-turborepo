@@ -1,4 +1,5 @@
 const TRUE_STRING_VALUES = new Set(["true", "1", "on", "yes"]);
+
 const FALSE_STRING_VALUES = new Set(["false", "0", "off", "no"]);
 
 export function normalizeSingleValue(value: unknown): unknown {

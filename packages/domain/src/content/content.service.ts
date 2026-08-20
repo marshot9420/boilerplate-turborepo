@@ -1,6 +1,6 @@
 import type { AppError } from "@repo/core/errors";
 import { logger } from "@repo/core/logger";
-import { createPagination, createPaginationMeta } from "@repo/core/pagination";
+import { buildPagination, buildPaginationMeta } from "@repo/core/pagination";
 import { failure, success, type Result } from "@repo/core/result";
 import {
   countContentsRepository,
@@ -112,7 +112,7 @@ export async function getContentsService(
   query: ContentListQueryInput = {},
 ): Promise<Result<ContentListResponse, AppError>> {
   try {
-    const pagination = createPagination({
+    const pagination = buildPagination({
       page: query.page,
       limit: query.limit,
     });
@@ -132,7 +132,7 @@ export async function getContentsService(
 
     return success({
       items: contents.map(toContentResponse),
-      meta: createPaginationMeta({
+      meta: buildPaginationMeta({
         page: pagination.page,
         limit: pagination.limit,
         totalCount,

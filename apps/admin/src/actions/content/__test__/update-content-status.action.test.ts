@@ -4,7 +4,7 @@ import type { AppError } from "@repo/core/errors";
 
 import { updateContentStatusAction } from "../update-content-status.action";
 
-interface CreateActionParams<TInput> {
+interface ExecuteFormActionParams<TInput> {
   actionName: string;
   schema: unknown;
   formData: FormData;
@@ -17,7 +17,7 @@ const authMock = vi.hoisted(() => ({
 }));
 
 const actionMock = vi.hoisted(() => ({
-  createAction: vi.fn(),
+  executeFormAction: vi.fn(),
 }));
 
 const contentServiceMock = vi.hoisted(() => ({
@@ -81,9 +81,9 @@ describe("updateContentStatusAction", () => {
     authMock.requireAdmin.mockResolvedValue(createAdminSession());
     contentServiceMock.updateContentStatusService.mockResolvedValue(serviceResult);
 
-    actionMock.createAction.mockImplementationOnce(
+    actionMock.executeFormAction.mockImplementationOnce(
       async (
-        params: CreateActionParams<{
+        params: ExecuteFormActionParams<{
           id: string;
           status: "PUBLISHED" | "HIDDEN";
         }>,
@@ -101,7 +101,7 @@ describe("updateContentStatusAction", () => {
 
     expect(authMock.requireAdmin).toHaveBeenCalledOnce();
 
-    expect(actionMock.createAction).toHaveBeenCalledWith(
+    expect(actionMock.executeFormAction).toHaveBeenCalledWith(
       expect.objectContaining({
         actionName: "admin.content.update_status",
         formData,
@@ -138,7 +138,7 @@ describe("updateContentStatusAction", () => {
     };
 
     authMock.requireAdmin.mockResolvedValue(createAdminSession());
-    actionMock.createAction.mockResolvedValue(actionResult);
+    actionMock.executeFormAction.mockResolvedValue(actionResult);
 
     const result = await updateContentStatusAction(null, formData);
 
@@ -146,7 +146,7 @@ describe("updateContentStatusAction", () => {
     expect(result).toEqual(actionResult);
   });
 
-  it("서비스가 실패 Result를 반환해도 createAction의 결과를 그대로 반환한다", async () => {
+  it("서비스가 실패 Result를 반환해도 executeFormAction의 결과를 그대로 반환한다", async () => {
     const formData = new FormData();
 
     const serviceError: AppError = {
@@ -168,9 +168,9 @@ describe("updateContentStatusAction", () => {
     authMock.requireAdmin.mockResolvedValue(createAdminSession());
     contentServiceMock.updateContentStatusService.mockResolvedValue(serviceResult);
 
-    actionMock.createAction.mockImplementationOnce(
+    actionMock.executeFormAction.mockImplementationOnce(
       async (
-        params: CreateActionParams<{
+        params: ExecuteFormActionParams<{
           id: string;
           status: "PUBLISHED" | "HIDDEN";
         }>,

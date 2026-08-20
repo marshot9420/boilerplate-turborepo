@@ -7,47 +7,52 @@ import type { Result } from "../result";
 import { mapZodErrorToFieldErrors } from "../validation";
 import type { ActionResult } from "./action-result";
 
-export interface CreateActionParams<TInput, TData> {
+interface ExecuteFormActionParams<TInput, TData> {
   actionName: string;
   schema: z.ZodType<TInput>;
   formData: FormData;
   handler: (input: TInput) => Promise<Result<TData, AppError>>;
   successMessage?: string;
+  parseFormData?: (formData: FormData) => unknown;
 }
 
-export async function createAction<TInput, TData>({
+export async function executeFormAction<TInput, TData>({
   actionName,
   schema,
   formData,
   handler,
   successMessage,
-}: CreateActionParams<TInput, TData>): Promise<ActionResult<TData>> {
+  parseFormData,
+}: ExecuteFormActionParams<TInput, TData>): Promise<ActionResult<TData>> {
   try {
-    const raw = Object.fromEntries(formData.entries());
-    const parsed = schema.safeParse(raw);
+    const rawInput = parseFormData
+      ? parseFormData(formData)
+      : Object.fromEntries(formData.entries());
 
-    if (!parsed.success) {
+    const parseResult = schema.safeParse(rawInput);
+
+    if (!parseResult.success) {
       return {
         ok: false,
         code: COMMON_ERROR_CODE.VALIDATION_ERROR,
         message: "입력값을 확인해 주세요.",
-        fieldErrors: mapZodErrorToFieldErrors(parsed.error),
+        fieldErrors: mapZodErrorToFieldErrors(parseResult.error),
       };
     }
 
-    const result = await handler(parsed.data);
+    const handlerResult = await handler(parseResult.data);
 
-    if (!result.ok) {
+    if (!handlerResult.ok) {
       logger.warn(`${actionName}.failed`, {
-        code: result.error.code,
-        message: result.error.message,
+        code: handlerResult.error.code,
+        message: handlerResult.error.message,
       });
 
       return {
         ok: false,
-        code: result.error.code,
-        message: result.error.message,
-        fieldErrors: result.error.fieldErrors,
+        code: handlerResult.error.code,
+        message: handlerResult.error.message,
+        fieldErrors: handlerResult.error.fieldErrors,
       };
     }
 
@@ -55,7 +60,7 @@ export async function createAction<TInput, TData>({
 
     return {
       ok: true,
-      data: result.data,
+      data: handlerResult.data,
       message: successMessage,
     };
   } catch (error) {

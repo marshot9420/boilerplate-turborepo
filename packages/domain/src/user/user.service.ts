@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 
 import type { AppError } from "@repo/core/errors";
 import { logger } from "@repo/core/logger";
-import { createPagination, createPaginationMeta } from "@repo/core/pagination";
+import { buildPagination, buildPaginationMeta } from "@repo/core/pagination";
 import { failure, success, type Result } from "@repo/core/result";
 import {
   createUserRepository,
@@ -140,7 +140,7 @@ export async function getUsersService(
       return failure(createUserForbiddenError("사용자 목록을 조회할 권한이 없습니다."));
     }
 
-    const pagination = createPagination({
+    const pagination = buildPagination({
       page: query.page,
       limit: query.limit,
     });
@@ -157,7 +157,7 @@ export async function getUsersService(
 
     return success({
       items: result.users.map(toUserListItemResponse),
-      meta: createPaginationMeta({
+      meta: buildPaginationMeta({
         page: pagination.page,
         limit: pagination.limit,
         totalCount: result.totalElements,

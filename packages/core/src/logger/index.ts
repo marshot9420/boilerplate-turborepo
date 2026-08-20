@@ -1,1 +1,1 @@
-export { logger, type LogLevel, type LogMeta } from "./logger";
+export { logger } from "./logger";

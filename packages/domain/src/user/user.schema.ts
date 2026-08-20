@@ -1,8 +1,8 @@
 import { AuthProvider, UserRole, UserStatus } from "@prisma/client";
 import { z } from "zod";
 
-import type { ListQuery } from "@repo/core/types";
-import { zNullableString } from "@repo/core/validation";
+import { nullableStringSchema } from "@repo/core/input";
+import type { ListQuery } from "@repo/core/query";
 
 import { USER } from "./user.constant";
 
@@ -48,11 +48,13 @@ export const UserListQuerySchema = z.object({
 export type UserListQueryInput = z.infer<typeof UserListQuerySchema>;
 
 export const UpdateUserProfileRequest = z.object({
-  name: zNullableString().pipe(
+  name: nullableStringSchema().pipe(
     z.string().max(USER.NAME.MAX_LENGTH, USER.NAME.MAX_MESSAGE).nullable().optional(),
   ),
 
-  avatarUrl: zNullableString().pipe(z.url(USER.AVATAR_URL.INVALID_MESSAGE).nullable().optional()),
+  avatarUrl: nullableStringSchema().pipe(
+    z.url(USER.AVATAR_URL.INVALID_MESSAGE).nullable().optional(),
+  ),
 
   nickname: z
     .string()

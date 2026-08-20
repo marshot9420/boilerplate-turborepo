@@ -1,7 +1,2 @@
-export {
-  createPagination,
-  createPaginationMeta,
-  type PaginationInput,
-  type PaginationMeta,
-  type PaginationResult,
-} from "./pagination";
+export type { PaginationInput, PaginationMeta, PaginationResult } from "./pagination";
+export { buildPagination, buildPaginationMeta } from "./pagination";

@@ -4,7 +4,7 @@ import type { AppError } from "@repo/core/errors";
 
 import { deleteMyContentAction } from "../delete-my-content.action";
 
-interface CreateActionParams<TInput> {
+interface ExecuteFormActionParams<TInput> {
   actionName: string;
   schema: unknown;
   formData: FormData;
@@ -17,7 +17,7 @@ const authMock = vi.hoisted(() => ({
 }));
 
 const actionMock = vi.hoisted(() => ({
-  createAction: vi.fn(),
+  executeFormAction: vi.fn(),
 }));
 
 const contentServiceMock = vi.hoisted(() => ({
@@ -82,9 +82,9 @@ describe("deleteMyContentAction", () => {
     authMock.requireUser.mockResolvedValue(createSession());
     contentServiceMock.softDeleteContentService.mockResolvedValue(serviceResult);
 
-    actionMock.createAction.mockImplementationOnce(
+    actionMock.executeFormAction.mockImplementationOnce(
       async (
-        params: CreateActionParams<{
+        params: ExecuteFormActionParams<{
           id: string;
         }>,
       ) => {
@@ -100,7 +100,7 @@ describe("deleteMyContentAction", () => {
 
     expect(authMock.requireUser).toHaveBeenCalledOnce();
 
-    expect(actionMock.createAction).toHaveBeenCalledWith(
+    expect(actionMock.executeFormAction).toHaveBeenCalledWith(
       expect.objectContaining({
         actionName: "content.delete_my_content",
         formData,
@@ -136,7 +136,7 @@ describe("deleteMyContentAction", () => {
     };
 
     authMock.requireUser.mockResolvedValue(createSession());
-    actionMock.createAction.mockResolvedValue(actionResult);
+    actionMock.executeFormAction.mockResolvedValue(actionResult);
 
     const result = await deleteMyContentAction(null, formData);
 
@@ -144,7 +144,7 @@ describe("deleteMyContentAction", () => {
     expect(result).toEqual(actionResult);
   });
 
-  it("서비스가 실패 Result를 반환해도 createAction의 결과를 그대로 반환한다", async () => {
+  it("서비스가 실패 Result를 반환해도 executeFormAction의 결과를 그대로 반환한다", async () => {
     const formData = new FormData();
 
     const serviceError: AppError = {
@@ -166,9 +166,9 @@ describe("deleteMyContentAction", () => {
     authMock.requireUser.mockResolvedValue(createSession());
     contentServiceMock.softDeleteContentService.mockResolvedValue(serviceResult);
 
-    actionMock.createAction.mockImplementationOnce(
+    actionMock.executeFormAction.mockImplementationOnce(
       async (
-        params: CreateActionParams<{
+        params: ExecuteFormActionParams<{
           id: string;
         }>,
       ) => {
