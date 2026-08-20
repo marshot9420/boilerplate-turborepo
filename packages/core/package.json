@@ -11,8 +11,7 @@
     "./pagination": "./src/pagination.ts",
     "./query": "./src/query.ts",
     "./result": "./src/result.ts",
-    "./utils": "./src/functions.ts",
-    "./validation": "./src/validation/index.ts"
+    "./validation": "./src/validation.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
