@@ -2,7 +2,7 @@ import { AuthProvider, UserRole, UserStatus } from "@prisma/client";
 import { z } from "zod";
 
 import { zNullableString } from "@repo/core/input";
-import type { ListQuery } from "@repo/core/types";
+import type { ListQuery } from "@repo/core/query";
 
 import { USER } from "./user.constant";
 

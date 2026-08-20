@@ -58,7 +58,7 @@ export type ${pascalName}ErrorCode =
       path: join(domainDir, `${kebabName}.schema.ts`),
       content: `import { z } from "zod";
 
-import type { ListQuery } from "@repo/core/types";
+import type { ListQuery } from "@repo/core/query";
 
 import { ${constantName} } from "./${kebabName}.constant";
 

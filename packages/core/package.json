@@ -9,9 +9,8 @@
     "./input": "./src/input.ts",
     "./logger": "./src/logger.ts",
     "./pagination": "./src/pagination.ts",
+    "./query": "./src/query.ts",
     "./result": "./src/result.ts",
-    "./search-params": "./src/search-params.ts",
-    "./types": "./src/list-query.ts",
     "./utils": "./src/functions.ts",
     "./validation": "./src/validation/index.ts"
   },
