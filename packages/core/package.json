@@ -6,8 +6,8 @@
   "exports": {
     "./action": "./src/action/index.ts",
     "./errors": "./src/errors/index.ts",
+    "./input": "./src/input.ts",
     "./logger": "./src/logger.ts",
-    "./normalizer": "./src/normalizer.ts",
     "./pagination": "./src/pagination.ts",
     "./result": "./src/result.ts",
     "./search-params": "./src/search-params.ts",

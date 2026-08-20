@@ -1,11 +1,6 @@
 import { z } from "zod";
 
-import {
-  zOptionalEnum,
-  zOptionalInt,
-  zOptionalString,
-  zRequiredString,
-} from "@repo/core/validation";
+import { zOptionalEnum, zOptionalInt, zOptionalString, zRequiredString } from "@repo/core/input";
 
 import { CONTENT } from "./content.constant";
 
