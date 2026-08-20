@@ -6,13 +6,13 @@
   "exports": {
     "./action": "./src/action/index.ts",
     "./errors": "./src/errors/index.ts",
-    "./logger": "./src/logger/index.ts",
-    "./normalizer": "./src/normalizer/index.ts",
-    "./pagination": "./src/pagination/index.ts",
-    "./result": "./src/result/index.ts",
-    "./search-params": "./src/search-params/index.ts",
-    "./types": "./src/types/index.ts",
-    "./utils": "./src/utils/index.ts",
+    "./logger": "./src/logger.ts",
+    "./normalizer": "./src/normalizer.ts",
+    "./pagination": "./src/pagination.ts",
+    "./result": "./src/result.ts",
+    "./search-params": "./src/search-params.ts",
+    "./types": "./src/list-query.ts",
+    "./utils": "./src/functions.ts",
     "./validation": "./src/validation/index.ts"
   },
   "scripts": {
