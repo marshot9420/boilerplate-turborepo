@@ -15,6 +15,7 @@ Usage:
 
 Examples:
   pnpm generate domain content
+  pnpm generate domain content --repository
 
   pnpm generate component empty-state --target all --category feedback
   pnpm generate component phone-input --target web --category inputs
@@ -31,6 +32,10 @@ Examples:
   pnpm generate view order-detail-view --app admin --domain order
   pnpm generate view my-profile-view --app web --domain user
 
+Domain options:
+  --repository
+    Generate the database repository and repository integration test.
+
 Available generators:
   ${availableGenerators.join(", ")}
 `);
@@ -42,23 +47,20 @@ async function main() {
   if (!type || !name) {
     printHelp();
     process.exitCode = 1;
-
     return;
   }
 
   if (!isGeneratorType(type)) {
     console.error(`[generators] unsupported generator type: ${type}`);
-
     printHelp();
-
     process.exitCode = 1;
-
     return;
   }
 
   if (type === "domain") {
     await generateDomain({
       name,
+      repository: args.includes("--repository"),
     });
 
     return;
@@ -101,7 +103,6 @@ async function main() {
   }
 
   console.error(`[generators] ${type} generator is not implemented yet.`);
-
   process.exitCode = 1;
 }
 
