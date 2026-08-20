@@ -1,9 +1,15 @@
 import { access, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
+interface BarrelExports {
+  runtime: string[];
+  types: string[];
+}
+
 async function exists(filePath: string): Promise<boolean> {
   try {
     await access(filePath);
+
     return true;
   } catch {
     return false;
@@ -30,7 +36,63 @@ function extractRuntimeExportNames(content: string): string[] {
       }
 
       const aliasParts = specifier.split(/\s+as\s+/);
+      const exportedName = aliasParts.at(-1)?.trim();
 
+      if (exportedName) {
+        exportNames.add(exportedName);
+      }
+    }
+  }
+
+  return [...exportNames].sort((a, b) => a.localeCompare(b));
+}
+
+function extractTypeExportNames(content: string): string[] {
+  const exportNames = new Set<string>();
+
+  const typeExportPattern = /export\s+type\s*\{([\s\S]*?)\}\s*from\s*["'][^"']+["'];?/g;
+
+  for (const match of content.matchAll(typeExportPattern)) {
+    const rawSpecifiers = match[1];
+
+    if (!rawSpecifiers) {
+      continue;
+    }
+
+    for (const rawSpecifier of rawSpecifiers.split(",")) {
+      const specifier = rawSpecifier.trim();
+
+      if (!specifier) {
+        continue;
+      }
+
+      const aliasParts = specifier.split(/\s+as\s+/);
+      const exportedName = aliasParts.at(-1)?.trim();
+
+      if (exportedName) {
+        exportNames.add(exportedName);
+      }
+    }
+  }
+
+  const namedExportPattern = /export\s*\{([\s\S]*?)\}\s*from\s*["'][^"']+["'];?/g;
+
+  for (const match of content.matchAll(namedExportPattern)) {
+    const rawSpecifiers = match[1];
+
+    if (!rawSpecifiers) {
+      continue;
+    }
+
+    for (const rawSpecifier of rawSpecifiers.split(",")) {
+      const specifier = rawSpecifier.trim();
+
+      if (!specifier.startsWith("type ")) {
+        continue;
+      }
+
+      const typeSpecifier = specifier.slice("type ".length).trim();
+      const aliasParts = typeSpecifier.split(/\s+as\s+/);
       const exportedName = aliasParts.at(-1)?.trim();
 
       if (exportedName) {
@@ -71,7 +133,25 @@ function createNamedExportLine(exportNames: string[], modulePath: string): strin
   return `export { ${exportNames.join(", ")} } from "${modulePath}";`;
 }
 
-async function syncCategoryBarrel(categoryPath: string): Promise<string[]> {
+function createTypeExportLine(exportNames: string[], modulePath: string): string {
+  return `export type { ${exportNames.join(", ")} } from "${modulePath}";`;
+}
+
+function createExportLines(exports: BarrelExports, modulePath: string): string[] {
+  const lines: string[] = [];
+
+  if (exports.types.length > 0) {
+    lines.push(createTypeExportLine(exports.types, modulePath));
+  }
+
+  if (exports.runtime.length > 0) {
+    lines.push(createNamedExportLine(exports.runtime, modulePath));
+  }
+
+  return lines;
+}
+
+async function syncCategoryBarrel(categoryPath: string): Promise<BarrelExports> {
   const entries = await readdir(categoryPath, {
     withFileTypes: true,
   });
@@ -81,7 +161,8 @@ async function syncCategoryBarrel(categoryPath: string): Promise<string[]> {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const lines: string[] = [];
-  const categoryExportNames = new Set<string>();
+  const categoryRuntimeExportNames = new Set<string>();
+  const categoryTypeExportNames = new Set<string>();
 
   for (const componentDirectory of componentDirectories) {
     const componentIndexPath = path.join(categoryPath, componentDirectory.name, "index.ts");
@@ -92,22 +173,35 @@ async function syncCategoryBarrel(categoryPath: string): Promise<string[]> {
 
     const content = await readFile(componentIndexPath, "utf8");
 
-    const exportNames = extractRuntimeExportNames(content);
+    const exports: BarrelExports = {
+      runtime: extractRuntimeExportNames(content),
+      types: extractTypeExportNames(content),
+    };
 
-    if (exportNames.length === 0) {
+    if (exports.runtime.length === 0 && exports.types.length === 0) {
       continue;
     }
 
-    for (const exportName of exportNames) {
-      categoryExportNames.add(exportName);
+    for (const exportName of exports.runtime) {
+      categoryRuntimeExportNames.add(exportName);
     }
 
-    lines.push(createNamedExportLine(exportNames, `./${componentDirectory.name}`));
+    for (const exportName of exports.types) {
+      categoryTypeExportNames.add(exportName);
+    }
+
+    lines.push(...createExportLines(exports, `./${componentDirectory.name}`));
   }
 
-  await writeFile(path.join(categoryPath, "index.ts"), `${lines.join("\n")}\n`);
+  await writeFile(
+    path.join(categoryPath, "index.ts"),
+    lines.length > 0 ? `${lines.join("\n")}\n` : "",
+  );
 
-  return [...categoryExportNames].sort((a, b) => a.localeCompare(b));
+  return {
+    runtime: [...categoryRuntimeExportNames].sort((a, b) => a.localeCompare(b)),
+    types: [...categoryTypeExportNames].sort((a, b) => a.localeCompare(b)),
+  };
 }
 
 export async function syncDesignSystemTargetBarrels(params: {
@@ -142,14 +236,14 @@ export async function syncDesignSystemTargetBarrels(params: {
       continue;
     }
 
-    const exportNames = await syncCategoryBarrel(categoryPath);
+    const exports = await syncCategoryBarrel(categoryPath);
 
-    if (exportNames.length === 0) {
+    if (exports.runtime.length === 0 && exports.types.length === 0) {
       continue;
     }
 
-    targetLines.push(createNamedExportLine(exportNames, categoryModulePath));
+    targetLines.push(...createExportLines(exports, categoryModulePath));
   }
 
-  await writeFile(targetIndexPath, `${targetLines.join("\n")}\n`);
+  await writeFile(targetIndexPath, targetLines.length > 0 ? `${targetLines.join("\n")}\n` : "");
 }

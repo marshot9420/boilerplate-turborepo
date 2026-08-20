@@ -188,7 +188,7 @@ function createComponentTemplate(params: ComponentTemplateParams): string {
 
 import { cn } from "../../../utils";
 
-type ${componentName}Props = ComponentPropsWithRef<"div">;
+export type ${componentName}Props = ComponentPropsWithRef<"div">;
 
 export default function ${componentName}({
   className,
@@ -256,7 +256,8 @@ export const Default: Story = {};
 function createComponentIndexTemplate(params: ComponentTemplateParams): string {
   const { componentName, kebabName } = params;
 
-  return `export { default as ${componentName} } from "./${kebabName}";
+  return `export type { ${componentName}Props } from "./${kebabName}";
+export { default as ${componentName} } from "./${kebabName}";
 `;
 }
 
@@ -358,7 +359,6 @@ export async function generateComponent(params: GenerateComponentParams): Promis
 
   const generations = targets.map((target) => {
     const targetPath = path.join(designSystemSrcPath, target);
-
     const componentDir = path.join(targetPath, options.category, options.name);
 
     return {

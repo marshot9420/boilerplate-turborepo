@@ -1,9 +1,18 @@
+export type { CheckboxProps } from "./checkbox";
 export { Checkbox } from "./checkbox";
+export type { FileInputProps } from "./file-input";
 export { FileInput } from "./file-input";
+export type { InputProps } from "./input";
 export { Input } from "./input";
+export type { NumberInputProps } from "./number-input";
 export { NumberInput } from "./number-input";
+export type { PhoneInputProps } from "./phone-input";
 export { PhoneInput } from "./phone-input";
+export type { RadioProps } from "./radio";
 export { Radio } from "./radio";
+export type { SelectProps } from "./select";
 export { Select } from "./select";
+export type { SwitchProps } from "./switch";
 export { Switch } from "./switch";
+export type { TextareaProps } from "./textarea";
 export { Textarea } from "./textarea";

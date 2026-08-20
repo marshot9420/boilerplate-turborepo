@@ -11,7 +11,7 @@ const webAppUrl = vi.hoisted(() => "https://web.example.com");
 const handleOAuthCallbackMock = vi.hoisted(() => vi.fn());
 const parseOAuthProviderIdMock = vi.hoisted(() => vi.fn());
 
-vi.mock("@repo/env/server", () => ({
+vi.mock("@/config/server-env", () => ({
   serverEnv: {
     WEB_APP_URL: webAppUrl,
   },
@@ -32,6 +32,7 @@ describe("Web OAuth Callback Route", () => {
     parseOAuthProviderIdMock.mockReturnValue(null);
 
     const request = new NextRequest(`${webAppUrl}/api/auth/unknown/callback?code=code&state=state`);
+
     const response = await GET(request, {
       params: Promise.resolve({
         provider: "unknown",
@@ -121,6 +122,7 @@ describe("Web OAuth Callback Route", () => {
     const request = new NextRequest(
       `${webAppUrl}/api/auth/kakao/callback?code=test-code&state=test-state`,
     );
+
     const response = await GET(request, {
       params: Promise.resolve({
         provider: "kakao",
@@ -140,6 +142,7 @@ describe("Web OAuth Callback Route", () => {
     handleOAuthCallbackMock.mockResolvedValue(undefined);
 
     const request = new NextRequest(`${webAppUrl}/api/auth/google/callback`);
+
     await GET(request, {
       params: Promise.resolve({
         provider: "google",
