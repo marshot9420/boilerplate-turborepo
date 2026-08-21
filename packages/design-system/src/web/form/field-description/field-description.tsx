@@ -2,13 +2,32 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { forwardRef } from "react";
+import { forwardRef, type HTMLAttributes } from "react";
 
-import {
-  FieldDescription as PrimitiveFieldDescription,
-  type FieldDescriptionProps as PrimitiveFieldDescriptionProps,
-} from "../../../primitives/form/field-description";
 import { cn } from "../../../utils";
+
+export interface BaseFieldDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
+  disabled?: boolean;
+}
+
+const BaseFieldDescription = forwardRef<HTMLParagraphElement, BaseFieldDescriptionProps>(
+  ({ className, disabled = false, ...props }, ref) => {
+    return (
+      <p
+        ref={ref}
+        data-disabled={disabled ? "true" : "false"}
+        className={cn(
+          "text-muted-foreground text-sm",
+          "data-[disabled=true]:opacity-50",
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
+
+BaseFieldDescription.displayName = "FieldDescription";
 
 const fieldDescriptionVariants = cva([], {
   variants: {
@@ -28,12 +47,12 @@ const fieldDescriptionVariants = cva([], {
 });
 
 export interface FieldDescriptionProps
-  extends PrimitiveFieldDescriptionProps, VariantProps<typeof fieldDescriptionVariants> {}
+  extends BaseFieldDescriptionProps, VariantProps<typeof fieldDescriptionVariants> {}
 
 const FieldDescription = forwardRef<HTMLParagraphElement, FieldDescriptionProps>(
   ({ className, size, tone, ...props }, ref) => {
     return (
-      <PrimitiveFieldDescription
+      <BaseFieldDescription
         ref={ref}
         data-size={size ?? "md"}
         data-tone={tone ?? "default"}

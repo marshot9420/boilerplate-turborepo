@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "@repo/design-system/admin/styles.css";
 
-@source "../../../../packages/design-system/src/primitives";
 @source "../../../../packages/design-system/src/admin";
 
 @layer base {

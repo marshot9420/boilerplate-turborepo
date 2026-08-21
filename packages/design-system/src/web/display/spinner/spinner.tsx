@@ -2,13 +2,61 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { forwardRef } from "react";
+import { forwardRef, type HTMLAttributes } from "react";
 
-import {
-  Spinner as PrimitiveSpinner,
-  type SpinnerProps as PrimitiveSpinnerProps,
-} from "../../../primitives/display/spinner";
 import { cn } from "../../../utils";
+
+const baseSpinnerVariants = cva(
+  ["inline-block animate-spin rounded-full", "border-muted border-t-primary border-2"],
+  {
+    variants: {
+      size: {
+        sm: "size-4",
+        md: "size-5",
+        lg: "size-6",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+    },
+  },
+);
+
+export interface BaseSpinnerProps
+  extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof baseSpinnerVariants> {
+  label?: string;
+  decorative?: boolean;
+}
+
+const BaseSpinner = forwardRef<HTMLSpanElement, BaseSpinnerProps>(
+  (
+    {
+      className,
+      size,
+      label = "로딩 중",
+      decorative = false,
+      role,
+      "aria-label": ariaLabel,
+      ...props
+    },
+    ref,
+  ) => {
+    return (
+      <span
+        ref={ref}
+        role={decorative ? undefined : (role ?? "status")}
+        aria-label={decorative ? undefined : (ariaLabel ?? label)}
+        aria-hidden={decorative ? true : undefined}
+        data-size={size ?? "md"}
+        data-decorative={decorative ? "true" : "false"}
+        className={cn(baseSpinnerVariants({ size }), className)}
+        {...props}
+      />
+    );
+  },
+);
+
+BaseSpinner.displayName = "Spinner";
 
 const spinnerVariants = cva([], {
   variants: {
@@ -23,12 +71,12 @@ const spinnerVariants = cva([], {
   },
 });
 
-export interface SpinnerProps extends PrimitiveSpinnerProps, VariantProps<typeof spinnerVariants> {}
+export interface SpinnerProps extends BaseSpinnerProps, VariantProps<typeof spinnerVariants> {}
 
 const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(
   ({ className, variant, ...props }, ref) => {
     return (
-      <PrimitiveSpinner
+      <BaseSpinner
         ref={ref}
         data-variant={variant ?? "default"}
         className={cn(spinnerVariants({ variant }), className)}

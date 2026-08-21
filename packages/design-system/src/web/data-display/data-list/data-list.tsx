@@ -2,19 +2,101 @@
 
 import { cva } from "class-variance-authority";
 
-import { forwardRef } from "react";
+import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 
-import {
-  DataList as PrimitiveDataList,
-  DataListItem as PrimitiveDataListItem,
-  DataListLabel as PrimitiveDataListLabel,
-  DataListValue as PrimitiveDataListValue,
-  type DataListItemProps as PrimitiveDataListItemProps,
-  type DataListLabelProps as PrimitiveDataListLabelProps,
-  type DataListProps as PrimitiveDataListProps,
-  type DataListValueProps as PrimitiveDataListValueProps,
-} from "../../../primitives/data-display/data-list";
 import { cn } from "../../../utils";
+
+export type DataListSize = "sm" | "md" | "lg";
+
+export type DataListOrientation = "vertical" | "horizontal" | "responsive";
+
+export interface BaseDataListProps extends HTMLAttributes<HTMLDListElement> {
+  size?: DataListSize;
+  divided?: boolean;
+}
+
+const BaseDataList = forwardRef<HTMLDListElement, BaseDataListProps>(
+  ({ className, size = "md", divided = false, ...props }, ref) => {
+    return (
+      <dl
+        ref={ref}
+        className={cn(
+          "grid",
+          size === "sm" && "gap-2 text-xs",
+          size === "md" && "gap-3 text-sm",
+          size === "lg" && "gap-4 text-base",
+          divided && "divide-border divide-y",
+          className,
+        )}
+        data-size={size}
+        data-divided={divided ? "true" : "false"}
+        {...props}
+      />
+    );
+  },
+);
+
+BaseDataList.displayName = "DataList";
+
+export interface BaseDataListItemProps extends HTMLAttributes<HTMLDivElement> {
+  orientation?: DataListOrientation;
+}
+
+const BaseDataListItem = forwardRef<HTMLDivElement, BaseDataListItemProps>(
+  ({ className, orientation = "responsive", ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "grid gap-1",
+          orientation === "vertical" && "grid-cols-1",
+          orientation === "horizontal" && "grid-cols-[minmax(8rem,14rem)_1fr] items-start gap-4",
+          orientation === "responsive" &&
+            "grid-cols-1 sm:grid-cols-[minmax(8rem,14rem)_1fr] sm:items-start sm:gap-4",
+          className,
+        )}
+        data-orientation={orientation}
+        {...props}
+      />
+    );
+  },
+);
+
+BaseDataListItem.displayName = "DataListItem";
+
+export type BaseDataListLabelProps = HTMLAttributes<HTMLElement>;
+
+const BaseDataListLabel = forwardRef<HTMLElement, BaseDataListLabelProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <dt ref={ref} className={cn("text-muted-foreground font-medium", className)} {...props} />
+    );
+  },
+);
+
+BaseDataListLabel.displayName = "DataListLabel";
+
+export interface BaseDataListValueProps extends HTMLAttributes<HTMLElement> {
+  placeholder?: ReactNode;
+}
+
+const BaseDataListValue = forwardRef<HTMLElement, BaseDataListValueProps>(
+  ({ className, children, placeholder = "—", ...props }, ref) => {
+    const hasValue = children !== null && children !== undefined && children !== "";
+    return (
+      <dd
+        ref={ref}
+        className={cn("text-foreground", className)}
+        data-empty={hasValue ? "false" : "true"}
+        {...props}
+      >
+        {hasValue ? children : placeholder}
+      </dd>
+    );
+  },
+);
+
+BaseDataListValue.displayName = "DataListValue";
 
 const dataListClasses = cva(["border-border bg-surface rounded-2xl border shadow-sm"], {
   variants: {
@@ -24,7 +106,6 @@ const dataListClasses = cva(["border-border bg-surface rounded-2xl border shadow
       lg: "p-6",
     },
   },
-
   defaultVariants: {
     size: "md",
   },
@@ -39,15 +120,18 @@ const dataListValueClasses = cva([
   "data-[empty=true]:text-muted-foreground",
 ]);
 
-export type DataListProps = PrimitiveDataListProps;
-export type DataListItemProps = PrimitiveDataListItemProps;
-export type DataListLabelProps = PrimitiveDataListLabelProps;
-export type DataListValueProps = PrimitiveDataListValueProps;
+export type DataListProps = BaseDataListProps;
+
+export type DataListItemProps = BaseDataListItemProps;
+
+export type DataListLabelProps = BaseDataListLabelProps;
+
+export type DataListValueProps = BaseDataListValueProps;
 
 const DataList = forwardRef<HTMLDListElement, DataListProps>(
   ({ className, size = "md", ...props }, ref) => {
     return (
-      <PrimitiveDataList
+      <BaseDataList
         ref={ref}
         size={size}
         className={cn(dataListClasses({ size }), className)}
@@ -63,7 +147,7 @@ DataList.displayName = "DataList";
 export const DataListItem = forwardRef<HTMLDivElement, DataListItemProps>(
   ({ className, ...props }, ref) => {
     return (
-      <PrimitiveDataListItem
+      <BaseDataListItem
         ref={ref}
         className={cn(dataListItemClasses(), className)}
         data-ds-component="data-list-item"
@@ -78,7 +162,7 @@ DataListItem.displayName = "DataListItem";
 export const DataListLabel = forwardRef<HTMLElement, DataListLabelProps>(
   ({ className, ...props }, ref) => {
     return (
-      <PrimitiveDataListLabel
+      <BaseDataListLabel
         ref={ref}
         className={cn(dataListLabelClasses(), className)}
         data-ds-component="data-list-label"
@@ -93,7 +177,7 @@ DataListLabel.displayName = "DataListLabel";
 export const DataListValue = forwardRef<HTMLElement, DataListValueProps>(
   ({ className, ...props }, ref) => {
     return (
-      <PrimitiveDataListValue
+      <BaseDataListValue
         ref={ref}
         className={cn(dataListValueClasses(), className)}
         data-ds-component="data-list-value"
