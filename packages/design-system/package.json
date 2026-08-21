@@ -9,6 +9,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./utils": "./src/utils/index.ts",
+    "./hooks": "./src/hooks/index.ts",
     "./form": "./src/form/index.ts",
     "./toast": "./src/toast/index.ts",
     "./web": "./src/web/index.ts",
