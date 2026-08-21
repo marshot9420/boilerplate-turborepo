@@ -1,0 +1,127 @@
+# Dependency 변경은 사용자 확인 후 수행합니다.
+
+prefix_rule(
+    pattern = ["pnpm", "install"],
+    decision = "prompt",
+    justification = "Dependency 설치는 Workspace와 lockfile에 영향을 줄 수 있으므로 사용자 확인이 필요합니다.",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "add"],
+    decision = "prompt",
+    justification = "새 Dependency 추가는 Architecture와 Dependency Boundary에 영향을 줄 수 있으므로 사용자 확인이 필요합니다.",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "remove"],
+    decision = "prompt",
+    justification = "Dependency 제거는 여러 Workspace에 영향을 줄 수 있으므로 사용자 확인이 필요합니다.",
+)
+
+
+# Database 상태를 변경하는 명령은 사용자 확인 후 수행합니다.
+
+prefix_rule(
+    pattern = ["pnpm", "db:migrate"],
+    decision = "prompt",
+    justification = "Migration 생성 및 적용은 Database Schema History에 영향을 주므로 사용자 확인이 필요합니다.",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "db:push"],
+    decision = "prompt",
+    justification = "Database Schema를 직접 변경할 수 있으므로 사용자 확인이 필요합니다.",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "db:seed"],
+    decision = "prompt",
+    justification = "Database 데이터를 변경할 수 있으므로 사용자 확인이 필요합니다.",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "db:test:migrate"],
+    decision = "prompt",
+    justification = "Test Database Schema를 변경하므로 사용자 확인이 필요합니다.",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "db:test:push"],
+    decision = "prompt",
+    justification = "Test Database Schema를 변경하므로 사용자 확인이 필요합니다.",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "db:e2e:migrate"],
+    decision = "prompt",
+    justification = "E2E Database Schema를 변경하므로 사용자 확인이 필요합니다.",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "db:e2e:push"],
+    decision = "prompt",
+    justification = "E2E Database Schema를 변경하므로 사용자 확인이 필요합니다.",
+)
+
+prefix_rule(
+    pattern = ["pnpm", "db:e2e:seed"],
+    decision = "prompt",
+    justification = "E2E Database 데이터를 변경하므로 사용자 확인이 필요합니다.",
+)
+
+
+# Commit은 사용자가 변경 내용을 확인할 수 있도록 승인 후 수행합니다.
+
+prefix_rule(
+    pattern = ["git", "commit"],
+    decision = "prompt",
+    justification = "Commit은 Repository History를 변경하므로 사용자 확인이 필요합니다.",
+)
+
+
+# Remote Repository 변경은 Codex가 직접 수행하지 않습니다.
+
+prefix_rule(
+    pattern = ["git", "push"],
+    decision = "forbidden",
+    justification = "Remote Repository 반영은 사용자가 직접 수행하거나 명시적으로 별도 정책을 변경해야 합니다.",
+)
+
+
+# 복구하기 어려운 Git 명령은 차단합니다.
+
+prefix_rule(
+    pattern = ["git", "reset", "--hard"],
+    decision = "forbidden",
+    justification = "Working Tree 변경이 손실될 수 있습니다. 필요한 경우 안전한 restore 또는 revert 방식을 사용합니다.",
+)
+
+prefix_rule(
+    pattern = ["git", "clean"],
+    decision = "forbidden",
+    justification = "추적되지 않은 파일이 삭제될 수 있습니다. 삭제 대상이 필요하면 명시적으로 확인합니다.",
+)
+
+
+# 파괴적인 파일 삭제는 차단합니다.
+
+prefix_rule(
+    pattern = ["rm", "-rf"],
+    decision = "forbidden",
+    justification = "광범위한 파일 삭제는 허용하지 않습니다. 필요한 파일만 명시적으로 제거합니다.",
+)
+
+
+# Package Publish는 Codex가 직접 수행하지 않습니다.
+
+prefix_rule(
+    pattern = ["pnpm", "publish"],
+    decision = "forbidden",
+    justification = "Package Publish는 외부 Registry 상태를 변경하므로 Codex에서 직접 수행하지 않습니다.",
+)
+
+prefix_rule(
+    pattern = ["npm", "publish"],
+    decision = "forbidden",
+    justification = "Package Publish는 외부 Registry 상태를 변경하므로 Codex에서 직접 수행하지 않습니다.",
+)
