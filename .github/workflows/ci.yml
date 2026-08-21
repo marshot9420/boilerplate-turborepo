@@ -26,6 +26,25 @@ env:
   MAIL_FROM: "CI <ci@example.com>"
 
 jobs:
+  pr-title:
+    name: Pull Request Title
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Validate pull request title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        shell: bash
+        run: |
+          pattern='^[^[:space:]]+[[:space:]]+\[(Feature|Bug|Refactor|Docs|Test|Maintenance|Design|Env|Deploy)\][[:space:]]+.+$'
+
+          if [[ ! "$PR_TITLE" =~ $pattern ]]; then
+            echo 'Pull Request title must match: <emoji> [<Type>] <summary>'
+            exit 1
+          fi
+
   quality:
     name: Quality
     runs-on: ubuntu-latest

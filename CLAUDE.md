@@ -54,7 +54,7 @@ Domain Layer
   docs/08_도메인_레이어.md
 
 Server Actions
-  docs/09_Server_Actions.md
+  docs/09_서버_액션.md
 
 App structure / Entity / Feature / View
   docs/10_앱_구조.md
@@ -85,9 +85,14 @@ Naming / Import / Export / Commit conventions
 
 Project extension
   docs/19_확장_가이드.md
+
+Implementation safety
+  docs/22_구현_안전성.md
 ```
 
 Read only the documents relevant to the current task after checking `docs/00_문서_가이드.md`.
+
+When a change can involve Race Conditions, Read-Modify-Write, Idempotency, Transactions, Retry or Timeout, Partial Failure, or stale state, read `docs/22_구현_안전성.md` before implementing or reviewing it.
 
 ## Working Rules
 
