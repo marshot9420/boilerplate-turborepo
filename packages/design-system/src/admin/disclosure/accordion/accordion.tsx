@@ -62,7 +62,7 @@ const BaseAccordionTrigger = forwardRef<
 
         {rightSlot ? (
           <span
-            className="shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180"
+            className="duration-normal shrink-0 transition-transform group-data-[state=open]:rotate-180"
             aria-hidden="true"
           >
             {rightSlot}

@@ -177,7 +177,7 @@ describe("Web Dialog", () => {
     expect(screen.getByTestId("overlay")).toHaveClass(
       "fixed",
       "inset-0",
-      "bg-black/50",
+      "bg-overlay/50",
       "backdrop-blur-[1px]",
     );
   });

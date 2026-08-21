@@ -207,7 +207,7 @@ describe("Admin Drawer", () => {
     expect(screen.getByTestId("overlay")).toHaveClass(
       "fixed",
       "inset-0",
-      "bg-black/55",
+      "bg-overlay/55",
       "backdrop-blur-[1px]",
     );
   });

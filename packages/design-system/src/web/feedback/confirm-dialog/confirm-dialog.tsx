@@ -32,7 +32,7 @@ const BaseConfirmDialogOverlay = forwardRef<
     <AlertDialogPrimitive.Overlay
       ref={ref}
       className={cn(
-        "fixed inset-0 z-50 bg-black/50",
+        "bg-overlay/50 fixed inset-0 z-50",
         "data-[state=open]:animate-in data-[state=closed]:animate-out",
         "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         className,
@@ -234,7 +234,7 @@ export const ConfirmDialogOverlay = forwardRef<HTMLDivElement, BaseConfirmDialog
     return (
       <BaseConfirmDialogOverlay
         ref={ref}
-        className={cn("bg-black/50 backdrop-blur-sm", className)}
+        className={cn("bg-overlay/50 backdrop-blur-sm", className)}
         {...props}
       />
     );
@@ -250,7 +250,7 @@ export const ConfirmDialogContent = forwardRef<HTMLDivElement, ConfirmDialogCont
     return (
       <BaseConfirmDialogContent
         ref={ref}
-        overlayClassName={cn("bg-black/50 backdrop-blur-sm", overlayClassName)}
+        overlayClassName={cn("bg-overlay/50 backdrop-blur-sm", overlayClassName)}
         className={cn("rounded-xl shadow-xl", className)}
         {...props}
       />

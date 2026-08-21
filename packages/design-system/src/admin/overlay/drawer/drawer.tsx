@@ -14,7 +14,7 @@ import { cn } from "../../../utils";
 
 const drawerOverlayVariants = cva([
   "fixed inset-0 z-50",
-  "bg-black/50",
+  "bg-overlay/50",
   "data-[state=open]:animate-in data-[state=closed]:animate-out",
 ]);
 
@@ -205,7 +205,7 @@ export const DrawerOverlay = forwardRef<ComponentRef<typeof BaseDrawerOverlay>, 
     return (
       <BaseDrawerOverlay
         ref={ref}
-        className={cn("bg-black/55 backdrop-blur-[1px]", className)}
+        className={cn("bg-overlay/55 backdrop-blur-[1px]", className)}
         {...props}
       />
     );
