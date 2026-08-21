@@ -5,95 +5,45 @@ title: "✨ [FEATURE] "
 labels: ""
 ---
 
-## 📝 설명
+## 📝 현재 문제 / 배경
 
-<!-- 구현하려는 기능과 필요한 이유를 작성합니다. -->
+<!-- 어떤 문제를 해결해야 하며 왜 필요한지 작성합니다. -->
 
-## 🎯 요구사항
+## 🎯 목표
 
-<!-- 기능이 충족해야 하는 핵심 요구사항과 정책을 작성합니다. -->
+<!-- 구현 방법보다 이 Issue를 통해 달성해야 하는 결과를 작성합니다. -->
 
 -
 
-## ✅ 작업
+## 📌 작업 범위
 
-<!--
-필요하지 않은 계층은 제거합니다.
-각 체크리스트 아래에는 해당 계층에서 구현할 구체적인 내용을 작성합니다.
--->
+<!-- 이번 Issue에 포함하는 범위와 의도적으로 제외하는 범위를 구분합니다. -->
 
-### Domain
+### 포함
 
-- [ ] Domain
-  -
-  -
+-
 
-### Database
+### 제외
 
-- [ ] Database
-  -
-  -
+-
 
-### Server Action / Route Handler
+## ⚙️ 결정된 제약
 
-- [ ] Server Action / Route Handler
-  -
-  -
+<!-- 이미 결정된 Architecture나 기술적 제약이 있다면 작성하고, 없다면 삭제합니다. -->
 
-### Entity
-
-- [ ] Entity
-  -
-  -
-
-### Feature
-
-- [ ] Feature
-  -
-  -
-
-### View
-
-- [ ] View
-  -
-  -
-
-### App Router
-
-- [ ] App Router
-  -
-  -
-
-### Shared / Design System
-
-- [ ] Shared / Design System
-  -
-  -
-
-### Test
-
-- [ ] Unit Test
-  -
-
-- [ ] Component Test
-  -
-
-- [ ] Integration Test
-  -
-
-- [ ] E2E Test
-  -
-
-### Documentation
-
-- [ ] Documentation
-  -
+-
 
 ## ✅ 완료 조건
 
-<!-- 구현 완료 여부를 판단할 수 있는 사용자 관점의 조건을 작성합니다. -->
+<!-- 완료 여부를 판단할 수 있는 결과를 Checklist로 작성합니다. -->
 
--
+- [ ]
+
+## 🧪 검증 항목
+
+<!-- 완료 조건을 어떤 Test나 확인으로 검증할지 작성합니다. -->
+
+- [ ]
 
 ## 📎 참고
 
