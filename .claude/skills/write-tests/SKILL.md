@@ -20,6 +20,12 @@ docs/12_테스트_전략.md
 docs/18_컨벤션.md
 ```
 
+When the changed behavior involves concurrency, duplicate requests, transactions, retries, timeouts, stale state, or external side effects, also read:
+
+```txt
+docs/22_구현_안전성.md
+```
+
 Also inspect:
 
 ```txt
@@ -104,9 +110,19 @@ Transactions
 Database error mapping
 
 Infrastructure adapter behavior
+
+Concurrency-sensitive persistence behavior
+
+Idempotency and duplicate-event handling
 ```
 
 Do not replace the behavior being verified with a mock.
+
+## Implementation Safety Tests
+
+Determine whether concurrency or Idempotency behavior is important to Business Correctness before requiring a test.
+
+When the real Database Constraint, Transaction, Conditional Update, Lock, or duplicate-processing boundary is the behavior being verified, prefer an Integration Test using the actual boundary. Follow `docs/22_구현_안전성.md` for the risks and invariants, and `docs/12_테스트_전략.md` for the Test Level and setup.
 
 ## E2E Tests
 

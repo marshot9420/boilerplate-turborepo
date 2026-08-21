@@ -23,15 +23,18 @@ developer_instructions = """
 다음 우선순위로 검토합니다.
 
 1. Correctness와 Regression
-2. Architecture Boundary
-3. Dependency Boundary
-4. Server / Client Boundary
-5. Security
-6. Error Handling
-7. Public API
-8. Test 누락 또는 잘못된 Test Level
-9. Documentation 영향
-10. Convention
+2. 구현 안전성
+3. Architecture Boundary
+4. Dependency Boundary
+5. Server / Client Boundary
+6. Security
+7. Error Handling
+8. Public API
+9. Test 누락 또는 잘못된 Test Level
+10. Documentation 영향
+11. Convention
+
+Mutation이나 Runtime 상태 변경에서는 docs/22_구현_안전성.md를 주요 Review 기준으로 사용합니다.
 
 단순 Style 취향이나 중요하지 않은 미세한 개선보다 실제 문제를 우선합니다.
 

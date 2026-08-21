@@ -139,6 +139,8 @@ Storybook
 Convention
 
 Security Policy
+
+Implementation Safety
 ```
 
 이 내용은 각각의 전문 문서를 참조합니다.
@@ -160,6 +162,9 @@ Testing
 
 Convention
   → docs/18_컨벤션.md
+
+Implementation Safety
+  → docs/22_구현_안전성.md
 ```
 
 ---
@@ -233,6 +238,8 @@ docs/*
 .claude/agents/*
 .claude/skills/*
 ```
+
+Race Condition, Idempotency, Partial Failure 같은 구현 안전성 정책도 `.claude/settings.json`에 정의하지 않습니다. 해당 정책의 Source of Truth는 `22_구현_안전성.md`이며, Settings는 Claude Code Runtime과 Permission 책임만 유지합니다.
 
 ---
 
@@ -431,6 +438,8 @@ Dependency Direction
 Package 승격
 
 구조적 Refactoring
+
+Concurrency / Consistency 영향
 ```
 
 예:
@@ -467,6 +476,8 @@ Architecture Boundary
 Server / Client Boundary
 
 Security
+
+Implementation Safety
 
 Convention
 
@@ -527,7 +538,7 @@ Integration
 E2E
 ```
 
-`write-tests` Skill을 preload하고 Test Level 선택 기준은 `12_테스트_전략.md`를 따릅니다.
+`write-tests` Skill을 preload하고 Test Level 선택 기준은 `12_테스트_전략.md`를 따릅니다. 동시성이나 Idempotency가 Business Correctness에 중요하다면 `22_구현_안전성.md`를 함께 확인하고 실제 Boundary를 사용하는 Integration Test 필요 여부를 검토합니다.
 
 ---
 
@@ -550,6 +561,8 @@ E2E
   ↓
 필요한 책임과 계층 판단
   ↓
+동시성 및 실패 시나리오 검토
+  ↓
 필요하면 Generator 사용
   ↓
 구현
@@ -564,6 +577,8 @@ Test / Story
 모든 Feature에서 Database, Domain, Server Action, Entity, Feature, View를 기계적으로 모두 만들지 않습니다.
 
 실제 구현 순서는 `16_개발_워크플로우.md`를 따릅니다.
+
+Race Condition, Idempotency, Transaction, Retry, Timeout, Partial Failure 위험이 있는 구현에서는 `22_구현_안전성.md`를 함께 확인합니다.
 
 ---
 
@@ -588,6 +603,8 @@ Server / Client Boundary
 
 Security
 
+Implementation Safety
+
 Convention
 
 Test
@@ -596,6 +613,8 @@ Documentation
 ```
 
 `code-reviewer` Agent가 사용합니다.
+
+구현 안전성 Review의 상세 기준은 `review-code` Skill에 복제하지 않고 `22_구현_안전성.md`를 참조합니다.
 
 ---
 
@@ -643,6 +662,8 @@ E2E
 ```
 
 `test-writer` Agent가 사용합니다.
+
+Business Correctness에 중요한 동시성 또는 Idempotency 동작은 `22_구현_안전성.md`를 확인하여 Integration Test 필요 여부를 판단합니다.
 
 ---
 
@@ -701,6 +722,8 @@ docs-maintainer
 ```
 
 모든 Agent와 Skill을 항상 순서대로 실행하는 것이 아니라 현재 작업에 필요한 것만 사용합니다.
+
+Mutation, 상태 전이, 외부 Side Effect처럼 구현 안전성 위험이 있는 작업은 구현·리뷰·테스트 단계에서 `22_구현_안전성.md`를 공통 Context로 사용합니다.
 
 ---
 
@@ -842,6 +865,9 @@ Claude Code는 현재 작업 종류에 따라 필요한 전문 문서를 선택�
 
 19_확장_가이드.md
   App / Domain / Package 확장
+
+22_구현_안전성.md
+  Concurrency / Idempotency / Partial Failure / Retry 안전성
 ```
 
 모든 문서를 항상 읽는 것이 아니라 현재 작업에 필요한 문서만 선택합니다.
@@ -876,6 +902,8 @@ Agent와 Skill에서 프로젝트 Architecture를 다시 정의하지 않는다.
 현재 제공되는 Agent와 Skill로 해결할 수 있다면 새로 추가하지 않는다.
 
 Claude Code 관련 파일과 docs/*에서 동일한 정책을 이중으로 유지하지 않는다.
+
+구현 안전성의 Source of Truth는 22_구현_안전성.md로 유지한다.
 
 실행하지 않은 검증을 성공했다고 보고하지 않는다.
 ```

@@ -92,9 +92,14 @@ Claude Code
 
 Codex
   docs/21_Codex.md
+
+Implementation Safety
+  docs/22_구현_안전성.md
 ```
 
 문서 선택의 최종 기준은 `docs/00_문서_가이드.md`를 따릅니다.
+
+Race Condition, Read-Modify-Write, Idempotency, Transaction, Retry / Timeout, Partial Failure, Stale State 위험이 있는 구현이나 리뷰에서는 `docs/22_구현_안전성.md`를 확인합니다.
 
 ---
 
@@ -179,6 +184,8 @@ Dependency 방향
 ```
 
 기존 프로젝트 Pattern이 존재한다면 새로운 Pattern을 임의로 만들지 않습니다.
+
+Mutation이나 Runtime 상태 변경이 포함된다면 구현 방식을 선택하기 전에 동시 실행, 중복 요청, 외부 Side Effect와 실패 시나리오가 Business Correctness에 미치는 영향을 검토합니다.
 
 ---
 

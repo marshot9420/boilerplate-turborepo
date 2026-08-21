@@ -23,6 +23,7 @@ Check whether the change introduces:
 - server/client boundary problems
 - incorrect public exports
 - unsafe handling of external input or secrets
+- implementation safety risks covered by `docs/22_구현_안전성.md`
 - unnecessary abstraction
 - inconsistent naming
 - missing behavior tests

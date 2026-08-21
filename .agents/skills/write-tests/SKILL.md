@@ -77,6 +77,8 @@ Integration
   Repository + PostgreSQL
   Transaction
   Database Constraint
+  Concurrency-sensitive Persistence
+  Idempotency / Duplicate Event 처리
   Domain Service + Repository
   실제 Module 연결
 
@@ -88,6 +90,12 @@ E2E
   사용자 Workflow
   전체 계층 연결
 ```
+
+Business Correctness에 중요한 동시성, 중복 요청, Idempotency, Retry / Timeout, Partial Failure가 있다면 `docs/22_구현_안전성.md`를 함께 확인합니다.
+
+실제 Database Constraint, Transaction, Conditional Update, Lock 또는 중복 처리 경계가 검증 대상이라면 실제 Boundary를 사용하는 Integration Test 필요 여부를 우선 판단합니다.
+
+모든 안전성 항목에 Test를 기계적으로 추가하지 않고, 경쟁이나 중복 실행이 실제 Business Invariant를 깨뜨릴 수 있는지에 따라 Test 필요 여부를 결정합니다.
 
 ---
 
@@ -161,6 +169,8 @@ Constraint
 Relation
 
 Persistence Mapping
+
+Concurrency와 Idempotency가 중요한 Persistence Behavior
 ```
 
 Prisma 동작 자체가 중요한 Test를 Mock으로 대체하지 않습니다.

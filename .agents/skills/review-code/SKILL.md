@@ -67,6 +67,9 @@ Security
 
 Convention
   docs/18_컨벤션.md
+
+Implementation Safety
+  docs/22_구현_안전성.md
 ```
 
 ---
@@ -92,14 +95,38 @@ Null / Undefined 처리
 
 비동기 처리 오류
 
-Race Condition
-
 잘못된 Error Handling
 
 Regression 가능성
 ```
 
 구현 취향보다 실제 Behavior 오류를 우선합니다.
+
+---
+
+## 3.1 구현 안전성
+
+Mutation, 상태 전이, Persistence 변경, Retry, 외부 Side Effect가 포함된 변경은 `docs/22_구현_안전성.md`를 기준으로 검토합니다.
+
+확인:
+
+```txt
+Race Condition
+
+Read-Modify-Write
+
+Idempotency
+
+Atomicity
+
+Partial Failure
+
+Retry / Timeout
+
+Stale State
+```
+
+실제 Business Invariant와 실패 시나리오가 요구하는 경우에만 보호 수단이나 Test를 Finding으로 제시합니다.
 
 ---
 
@@ -181,6 +208,8 @@ App 또는 Domain Service가 Prisma를 직접 사용하는가?
 Repository에 Business Rule이 들어갔는가?
 
 Transaction Boundary가 잘못되었는가?
+
+동시성에 중요한 Persistence 동작이 실제 Boundary에서 안전한가?
 
 Persistence Model이 Client까지 그대로 노출되는가?
 ```
