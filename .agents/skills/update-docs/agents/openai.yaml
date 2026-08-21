@@ -1,0 +1,7 @@
+interface:
+  display_name: "문서 갱신"
+  short_description: "실제 구현을 기준으로 프로젝트 Source of Truth 문서를 갱신합니다"
+  default_prompt: "$update-docs를 사용하여 현재 변경사항에 영향을 받는 문서를 갱신해."
+
+policy:
+  allow_implicit_invocation: true

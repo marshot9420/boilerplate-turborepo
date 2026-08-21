@@ -12,7 +12,7 @@ export type {
   SidebarNavProps,
   SidebarProps,
   SidebarSeparatorProps,
-} from "../../../primitives/layout/sidebar";
+} from "./sidebar";
 export { default as Sidebar } from "./sidebar";
 export {
   SidebarContent,

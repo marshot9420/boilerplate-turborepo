@@ -1,0 +1,26 @@
+export type {
+  ConfirmDialogActionProps,
+  ConfirmDialogCancelProps,
+  ConfirmDialogContentProps,
+  ConfirmDialogDescriptionProps,
+  ConfirmDialogFooterProps,
+  ConfirmDialogHeaderProps,
+  ConfirmDialogOverlayProps,
+  ConfirmDialogPortalProps,
+  ConfirmDialogProps,
+  ConfirmDialogTitleProps,
+  ConfirmDialogTriggerProps,
+} from "./confirm-dialog";
+export {
+  default as ConfirmDialog,
+  ConfirmDialogAction,
+  ConfirmDialogCancel,
+  ConfirmDialogContent,
+  ConfirmDialogDescription,
+  ConfirmDialogFooter,
+  ConfirmDialogHeader,
+  ConfirmDialogOverlay,
+  ConfirmDialogPortal,
+  ConfirmDialogTitle,
+  ConfirmDialogTrigger,
+} from "./confirm-dialog";

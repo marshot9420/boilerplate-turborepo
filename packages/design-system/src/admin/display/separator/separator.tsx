@@ -2,13 +2,57 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { forwardRef } from "react";
+import { forwardRef, type HTMLAttributes } from "react";
 
-import {
-  Separator as PrimitiveSeparator,
-  type SeparatorProps as PrimitiveSeparatorProps,
-} from "../../../primitives/display/separator";
 import { cn } from "../../../utils";
+
+const baseSeparatorVariants = cva("bg-border shrink-0", {
+  variants: {
+    orientation: {
+      horizontal: "h-px w-full",
+      vertical: "h-full w-px",
+    },
+  },
+  defaultVariants: {
+    orientation: "horizontal",
+  },
+});
+
+type SeparatorOrientation = "horizontal" | "vertical";
+
+export interface BaseSeparatorProps
+  extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof baseSeparatorVariants> {
+  decorative?: boolean;
+}
+
+const BaseSeparator = forwardRef<HTMLDivElement, BaseSeparatorProps>(
+  (
+    {
+      className,
+      orientation,
+      decorative = true,
+      role,
+      "aria-orientation": ariaOrientation,
+      ...props
+    },
+    ref,
+  ) => {
+    const resolvedOrientation: SeparatorOrientation = orientation ?? "horizontal";
+    return (
+      <div
+        ref={ref}
+        role={decorative ? "none" : (role ?? "separator")}
+        aria-orientation={decorative ? undefined : (ariaOrientation ?? resolvedOrientation)}
+        data-orientation={resolvedOrientation}
+        data-decorative={decorative ? "true" : "false"}
+        className={cn(baseSeparatorVariants({ orientation: resolvedOrientation }), className)}
+        {...props}
+      />
+    );
+  },
+);
+
+BaseSeparator.displayName = "Separator";
 
 type SeparatorSpacing = "none" | "sm" | "md" | "lg";
 
@@ -39,8 +83,7 @@ const verticalSpacingClassNames: Record<SeparatorSpacing, string> = {
   lg: "mx-6",
 };
 
-export interface SeparatorProps
-  extends PrimitiveSeparatorProps, VariantProps<typeof separatorVariants> {
+export interface SeparatorProps extends BaseSeparatorProps, VariantProps<typeof separatorVariants> {
   spacing?: SeparatorSpacing;
 }
 
@@ -51,9 +94,8 @@ const Separator = forwardRef<HTMLDivElement, SeparatorProps>(
       resolvedOrientation === "vertical"
         ? verticalSpacingClassNames[spacing]
         : horizontalSpacingClassNames[spacing];
-
     return (
-      <PrimitiveSeparator
+      <BaseSeparator
         ref={ref}
         orientation={resolvedOrientation}
         data-variant={variant ?? "default"}

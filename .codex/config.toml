@@ -1,0 +1,16 @@
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+[sandbox_workspace_write]
+network_access = false
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 4
+
+[features]
+memories = false
+
+[memories]
+generate_memories = false
+use_memories = false

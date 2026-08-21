@@ -7,8 +7,8 @@ export type {
   PaginationLinkProps,
   PaginationListProps,
   PaginationProps,
-} from "../../../primitives/navigation/pagination";
-export { getPaginationItems } from "../../../primitives/navigation/pagination";
+} from "./pagination";
+export { getPaginationItems } from "./pagination";
 export { default as Pagination } from "./pagination";
 export {
   PaginationButton,

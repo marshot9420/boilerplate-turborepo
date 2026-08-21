@@ -6,7 +6,7 @@ export type {
   BreadcrumbPageProps,
   BreadcrumbProps,
   BreadcrumbSeparatorProps,
-} from "../../../primitives/navigation/breadcrumb";
+} from "./breadcrumb";
 export { default as Breadcrumb } from "./breadcrumb";
 export {
   BreadcrumbEllipsis,

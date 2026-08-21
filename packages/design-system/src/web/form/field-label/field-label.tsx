@@ -2,13 +2,58 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { forwardRef } from "react";
+import { forwardRef, type LabelHTMLAttributes, type ReactNode } from "react";
 
-import {
-  FieldLabel as PrimitiveFieldLabel,
-  type FieldLabelProps as PrimitiveFieldLabelProps,
-} from "../../../primitives/form/field-label";
 import { cn } from "../../../utils";
+
+export interface BaseFieldLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+  hasError?: boolean;
+  required?: boolean;
+  disabled?: boolean;
+  requiredSlot?: ReactNode;
+}
+
+const BaseFieldLabel = forwardRef<HTMLLabelElement, BaseFieldLabelProps>(
+  (
+    {
+      className,
+      hasError = false,
+      required = false,
+      disabled = false,
+      requiredSlot,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    return (
+      <label
+        ref={ref}
+        data-invalid={hasError ? "true" : "false"}
+        data-required={required ? "true" : "false"}
+        data-disabled={disabled ? "true" : "false"}
+        className={cn(
+          "inline-flex items-center gap-1",
+          "text-foreground text-sm leading-none font-medium",
+          "data-[invalid=true]:text-destructive",
+          "data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+
+        {required ? (
+          <span aria-hidden="true" className="text-destructive">
+            {requiredSlot ?? "*"}
+          </span>
+        ) : null}
+      </label>
+    );
+  },
+);
+
+BaseFieldLabel.displayName = "FieldLabel";
 
 const fieldLabelVariants = cva([], {
   variants: {
@@ -28,12 +73,12 @@ const fieldLabelVariants = cva([], {
 });
 
 export interface FieldLabelProps
-  extends PrimitiveFieldLabelProps, VariantProps<typeof fieldLabelVariants> {}
+  extends BaseFieldLabelProps, VariantProps<typeof fieldLabelVariants> {}
 
 const FieldLabel = forwardRef<HTMLLabelElement, FieldLabelProps>(
   ({ className, size, weight, ...props }, ref) => {
     return (
-      <PrimitiveFieldLabel
+      <BaseFieldLabel
         ref={ref}
         data-size={size ?? "md"}
         data-weight={weight ?? "medium"}
