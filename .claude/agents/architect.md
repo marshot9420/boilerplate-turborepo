@@ -24,10 +24,11 @@ Depending on the change, also inspect:
 
 - `docs/07_데이터베이스.md`
 - `docs/08_도메인_레이어.md`
-- `docs/09_Server_Actions.md`
+- `docs/09_서버_액션.md`
 - `docs/10_앱_구조.md`
 - `docs/11_디자인_시스템.md`
 - `docs/17_보안_및_운영_기본정책.md`
+- `docs/22_구현_안전성.md`
 
 Inspect the current implementation near the affected code before recommending changes.
 
@@ -40,6 +41,7 @@ Evaluate:
 - app/package separation
 - colocation versus promotion
 - whether a new package, app, or abstraction is actually justified
+- concurrency and consistency impact of structural changes
 
 Do not propose a new Workspace Package solely to remove duplication.
 

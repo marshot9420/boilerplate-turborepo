@@ -25,6 +25,10 @@ Test에서는 구현 세부사항보다 외부에서 관찰 가능한 Behavior�
 
 Persistence 동작 자체가 중요하다면 실제 Test Database 기반 Integration Test를 우선 검토합니다.
 
+동시성, Idempotency, Retry / Timeout 또는 Partial Failure가 Behavior에 영향을 준다면 docs/22_구현_안전성.md를 확인합니다.
+
+Business Correctness에 중요한 동시성 또는 중복 처리 동작은 실제 Database나 Module Boundary를 사용하는 Integration Test 필요 여부를 검토합니다.
+
 Production Code를 Test에 맞추기 위해 임의로 변경하지 않습니다.
 
 Production Bug 또는 Testability 문제를 발견하면 Parent Agent에게 보고합니다.

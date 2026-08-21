@@ -29,7 +29,7 @@ Domain Layer
   docs/08_도메인_레이어.md
 
 Server Actions
-  docs/09_Server_Actions.md
+  docs/09_서버_액션.md
 
 App Structure
   docs/10_앱_구조.md
@@ -45,6 +45,9 @@ Conventions
 
 Extension Guide
   docs/19_확장_가이드.md
+
+Implementation Safety
+  docs/22_구현_안전성.md
 ```
 
 ## Review Process
@@ -53,7 +56,8 @@ Extension Guide
 2. Inspect the affected surrounding code.
 3. Identify the responsibilities changed by the diff.
 4. Read the relevant documentation.
-5. Report concrete problems only.
+5. Review implementation safety when runtime state or side effects can be affected.
+6. Report concrete problems only.
 
 ## Correctness
 
@@ -70,6 +74,30 @@ Are error paths handled?
 
 Are edge cases relevant to the use case covered?
 ```
+
+## Implementation Safety
+
+For mutations, state transitions, persistence changes, retries, and external side effects, review the change against `docs/22_구현_안전성.md`.
+
+Check whether the change introduces or fails to handle:
+
+```txt
+Race Condition
+
+Read-Modify-Write
+
+Idempotency
+
+Atomicity
+
+Partial Failure
+
+Retry / Timeout
+
+Stale State
+```
+
+Require a protection mechanism or test only when the actual Business Invariant and failure scenario justify it.
 
 ## Architecture
 
@@ -103,6 +131,8 @@ Are Permission and Rule responsibilities placed correctly?
 Are response transformations handled by mappers when appropriate?
 
 Is real persistence behavior covered by Integration Tests when needed?
+
+Is concurrency-sensitive persistence behavior verified against the real boundary when needed?
 ```
 
 ## Server Actions

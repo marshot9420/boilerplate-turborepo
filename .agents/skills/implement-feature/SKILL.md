@@ -83,6 +83,9 @@ Workflow
 
 Convention
   docs/18_컨벤션.md
+
+Implementation Safety
+  docs/22_구현_안전성.md
 ```
 
 ---
@@ -148,6 +151,14 @@ Domain Object 표현
 ```
 
 모든 기능에 모든 계층을 추가하지 않습니다.
+
+---
+
+## 4.1 구현 안전성 사전 검토
+
+Mutation이나 Runtime 상태 변경을 구현하기 전에 동시 실행, 중복 전달, Stale State, Retry / Timeout, 외부 Side Effect, Partial Failure가 Business Correctness를 깨뜨릴 수 있는지 확인합니다.
+
+해당 위험이 있다면 `docs/22_구현_안전성.md`를 기준으로 Business Invariant, 실패 시나리오, 필요한 보호 수단과 검증 범위를 결정합니다. 이 Skill에서 상세 안전성 정책을 다시 정의하지 않습니다.
 
 ---
 

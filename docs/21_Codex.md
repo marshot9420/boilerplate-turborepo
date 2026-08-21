@@ -62,6 +62,7 @@ docs/*
   Convention
   Workflow
   Security
+  Implementation Safety
   Test
   Tooling
 
@@ -76,6 +77,8 @@ AGENTS.md
 ```
 
 같은 규칙을 여러 파일에서 독립적으로 관리하지 않습니다.
+
+Race Condition, Idempotency, Partial Failure 같은 구현 안전성 정책은 `22_구현_안전성.md`가 소유합니다. Codex 전용 파일은 해당 문서를 선택하고 작업 절차에 적용하도록 안내합니다.
 
 ---
 
@@ -152,6 +155,9 @@ Test
 
 Convention
   → docs/18_컨벤션.md
+
+Implementation Safety
+  → docs/22_구현_안전성.md
 ```
 
 ---
@@ -246,6 +252,8 @@ Shell Network
 ```
 
 Repository 설정에는 Model이나 개인적인 응답 Style 같은 개발자별 선호를 넣지 않습니다.
+
+구현 안전성 규칙도 `.codex/config.toml`에 정의하지 않습니다. Project Config는 Runtime, Sandbox, Approval과 같은 실행 환경 책임만 유지합니다.
 
 ---
 
@@ -412,6 +420,8 @@ Rules는 Command 실행 Policy를 보조하는 기능입니다.
 
 Architecture나 Business Rule을 `.rules`에 작성하지 않습니다.
 
+Concurrency, Idempotency, Retry 같은 구현 안전성 정책도 `.rules`에 작성하지 않고 `22_구현_안전성.md`를 참조합니다.
+
 ---
 
 ## 14. Codex Skills
@@ -438,6 +448,19 @@ update-docs
 
 write-tests
   Test 작성 Workflow
+```
+
+구현 안전성 위험이 있는 작업에서는 각 Skill이 `22_구현_안전성.md`를 공통 Context로 사용합니다.
+
+```txt
+implement-feature
+  구현 전 동시성 및 실패 시나리오 검토
+
+review-code
+  Race Condition / Idempotency / Partial Failure Review
+
+write-tests
+  Business Correctness에 중요한 동시성 Integration Test 판단
 ```
 
 구조:
@@ -584,6 +607,8 @@ Design System Boundary
 새 Package 필요 여부
 
 구조적 Refactoring
+
+Concurrency / Consistency 영향
 ```
 
 코드를 수정하지 않고 분석 결과를 Main Codex에 반환합니다.
@@ -608,6 +633,8 @@ Dependency
 Server / Client Boundary
 
 Security
+
+Implementation Safety
 
 Test
 
@@ -659,6 +686,8 @@ E2E
 ```
 
 `write-tests` Skill을 사용합니다.
+
+동시성이나 Idempotency가 Business Correctness에 중요하다면 `22_구현_안전성.md`를 함께 확인하고 실제 Boundary를 사용하는 Integration Test 필요 여부를 검토합니다.
 
 ---
 
@@ -733,6 +762,8 @@ write-tests
 
 Skill이나 Agent가 프로젝트 규칙을 독립적으로 재정의하지 않습니다.
 
+구현 안전성의 상세 정책도 Skill이나 Agent에 복제하지 않고 `22_구현_안전성.md`를 참조합니다.
+
 ## 16. Rules와 AGENTS의 차이
 
 두 파일은 목적이 다릅니다.
@@ -760,6 +791,9 @@ AGENTS.md
 
 "git push를 실행하지 않는다."
   → Rules
+
+"Race Condition과 Idempotency를 검토한다."
+  → docs/22_구현_안전성.md + AGENTS.md / Skill
 ```
 
 두 역할을 혼합하지 않습니다.
@@ -807,6 +841,8 @@ AGENTS.md
   ↓
 필요한 계층 판단
   ↓
+동시성 및 실패 시나리오 검토
+  ↓
 구현
   ↓
 관련 Test
@@ -849,6 +885,8 @@ Component Test
   ↓
 Validation
 ```
+
+Race Condition, Idempotency, Transaction, Retry, Timeout, Partial Failure 위험이 있는 구현·리뷰·테스트에서는 `22_구현_안전성.md`를 공통 Context로 사용합니다.
 
 ---
 
@@ -972,6 +1010,9 @@ Tool별 지침 파일에서 Architecture와 Convention을 서로 다르게 정�
 
 20_Claude_Code.md
   Claude Code 설정
+
+22_구현_안전성.md
+  Concurrency / Idempotency / Partial Failure / Retry 안전성
 ```
 
 ---
@@ -986,6 +1027,10 @@ AGENTS.md는 Codex의 프로젝트 진입점이다.
 .codex/config.toml은 Repository 공통 실행 정책을 관리한다.
 
 .codex/rules는 Command 실행 정책만 관리한다.
+
+구현 안전성의 Source of Truth는 22_구현_안전성.md로 유지한다.
+
+구현 안전성 정책을 .codex/config.toml이나 .codex/rules에 중복 정의하지 않는다.
 
 개인 설정은 ~/.codex/config.toml에 둔다.
 

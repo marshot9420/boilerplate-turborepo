@@ -26,7 +26,7 @@ Domain Layer
   docs/08_도메인_레이어.md
 
 Server Actions
-  docs/09_Server_Actions.md
+  docs/09_서버_액션.md
 
 App Structure
   docs/10_앱_구조.md
@@ -48,6 +48,9 @@ Conventions
 
 Extension Guide
   docs/19_확장_가이드.md
+
+Implementation Safety
+  docs/22_구현_안전성.md
 ```
 
 ## Workflow
@@ -55,12 +58,13 @@ Extension Guide
 1. Read the task requirements.
 2. Inspect the target files and nearby implementations.
 3. Determine which responsibilities actually need to change.
-4. Use an existing generator when it reduces repetitive scaffold work.
-5. Implement from the lowest affected responsibility toward the application composition layer.
-6. Add or update tests for the changed behavior.
-7. Add or update Storybook stories when required by the Storybook guide.
-8. Check whether project documentation must also be updated.
-9. Run validation appropriate to the change.
+4. For mutations or runtime state changes, inspect concurrency and failure scenarios before choosing the implementation.
+5. Use an existing generator when it reduces repetitive scaffold work.
+6. Implement from the lowest affected responsibility toward the application composition layer.
+7. Add or update tests for the changed behavior.
+8. Add or update Storybook stories when required by the Storybook guide.
+9. Check whether project documentation must also be updated.
+10. Run validation appropriate to the change.
 
 ## Choose Only the Required Layers
 
@@ -101,6 +105,12 @@ Mutation
 New persistence requirement
   → Prisma + Repository + Domain
 ```
+
+## Implementation Safety
+
+Before implementing a mutation or other runtime state change, determine whether concurrent execution, duplicate delivery, stale state, retry or timeout, external side effects, or partial failure can break Business Correctness.
+
+If any of these risks apply, use `docs/22_구현_안전성.md` to identify the invariant, failure scenarios, required protection, and appropriate validation. Do not copy its detailed policy into this skill.
 
 ## Database
 
@@ -153,7 +163,7 @@ Use Server Actions for mutation boundaries when appropriate.
 
 Do not create Server Actions for ordinary server-side queries.
 
-Follow `docs/09_Server_Actions.md`.
+Follow `docs/09_서버_액션.md`.
 
 ## App UI
 
