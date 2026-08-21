@@ -229,6 +229,8 @@ export const ConfirmDialogTrigger = BaseConfirmDialogTrigger;
 
 export const ConfirmDialogPortal = BaseConfirmDialogPortal;
 
+export type ConfirmDialogOverlayProps = BaseConfirmDialogOverlayProps;
+
 export const ConfirmDialogOverlay = forwardRef<HTMLDivElement, BaseConfirmDialogOverlayProps>(
   ({ className, ...props }, ref) => {
     return (
