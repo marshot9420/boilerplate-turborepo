@@ -1,0 +1,7 @@
+interface:
+  display_name: "테스트 작성"
+  short_description: "변경된 동작에 적절한 테스트 수준을 선택하고 작성합니다"
+  default_prompt: "$write-tests를 사용하여 현재 변경사항에 필요한 테스트를 작성하고 실행해."
+
+policy:
+  allow_implicit_invocation: true

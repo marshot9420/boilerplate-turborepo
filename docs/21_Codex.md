@@ -414,7 +414,326 @@ Architecture나 Business Rule을 `.rules`에 작성하지 않습니다.
 
 ---
 
-## 14. Rules와 AGENTS의 차이
+## 14. Codex Skills
+
+Codex는 반복 작업 Workflow를 Skill로 관리할 수 있습니다.
+
+Repository Skill은 다음 위치에 둡니다.
+
+```txt
+.agents/skills/
+```
+
+현재 Boilerplate는 다음 Skill을 제공합니다.
+
+```txt
+implement-feature
+  기능 구현 Workflow
+
+review-code
+  코드 리뷰 Workflow
+
+update-docs
+  문서 갱신 Workflow
+
+write-tests
+  Test 작성 Workflow
+```
+
+구조:
+
+```txt
+.agents/
+└─ skills/
+   ├─ implement-feature/
+   │  ├─ SKILL.md
+   │  └─ agents/
+   │     └─ openai.yaml
+   │
+   ├─ review-code/
+   ├─ update-docs/
+   └─ write-tests/
+```
+
+`SKILL.md`는 실제 Workflow를 정의합니다.
+
+```txt
+Trigger
+
+Context 확인
+
+작업 순서
+
+Boundary
+
+검증
+
+완료 조건
+```
+
+`agents/openai.yaml`은 Codex 제품이 사용하는 선택적인 Metadata입니다.
+
+대표적인 역할:
+
+```txt
+display_name
+
+short_description
+
+default_prompt
+
+implicit invocation 정책
+```
+
+Skill에 Architecture 규칙 전체를 복제하지 않습니다.
+
+필요한 프로젝트 규칙은 `AGENTS.md`와 `docs/*`를 참조합니다.
+
+---
+
+### Skill 호출
+
+Skill은 Codex가 요청 내용에 따라 자동으로 선택할 수도 있고 명시적으로 호출할 수도 있습니다.
+
+예:
+
+```txt
+$implement-feature
+
+$review-code
+
+$update-docs
+
+$write-tests
+```
+
+명시적인 Skill 호출은 특정 Workflow를 확실하게 적용하고 싶을 때 유용합니다.
+
+일상적인 작은 작업까지 모든 요청에 Skill을 강제하지 않습니다.
+
+---
+
+### Skill과 Script
+
+Skill Directory에는 필요에 따라 다음 구조를 추가할 수 있습니다.
+
+```txt
+scripts/
+
+references/
+
+assets/
+```
+
+현재 Boilerplate Skill은 대부분 Repository의 기존 Tooling과 `docs/*`를 사용하므로 별도의 Script를 기본으로 추가하지 않습니다.
+
+반복적이고 결정적인 자동화가 실제로 필요해졌을 때만 Skill-local Script를 추가합니다.
+
+---
+
+## 15. Custom Agents
+
+Codex는 프로젝트 전용 Subagent를 다음 위치에 정의할 수 있습니다.
+
+```txt
+.codex/agents/
+```
+
+현재 Boilerplate는 다음 Agent를 제공합니다.
+
+```txt
+architect
+
+code-reviewer
+
+docs-maintainer
+
+test-writer
+```
+
+구조:
+
+```txt
+.codex/
+└─ agents/
+   ├─ architect.toml
+   ├─ code-reviewer.toml
+   ├─ docs-maintainer.toml
+   └─ test-writer.toml
+```
+
+---
+
+### `architect`
+
+Architecture와 구조적 판단을 위한 읽기 전용 Agent입니다.
+
+대표적인 대상:
+
+```txt
+Package Boundary
+
+Dependency Direction
+
+Domain Boundary
+
+App Structure
+
+Design System Boundary
+
+새 Package 필요 여부
+
+구조적 Refactoring
+```
+
+코드를 수정하지 않고 분석 결과를 Main Codex에 반환합니다.
+
+---
+
+### `code-reviewer`
+
+현재 변경사항을 독립적인 Context에서 검토합니다.
+
+주요 대상:
+
+```txt
+Correctness
+
+Regression
+
+Architecture
+
+Dependency
+
+Server / Client Boundary
+
+Security
+
+Test
+
+Documentation
+```
+
+기본적으로 읽기 전용입니다.
+
+`review-code` Skill과 같은 Review 기준을 사용합니다.
+
+---
+
+### `docs-maintainer`
+
+구현 변경에 따라 프로젝트 문서를 갱신합니다.
+
+주요 대상:
+
+```txt
+docs/*
+
+README.md
+
+AI Tool Guide
+
+Cross Reference
+```
+
+`update-docs` Skill을 사용합니다.
+
+Source Code의 Business Logic을 변경하지 않습니다.
+
+---
+
+### `test-writer`
+
+변경된 Behavior에 필요한 Test를 작성합니다.
+
+다음 수준 중 실제 책임에 맞는 Test를 선택합니다.
+
+```txt
+Unit
+
+Component
+
+Integration
+
+E2E
+```
+
+`write-tests` Skill을 사용합니다.
+
+---
+
+### Main Codex
+
+기본 기능 구현은 별도의 Implementer Agent로 분리하지 않습니다.
+
+```txt
+Main Codex
+  ↓
+implement-feature
+```
+
+형태를 사용합니다.
+
+Main Codex가 사용자 요구사항과 전체 작업 Context를 유지한 상태에서 구현하는 것이 기본입니다.
+
+전문 Agent는 별도의 Context가 실제로 도움이 되는 경우에만 사용합니다.
+
+---
+
+### Agent와 Skill의 차이
+
+```txt
+Skill
+  반복 가능한 작업 절차
+
+Agent
+  별도의 역할과 Context를 가진 Worker
+```
+
+예:
+
+```txt
+review-code
+  리뷰 절차
+
+code-reviewer
+  리뷰 역할을 맡는 별도의 Agent
+```
+
+Skill만 필요한 작업을 불필요하게 Agent로 분리하지 않습니다.
+
+Agent는 Context 분리나 전문 역할이 실제로 도움이 될 때 사용합니다.
+
+---
+
+### 현재 권장 관계
+
+```txt
+Main Codex
+  ↓
+implement-feature
+
+architect
+  Architecture Review
+
+code-reviewer
+  ↓
+review-code
+
+docs-maintainer
+  ↓
+update-docs
+
+test-writer
+  ↓
+write-tests
+```
+
+프로젝트 Architecture와 Convention의 Source of Truth는 여전히 `docs/*`입니다.
+
+Skill이나 Agent가 프로젝트 규칙을 독립적으로 재정의하지 않습니다.
+
+## 16. Rules와 AGENTS의 차이
 
 두 파일은 목적이 다릅니다.
 
@@ -447,7 +766,7 @@ AGENTS.md
 
 ---
 
-## 15. VS Code
+## 17. VS Code
 
 VS Code에서는 Repository Root를 Workspace로 열어 사용하는 것을 기본으로 합니다.
 
@@ -473,7 +792,7 @@ Codex의 Project Config를 수정하려면:
 
 ---
 
-## 16. 권장 작업 흐름
+## 18. 권장 작업 흐름
 
 일반적인 기능 구현:
 
@@ -533,7 +852,7 @@ Validation
 
 ---
 
-## 17. 검증
+## 19. 검증
 
 Codex가 코드를 수정했다면 변경 범위에 맞는 검증을 수행합니다.
 
@@ -568,7 +887,7 @@ pnpm build
 
 ---
 
-## 18. Secret
+## 20. Secret
 
 Codex에게 실제 Environment Secret을 읽거나 출력하도록 지시하지 않습니다.
 
@@ -596,7 +915,7 @@ Secret 정책은 `06_환경변수.md`와 `17_보안_및_운영_기본정책.md`�
 
 ---
 
-## 19. Claude Code와의 관계
+## 21. Claude Code와의 관계
 
 Claude Code와 Codex는 서로 다른 Tool이지만 프로젝트 규칙의 Source of Truth를 공유합니다.
 
@@ -627,7 +946,7 @@ Tool별 지침 파일에서 Architecture와 Convention을 서로 다르게 정�
 
 ---
 
-## 20. 관련 문서
+## 22. 관련 문서
 
 ```txt
 00_문서_가이드.md
@@ -657,7 +976,7 @@ Tool별 지침 파일에서 Architecture와 Convention을 서로 다르게 정�
 
 ---
 
-## 21. 핵심 원칙
+## 23. 핵심 원칙
 
 ```txt
 프로젝트 규칙은 docs/*가 Source of Truth다.

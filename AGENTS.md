@@ -215,6 +215,109 @@ Persistence
 
 ---
 
+## Codex Skills
+
+반복적인 작업에는 Repository Skill을 사용합니다.
+
+```txt
+기능 구현
+  → $implement-feature
+
+코드 리뷰
+  → $review-code
+
+문서 갱신
+  → $update-docs
+
+테스트 작성
+  → $write-tests
+```
+
+Skill은 다음 위치에서 관리합니다.
+
+```txt
+.agents/skills/
+```
+
+사용자의 요청이 Skill의 목적과 명확하게 일치하면 해당 Skill을 사용할 수 있습니다.
+
+모든 작업을 Skill로 강제하지 않습니다.
+
+작은 단순 수정은 직접 처리할 수 있습니다.
+
+---
+
+## Codex Agents
+
+전문적인 별도 Context가 도움이 되는 경우 Project Agent를 사용할 수 있습니다.
+
+```txt
+architect
+  Architecture와 Boundary 검토
+  Read-only
+
+code-reviewer
+  현재 변경사항 검토
+  Read-only
+
+docs-maintainer
+  문서 갱신
+
+test-writer
+  Test 작성
+```
+
+Project Agent 정의:
+
+```txt
+.codex/agents/
+```
+
+기본 관계:
+
+```txt
+Main Codex
+  ↓
+$implement-feature
+
+architect
+  Architecture 판단
+
+code-reviewer
+  ↓
+$review-code
+
+docs-maintainer
+  ↓
+$update-docs
+
+test-writer
+  ↓
+$write-tests
+```
+
+일반적인 기능 구현을 별도의 Implementer Agent에 위임하지 않습니다.
+
+Main Codex가 현재 사용자 Context를 유지하면서 `$implement-feature`를 사용하여 구현합니다.
+
+Agent는 다음 상황에서 사용합니다.
+
+```txt
+별도의 읽기 전용 검토가 유용함
+
+현재 구현 Context와 분리된 Review가 유용함
+
+독립적인 Test 작업을 위임할 가치가 있음
+
+문서 정리를 별도 Context에서 수행할 가치가 있음
+```
+
+작은 작업을 불필요하게 Agent로 분리하지 않습니다.
+
+Subagent 결과는 Parent Agent가 다시 검토한 뒤 최종 작업에 반영합니다.
+
+---
+
 ## Domain과 Database
 
 Business Rule은 Domain에서 관리합니다.
