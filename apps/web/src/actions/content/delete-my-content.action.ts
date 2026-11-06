@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 import { requireUser } from "@repo/auth/server";
 import type { ActionResult } from "@repo/core/action";
@@ -43,6 +44,7 @@ export async function deleteMyContentAction(
     revalidatePath(URLS.CLIENT.MY_PAGE);
     revalidatePath(createContentDetailHref(result.data.id));
     revalidatePath(createContentEditHref(result.data.id));
+    redirect(URLS.CLIENT.CONTENTS);
   }
 
   return result;

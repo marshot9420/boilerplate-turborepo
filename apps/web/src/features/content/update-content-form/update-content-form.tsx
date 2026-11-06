@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useActionState, useEffect, useId, useState } from "react";
+import { useActionState, useEffect, useId, useState, useSyncExternalStore } from "react";
 
 import type { ActionResult } from "@repo/core/action";
 import { getFieldError, getFormError } from "@repo/design-system/form";
@@ -21,6 +21,10 @@ import {
 import { CONTENT, type ContentDetailResponse } from "@repo/domain/content/client";
 
 import { UpdateContentSubmitButton } from "../update-content-submit-button";
+
+const subscribeToHydration = () => () => undefined;
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 export type UpdateContentFormState = ActionResult<ContentDetailResponse> | null;
 
@@ -50,6 +54,7 @@ export default function UpdateContentForm({
 }: UpdateContentFormProps) {
   const router = useRouter();
   const [state, formAction] = useActionState(action, initialState);
+  const hydrated = useSyncExternalStore(subscribeToHydration, getClientSnapshot, getServerSnapshot);
 
   const titleId = useId();
   const titleCounterId = useId();
@@ -106,6 +111,7 @@ export default function UpdateContentForm({
           required
           maxLength={CONTENT.TITLE.MAX_LENGTH}
           defaultValue={content.title}
+          disabled={!hydrated}
           placeholder="콘텐츠 제목을 입력해 주세요."
           aria-invalid={titleError ? true : undefined}
           aria-describedby={createDescribedBy(
@@ -140,6 +146,7 @@ export default function UpdateContentForm({
           name="content"
           required
           defaultValue={content.content}
+          disabled={!hydrated}
           placeholder="콘텐츠 본문을 입력해 주세요."
           className="min-h-60 resize-y"
           aria-invalid={bodyError ? true : undefined}
@@ -164,7 +171,7 @@ export default function UpdateContentForm({
       <Separator spacing="md" />
 
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-        <UpdateContentSubmitButton className="w-full sm:w-auto" />
+        <UpdateContentSubmitButton disabled={!hydrated} className="w-full sm:w-auto" />
       </div>
     </form>
   );

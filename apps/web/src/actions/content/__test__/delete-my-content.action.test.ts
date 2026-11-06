@@ -28,6 +28,8 @@ const nextCacheMock = vi.hoisted(() => ({
   revalidatePath: vi.fn(),
 }));
 
+const redirectMock = vi.hoisted(() => vi.fn());
+
 vi.mock("@repo/auth/server", () => authMock);
 
 vi.mock("@repo/core/action", () => actionMock);
@@ -35,6 +37,8 @@ vi.mock("@repo/core/action", () => actionMock);
 vi.mock("@repo/domain/content/server", () => contentServiceMock);
 
 vi.mock("next/cache", () => nextCacheMock);
+
+vi.mock("next/navigation", () => ({ redirect: redirectMock }));
 
 function createSession() {
   return {
@@ -61,6 +65,9 @@ function createContentDetailResponse() {
 describe("deleteMyContentAction", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    redirectMock.mockImplementation((url: string) => {
+      throw new Error(`NEXT_REDIRECT:${url}`);
+    });
   });
 
   it("현재 사용자를 actor로 사용해 콘텐츠를 삭제하고 관련 경로를 revalidate 한다", async () => {
@@ -96,7 +103,7 @@ describe("deleteMyContentAction", () => {
       },
     );
 
-    const result = await deleteMyContentAction(null, formData);
+    await expect(deleteMyContentAction(null, formData)).rejects.toThrow("NEXT_REDIRECT:/contents");
 
     expect(authMock.requireUser).toHaveBeenCalledOnce();
 
@@ -120,7 +127,7 @@ describe("deleteMyContentAction", () => {
     expect(nextCacheMock.revalidatePath).toHaveBeenCalledWith("/contents/content-id");
     expect(nextCacheMock.revalidatePath).toHaveBeenCalledWith("/contents/content-id/edit");
 
-    expect(result).toEqual(actionResult);
+    expect(redirectMock).toHaveBeenCalledWith("/contents");
   });
 
   it("액션 결과가 실패하면 revalidatePath를 호출하지 않는다", async () => {
@@ -141,6 +148,7 @@ describe("deleteMyContentAction", () => {
     const result = await deleteMyContentAction(null, formData);
 
     expect(nextCacheMock.revalidatePath).not.toHaveBeenCalled();
+    expect(redirectMock).not.toHaveBeenCalled();
     expect(result).toEqual(actionResult);
   });
 
@@ -189,6 +197,7 @@ describe("deleteMyContentAction", () => {
     });
 
     expect(nextCacheMock.revalidatePath).not.toHaveBeenCalled();
+    expect(redirectMock).not.toHaveBeenCalled();
     expect(result).toEqual(actionResult);
   });
 });

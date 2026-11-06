@@ -1,5 +1,6 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { renderToString } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { ActionResult } from "@repo/core/action";
@@ -65,6 +66,17 @@ describe("UpdateContentForm", () => {
     vi.clearAllMocks();
   });
 
+  it("서버에서 렌더링한 수정 폼은 초기화 전 입력과 제출을 막는다", () => {
+    const container = document.createElement("div");
+    container.innerHTML = renderToString(
+      <UpdateContentForm content={content} action={createActionMock()} />,
+    );
+
+    expect(within(container).getByRole("textbox", { name: "제목" })).toBeDisabled();
+    expect(within(container).getByRole("textbox", { name: "본문" })).toBeDisabled();
+    expect(within(container).getByRole("button", { name: "콘텐츠 수정" })).toBeDisabled();
+  });
+
   it("기존 콘텐츠 값과 제출 버튼을 렌더링한다", () => {
     render(<UpdateContentForm content={content} action={createActionMock()} />);
 
@@ -117,6 +129,31 @@ describe("UpdateContentForm", () => {
 
     expect(screen.getByText(`3/${CONTENT.TITLE.MAX_LENGTH}`)).toBeInTheDocument();
     expect(screen.getByText("6자")).toBeInTheDocument();
+  });
+
+  it("제목과 본문을 수정한 뒤 제출하면 변경된 값을 action에 전달한다", async () => {
+    const user = userEvent.setup();
+    const action = createActionMock();
+
+    render(<UpdateContentForm content={content} action={action} />);
+
+    const titleInput = screen.getByRole("textbox", { name: "제목" });
+    const contentTextarea = screen.getByRole("textbox", { name: "본문" });
+
+    await user.clear(titleInput);
+    await user.type(titleInput, "변경한 제목");
+    await user.clear(contentTextarea);
+    await user.type(contentTextarea, "변경한 본문입니다.");
+    await user.click(screen.getByRole("button", { name: "콘텐츠 수정" }));
+
+    await waitFor(() => {
+      expect(action).toHaveBeenCalledOnce();
+    });
+
+    const submittedFormData = action.mock.calls[0]?.[1];
+
+    expect(submittedFormData?.get("title")).toBe("변경한 제목");
+    expect(submittedFormData?.get("content")).toBe("변경한 본문입니다.");
   });
 
   it("initialState에 form error가 있으면 alert를 표시한다", () => {
