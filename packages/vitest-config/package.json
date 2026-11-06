@@ -24,7 +24,7 @@
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",
     "@vitejs/plugin-react": "catalog:",
-    "@vitest/coverage-v8": "^4.1.8",
+    "@vitest/coverage-v8": "5.0.5",
     "dotenv": "catalog:",
     "eslint": "catalog:",
     "jsdom": "catalog:",
@@ -32,11 +32,11 @@
     "vitest": "catalog:"
   },
   "peerDependencies": {
-    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.0.0",
     "@vitejs/plugin-react": "^6.0.0",
-    "jsdom": "^29.0.0",
-    "vitest": "^4.1.0"
+    "jsdom": "^31.0.0",
+    "vitest": "^5.0.5"
   }
 }

@@ -568,6 +568,31 @@ describe("content.service", () => {
   });
 
   describe("updateContentStatusService", () => {
+    it("조회 이후 상태가 바뀌면 덮어쓰지 않고 CONTENT_CONFLICT를 반환한다", async () => {
+      const actor = createActor({ id: "admin-id", role: "ADMIN" });
+      repositoryMock.findContentByIdRepository.mockResolvedValue(createMockContent());
+      repositoryMock.updateContentRepository.mockRejectedValue({
+        code: "DATABASE_RECORD_NOT_FOUND",
+        message: "대상을 찾을 수 없습니다.",
+      });
+
+      const result = await updateContentStatusService("content-id", actor, { status: "HIDDEN" });
+
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          code: "CONTENT_CONFLICT",
+          message: "콘텐츠 상태가 변경되었습니다. 새로고침 후 다시 시도해 주세요.",
+        },
+      });
+      expect(repositoryMock.updateContentRepository).toHaveBeenCalledWith(
+        "content-id",
+        { status: "HIDDEN" },
+        "PUBLISHED",
+      );
+      expect(loggerMock.info).not.toHaveBeenCalled();
+    });
+
     it("콘텐츠가 없으면 CONTENT_NOT_FOUND 실패 Result를 반환한다", async () => {
       const actor = createActor({
         role: "ADMIN",
@@ -659,9 +684,11 @@ describe("content.service", () => {
         status: "HIDDEN",
       });
 
-      expect(repositoryMock.updateContentRepository).toHaveBeenCalledWith("content-id", {
-        status: "HIDDEN",
-      });
+      expect(repositoryMock.updateContentRepository).toHaveBeenCalledWith(
+        "content-id",
+        { status: "HIDDEN" },
+        "PUBLISHED",
+      );
 
       expect(result.ok).toBe(true);
 

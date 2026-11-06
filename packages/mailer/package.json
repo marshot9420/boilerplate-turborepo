@@ -18,7 +18,7 @@
     "clean": "rm -rf node_modules .turbo coverage"
   },
   "dependencies": {
-    "resend": "^6.16.0",
+    "resend": "^6.37.0",
     "server-only": "catalog:"
   },
   "devDependencies": {

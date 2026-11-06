@@ -48,22 +48,18 @@ const contentResponse = {
   updatedAt: "2026-06-20T01:00:00.000Z",
 } satisfies ContentDetailResponse;
 
-const updateStatusActionMock = vi.fn(
-  async (): Promise<ActionResult<ContentDetailResponse>> => ({
-    ok: true,
-    data: contentResponse,
-  }),
-);
+const updateStatusActionMock = vi.fn(async (): Promise<ActionResult<ContentDetailResponse>> => ({
+  ok: true,
+  data: contentResponse,
+}));
 
-const deleteActionMock = vi.fn(
-  async (): Promise<ActionResult<ContentDetailResponse>> => ({
-    ok: true,
-    data: {
-      ...contentResponse,
-      status: "DELETED",
-    },
-  }),
-);
+const deleteActionMock = vi.fn(async (): Promise<ActionResult<ContentDetailResponse>> => ({
+  ok: true,
+  data: {
+    ...contentResponse,
+    status: "DELETED",
+  },
+}));
 
 describe("ContentAdminActions", () => {
   beforeEach(() => {

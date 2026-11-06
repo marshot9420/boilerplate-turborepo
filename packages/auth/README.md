@@ -203,7 +203,7 @@ http://localhost:3001/api/auth/kakao/callback
 ### OAuth 시작 route
 
 ```ts
-// apps/web/app/api/auth/[provider]/route.ts
+// apps/web/src/app/api/auth/[provider]/route.ts
 import { type NextRequest, NextResponse } from "next/server";
 
 import { createOAuthAuthorizeUrl, parseOAuthProviderId } from "@repo/auth/server";
@@ -245,10 +245,11 @@ export async function GET(
 ### OAuth callback route
 
 ```ts
-// apps/web/app/api/auth/[provider]/callback/route.ts
+// apps/web/src/app/api/auth/[provider]/callback/route.ts
 import { type NextRequest, NextResponse } from "next/server";
 
 import { handleOAuthCallback, parseOAuthProviderId } from "@repo/auth/server";
+import { USER_ERROR_CODE } from "@repo/domain/user/server";
 import { serverEnv } from "@repo/env/server";
 
 export const runtime = "nodejs";
@@ -299,8 +300,16 @@ export async function GET(
     });
 
     return NextResponse.redirect(createWebUrl("/me"));
-  } catch {
-    return NextResponse.redirect(createWebUrl("/login?error=oauth_failed"));
+  } catch (error) {
+    const errorCode =
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === USER_ERROR_CODE.OAUTH_EMAIL_CONFLICT
+        ? "oauth_email_conflict"
+        : "oauth_failed";
+
+    return NextResponse.redirect(createWebUrl(`/login?error=${errorCode}`));
   }
 }
 ```
@@ -548,8 +557,11 @@ export const AUTH_ERROR_CODE = {
 ```txt
 AUTH_UNAUTHORIZED → /login?error=unauthorized
 AUTH_FORBIDDEN → /login?error=forbidden
-OAuth 실패 → /login?error=oauth_failed
+USER_OAUTH_EMAIL_CONFLICT → /login?error=oauth_email_conflict
+그 외 OAuth 실패 → /login?error=oauth_failed
 ```
+
+계정 식별, 이메일 충돌, Kakao 이메일 검증 정책은 [보안 및 운영 기본 정책](../../docs/17_보안_및_운영_기본정책.md#51-oauth-identity와-이메일-충돌)을 따릅니다.
 
 ---
 
@@ -586,7 +598,7 @@ oauth-callback.test.ts
   code 누락
   state 검증 실패
   provider별 profile resolver 호출
-  사용자 생성/연결 실패
+  사용자 생성/이메일 충돌 실패
   세션 생성 성공
 ```
 
@@ -644,7 +656,7 @@ export interface OAuthProfile {
 
 `@repo/auth`는 `findOrCreateOAuthUserService()`를 호출할 뿐입니다.
 
-사용자 상태 검증, 기존 이메일 사용자 연결, 신규 사용자 생성, OAuth 계정 연결 규칙은 `@repo/domain/user`에 둡니다.
+사용자 상태 검증, 기존 OAuth 계정 조회, 이메일 충돌 처리, 신규 사용자 생성은 `@repo/domain/user`에 둡니다.
 
 ### 5. 앱 route에서 callbackPath를 실제 경로와 맞춰야 한다
 

@@ -36,13 +36,14 @@ beforeEach(() => {
   vi.clearAllMocks();
 
   vi.mocked(useRouter).mockReturnValue({
+    bfcacheId: "test-bfcache-id",
     back: vi.fn(),
     forward: vi.fn(),
     prefetch: vi.fn(),
     push: vi.fn(),
     refresh: vi.fn(),
     replace,
-  } as ReturnType<typeof useRouter>);
+  } satisfies ReturnType<typeof useRouter>);
 });
 
 describe("CreateContentForm integration", () => {

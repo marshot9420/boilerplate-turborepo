@@ -65,11 +65,13 @@ export async function countContentsRepository(params?: {
 export async function updateContentRepository(
   contentId: string,
   data: Prisma.ContentUpdateInput,
+  expectedStatus?: ContentStatus,
 ): Promise<Content> {
   try {
     return await prisma.content.update({
       where: {
         id: contentId,
+        ...(expectedStatus ? { status: expectedStatus } : {}),
       },
       data,
     });

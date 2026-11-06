@@ -11,6 +11,10 @@ const DEFAULT_LOGIN_ERROR_MESSAGE = {
 } satisfies LoginErrorMessage;
 
 const LOGIN_ERROR_MESSAGES = {
+  oauth_email_conflict: {
+    title: "소셜 계정을 자동으로 연결할 수 없습니다.",
+    description: "이미 가입된 이메일입니다. 기존 로그인 방법으로 로그인해 주세요.",
+  },
   invalid_oauth_provider: {
     title: "지원하지 않는 로그인 방식입니다.",
     description: "다른 로그인 방식을 선택해 주세요.",

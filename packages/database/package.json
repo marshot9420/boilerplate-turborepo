@@ -32,19 +32,19 @@
     "db:test:migrate": "NODE_ENV=test prisma migrate"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/adapter-pg": "7.10.1",
     "@prisma/client": "catalog:",
     "@repo/core": "workspace:*",
     "@repo/env": "workspace:*",
     "dotenv": "catalog:",
-    "pg": "^8.21.0",
+    "pg": "^8.23.1",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@repo/vitest-config": "workspace:*",
-    "@types/pg": "^8.20.0",
+    "@types/pg": "^8.23.1",
     "eslint": "catalog:",
     "prisma": "catalog:",
     "typescript": "catalog:"

@@ -268,6 +268,18 @@ describe("content.repository", () => {
   });
 
   describe("updateContentRepository", () => {
+    it("예상한 현재 상태를 저장 조건에 포함한다", async () => {
+      const content = createMockContent({ status: "HIDDEN" });
+      prismaMock.content.update.mockResolvedValue(content);
+
+      await updateContentRepository("content-id", { status: "HIDDEN" }, "PUBLISHED");
+
+      expect(prismaMock.content.update).toHaveBeenCalledWith({
+        where: { id: "content-id", status: "PUBLISHED" },
+        data: { status: "HIDDEN" },
+      });
+    });
+
     it("콘텐츠를 수정한다", async () => {
       const data: Prisma.ContentUpdateInput = {
         title: "수정된 제목",

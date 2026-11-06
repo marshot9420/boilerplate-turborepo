@@ -137,6 +137,27 @@ describe("Web OAuth Callback Route", () => {
     );
   });
 
+  it("이메일 충돌이면 고정된 충돌 코드로 로그인 페이지에 redirect한다", async () => {
+    parseOAuthProviderIdMock.mockReturnValue("google");
+    handleOAuthCallbackMock.mockRejectedValue({
+      code: "USER_OAUTH_EMAIL_CONFLICT",
+      message: "이미 가입된 이메일입니다. 기존 로그인 방법으로 로그인해 주세요.",
+    });
+
+    const request = new NextRequest(
+      `${webAppUrl}/api/auth/google/callback?code=test-code&state=test-state`,
+    );
+
+    const response = await GET(request, {
+      params: Promise.resolve({ provider: "google" }),
+    });
+
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe(
+      `${webAppUrl}${URLS.CLIENT.LOGIN}?error=oauth_email_conflict`,
+    );
+  });
+
   it("code와 state가 없으면 null로 callback handler에 전달한다", async () => {
     parseOAuthProviderIdMock.mockReturnValue("google");
     handleOAuthCallbackMock.mockResolvedValue(undefined);

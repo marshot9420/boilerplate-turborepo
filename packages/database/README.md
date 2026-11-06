@@ -62,6 +62,16 @@ if (!user) {
 }
 ```
 
+콘텐츠 상태 변경에는 기대 상태를 선택적으로 전달할 수 있습니다.
+
+```ts
+import { updateContentRepository } from "@repo/database/content";
+
+await updateContentRepository(contentId, { status: "PUBLISHED" }, "HIDDEN");
+```
+
+조건부 Update와 충돌 처리 계약은 [데이터베이스 문서](../../docs/07_데이터베이스.md#104-기대-상태를-포함한-콘텐츠-update)를 참고합니다.
+
 ## Transaction 사용 예시
 
 여러 DB 작업을 하나의 트랜잭션으로 묶을 때 사용합니다.

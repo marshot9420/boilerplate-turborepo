@@ -45,6 +45,14 @@ describe("LoginView", () => {
     expect(screen.getByText("소셜 로그인에 실패했습니다. 다시 시도해 주세요.")).toBeInTheDocument();
   });
 
+  it("이메일 충돌이면 기존 로그인 방법으로 로그인하도록 안내한다", () => {
+    render(<LoginView error="oauth_email_conflict" />);
+
+    expect(
+      screen.getByText("이미 가입된 이메일입니다. 기존 로그인 방법으로 로그인해 주세요."),
+    ).toBeInTheDocument();
+  });
+
   it("알 수 없는 error면 기본 error 메시지를 렌더링한다", () => {
     render(<LoginView error="unknown_error" />);
 

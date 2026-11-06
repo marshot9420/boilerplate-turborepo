@@ -9,6 +9,7 @@ export const USER_ERROR_CODE = {
   SUSPENDED: "USER_SUSPENDED",
   BANNED: "USER_BANNED",
   OAUTH_USER_BLOCKED: "USER_OAUTH_USER_BLOCKED",
+  OAUTH_EMAIL_CONFLICT: "USER_OAUTH_EMAIL_CONFLICT",
   OAUTH_LOGIN_FAILED: "USER_OAUTH_LOGIN_FAILED",
 } as const;
 
@@ -64,5 +65,12 @@ export function createOAuthLoginFailedError(cause?: unknown): AppError {
     code: USER_ERROR_CODE.OAUTH_LOGIN_FAILED,
     message: "소셜 로그인 처리 중 오류가 발생했습니다.",
     cause,
+  };
+}
+
+export function createOAuthEmailConflictError(): AppError {
+  return {
+    code: USER_ERROR_CODE.OAUTH_EMAIL_CONFLICT,
+    message: "이미 가입된 이메일입니다. 기존 로그인 방법으로 로그인해 주세요.",
   };
 }

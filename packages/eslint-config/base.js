@@ -129,6 +129,6 @@ export const baseConfig = [
   },
 
   {
-    ignores: ["dist/**", ".turbo/**", "node_modules/**", "coverage/**"],
+    ignores: ["dist/**", ".turbo/**", "node_modules/**", "coverage/**", "storybook-static/**"],
   },
 ];

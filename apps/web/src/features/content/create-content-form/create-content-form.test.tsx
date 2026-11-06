@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -101,6 +101,19 @@ describe("CreateContentForm", () => {
 
     expect(screen.getByText(`3/${CONTENT.TITLE.MAX_LENGTH}`)).toBeInTheDocument();
     expect(screen.getByText("5자")).toBeInTheDocument();
+  });
+
+  it("폼이 초기화되면 제목과 본문 입력 길이도 초기화한다", async () => {
+    const user = userEvent.setup();
+    render(<CreateContentForm action={createActionMock()} />);
+    const title = screen.getByRole("textbox", { name: "제목" });
+    await user.type(title, "테스트");
+    await user.type(screen.getByRole("textbox", { name: "본문" }), "본문입니다");
+
+    fireEvent.reset(title.closest("form")!);
+
+    expect(screen.getByText(`0/${CONTENT.TITLE.MAX_LENGTH}`)).toBeInTheDocument();
+    expect(screen.getByText("0자")).toBeInTheDocument();
   });
 
   it("initialState에 form error가 있으면 alert를 표시한다", () => {

@@ -13,14 +13,12 @@ import {
   softDeleteUserRepository,
   updateUserRepository,
 } from "@repo/database/user";
-import {
-  createUserOAuthAccountRepository,
-  findUserOAuthAccountWithUserRepository,
-} from "@repo/database/user-oauth-account";
+import { findUserOAuthAccountWithUserRepository } from "@repo/database/user-oauth-account";
 import { revokeUserSessionsByUserIdRepository } from "@repo/database/user-session";
 
 import type { UserDetailResponse, UserListResponse, UserResponse } from "./user.dto";
 import {
+  createOAuthEmailConflictError,
   createOAuthLoginFailedError,
   createOAuthUserBlockedError,
   createUserBannedError,
@@ -71,28 +69,7 @@ export async function findOrCreateOAuthUserService(
         return failure(createOAuthUserBlockedError());
       }
 
-      const updatedUser = await updateUserRepository(existingUser.id, {
-        name: input.name,
-        avatarUrl: input.avatarUrl,
-      });
-
-      await createUserOAuthAccountRepository({
-        email: input.email,
-        provider: input.provider,
-        providerUserId: input.providerUserId,
-        user: {
-          connect: {
-            id: updatedUser.id,
-          },
-        },
-      });
-
-      logger.info("user.oauth_account_linked.succeeded", {
-        userId: updatedUser.id,
-        provider: input.provider,
-      });
-
-      return success(toUserResponse(updatedUser));
+      return failure(createOAuthEmailConflictError());
     }
 
     const nicknameHash = createHash("sha256")

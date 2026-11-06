@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 import { handleOAuthCallback, parseOAuthProviderId } from "@repo/auth/server";
+import { USER_ERROR_CODE } from "@repo/domain/user/server";
 
 import { serverEnv } from "@/config/server-env";
 import { URLS } from "@/constants";
@@ -55,7 +56,15 @@ export async function GET(
     });
 
     return NextResponse.redirect(createAdminUrl(URLS.CLIENT.HOME));
-  } catch {
-    return NextResponse.redirect(createAdminUrl(`${URLS.CLIENT.LOGIN}?error=oauth_failed`));
+  } catch (error) {
+    const errorCode =
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === USER_ERROR_CODE.OAUTH_EMAIL_CONFLICT
+        ? "oauth_email_conflict"
+        : "oauth_failed";
+
+    return NextResponse.redirect(createAdminUrl(`${URLS.CLIENT.LOGIN}?error=${errorCode}`));
   }
 }

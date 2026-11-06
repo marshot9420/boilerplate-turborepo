@@ -114,8 +114,6 @@ export default function CreateContentForm({
     }
 
     formRef.current?.reset();
-    setTitleLength(0);
-    setContentLength(0);
 
     const resolvedSuccessHref = resolveSuccessHref({
       successHref,
@@ -129,7 +127,15 @@ export default function CreateContentForm({
   }, [createdContentHrefPrefix, router, state, successHref]);
 
   return (
-    <form ref={formRef} action={formAction} className="space-y-6">
+    <form
+      ref={formRef}
+      action={formAction}
+      onReset={() => {
+        setTitleLength(0);
+        setContentLength(0);
+      }}
+      className="space-y-6"
+    >
       {formError ? (
         <Alert tone="danger" role="alert">
           <AlertDescription>{formError}</AlertDescription>

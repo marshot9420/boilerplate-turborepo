@@ -55,12 +55,10 @@ const deletedContentResponse = {
   updatedAt: "2026-06-20T01:00:00.000Z",
 } satisfies ContentDetailResponse;
 
-const actionMock = vi.fn(
-  async (): Promise<ActionResult<ContentDetailResponse>> => ({
-    ok: true,
-    data: deletedContentResponse,
-  }),
-);
+const actionMock = vi.fn(async (): Promise<ActionResult<ContentDetailResponse>> => ({
+  ok: true,
+  data: deletedContentResponse,
+}));
 
 function mockUseActionState(
   state: ActionResult<ContentDetailResponse> | null = null,

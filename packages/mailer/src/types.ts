@@ -28,9 +28,7 @@ export type SendMailSuccess = {
 };
 
 export type MailerErrorCode =
-  | "MAILER_INVALID_INPUT"
-  | "MAILER_NOT_CONFIGURED"
-  | "MAILER_PROVIDER_ERROR";
+  "MAILER_INVALID_INPUT" | "MAILER_NOT_CONFIGURED" | "MAILER_PROVIDER_ERROR";
 
 export type MailerError = {
   code: MailerErrorCode;

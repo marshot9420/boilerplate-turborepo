@@ -3,6 +3,7 @@ import { Alert, AlertDescription, AlertTitle, Card, Separator } from "@repo/desi
 import { SocialLoginButtons } from "@/features/auth";
 
 const LOGIN_ERROR_MESSAGES: Record<string, string> = {
+  oauth_email_conflict: "이미 가입된 이메일입니다. 기존 로그인 방법으로 로그인해 주세요.",
   invalid_oauth_provider: "지원하지 않는 로그인 방식입니다.",
   oauth_failed: "소셜 로그인에 실패했습니다. 다시 시도해 주세요.",
   unauthorized: "로그인이 필요한 페이지입니다.",

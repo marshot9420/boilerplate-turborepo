@@ -124,7 +124,7 @@ function toKakaoOAuthProfile(value: unknown): OAuthProfile {
   const isEmailValid = getBooleanProperty(kakaoAccount, "is_email_valid");
   const isEmailVerified = getBooleanProperty(kakaoAccount, "is_email_verified");
 
-  if (!email || isEmailValid === false || isEmailVerified === false) {
+  if (!email || isEmailValid !== true || isEmailVerified !== true) {
     throw createOAuthInvalidProfileResponseError(value);
   }
 

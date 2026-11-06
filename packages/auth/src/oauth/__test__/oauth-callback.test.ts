@@ -236,7 +236,31 @@ describe("oauth-callback", () => {
     });
   });
 
-  it("사용자 생성 또는 연결에 실패하면 해당 AppError를 던진다", async () => {
+  it("같은 이메일 충돌을 그대로 전달하고 사용자 세션을 생성하지 않는다", async () => {
+    const error = {
+      code: "USER_OAUTH_EMAIL_CONFLICT",
+      message: "이미 가입된 이메일입니다. 기존 로그인 방법으로 로그인해 주세요.",
+    };
+
+    mocks.findOrCreateOAuthUserService.mockResolvedValue({
+      ok: false,
+      error,
+    });
+
+    await expect(
+      handleOAuthCallback({
+        providerId: "google",
+        code: "google-code",
+        state: "state",
+        appBaseUrl: "http://localhost:3000",
+        callbackPath: "/api/auth/google/callback",
+      }),
+    ).rejects.toBe(error);
+
+    expect(mocks.createAuthSession).not.toHaveBeenCalled();
+  });
+
+  it("사용자 조회 또는 생성에 실패하면 해당 AppError를 던진다", async () => {
     mocks.findOrCreateOAuthUserService.mockResolvedValue({
       ok: false,
       error: {

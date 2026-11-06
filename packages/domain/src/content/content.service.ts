@@ -230,9 +230,11 @@ export async function updateContentStatusService(
       });
     }
 
-    const updatedContent = await updateContentRepository(contentId, {
-      status: input.status,
-    });
+    const updatedContent = await updateContentRepository(
+      contentId,
+      { status: input.status },
+      content.status,
+    );
 
     logger.info("content.update_status.succeeded", {
       contentId,
@@ -249,6 +251,13 @@ export async function updateContentStatusService(
       actorRole: actor.role,
       error,
     });
+
+    if ((error as AppError)?.code === "DATABASE_RECORD_NOT_FOUND") {
+      return failure({
+        code: CONTENT_ERROR_CODE.CONFLICT,
+        message: "콘텐츠 상태가 변경되었습니다. 새로고침 후 다시 시도해 주세요.",
+      });
+    }
 
     return failure(error as AppError);
   }

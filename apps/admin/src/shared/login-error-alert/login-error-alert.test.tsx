@@ -20,6 +20,14 @@ describe("LoginErrorAlert", () => {
     ).toBeInTheDocument();
   });
 
+  it("이메일 충돌이면 기존 로그인 방법으로 로그인하도록 안내한다", () => {
+    render(<LoginErrorAlert error="oauth_email_conflict" />);
+
+    expect(
+      screen.getByText("이미 가입된 이메일입니다. 기존 로그인 방법으로 로그인해 주세요."),
+    ).toBeInTheDocument();
+  });
+
   it("알 수 없는 에러이면 기본 에러 메시지를 렌더링한다", () => {
     render(<LoginErrorAlert error="unknown_error" />);
 
