@@ -53,6 +53,8 @@ tooling/scripts/
 └─ src/
    ├─ clean.ts
    ├─ init-project.ts
+   ├─ project-setup.ts
+   ├─ project-setup.test.ts
    ├─ seed.ts
    ├─ setup-scope.ts
    └─ index.ts
@@ -62,11 +64,14 @@ tooling/scripts/
 
 # 설치
 
-루트에서 의존성을 설치합니다.
+새 프로젝트에서는 아래 초기화를 Node로 먼저 실행한 뒤 루트에서 설치합니다.
 
 ```bash
-pnpm install
+pnpm install --no-frozen-lockfile
+pnpm format
 ```
+
+Node.js / pnpm 준비와 전체 설치 절차의 기준은 [프로젝트 초기화 문서](../../docs/15_프로젝트_초기화.md)입니다.
 
 ---
 
@@ -74,10 +79,10 @@ pnpm install
 
 ## 프로젝트 초기화
 
-보일러플레이트를 새 프로젝트로 복제한 직후 실행합니다.
+보일러플레이트를 새 프로젝트로 복제한 직후, Dependency 설치 전에 루트에서 실행합니다. Node.js 기본 모듈만 사용합니다. 설치 이후에는 루트 Alias인 `pnpm init-project <project-name> [options]`도 사용할 수 있습니다.
 
 ```bash
-pnpm init-project mars
+node tooling/scripts/src/init-project.ts mars
 ```
 
 실행 시 기본적으로 다음 작업을 수행합니다.
@@ -87,7 +92,8 @@ boilerplate-turborepo → mars
 @repo → @mars
 루트 package.json name 변경
 README 및 문서의 프로젝트명 변경
-.env.example 생성 확인
+세 Environment Example의 Project Identity 변경 및 누락된 Local Environment 파일 생성
+기존 Local Environment 파일 보존
 node_modules / .turbo / .next / dist / coverage 정리
 .git 제거 여부 선택
 초기 commit 안내
@@ -96,25 +102,25 @@ node_modules / .turbo / .next / dist / coverage 정리
 적용 전 변경 대상만 확인하려면 `--dry-run`을 사용합니다.
 
 ```bash
-pnpm init-project mars --dry-run
+node tooling/scripts/src/init-project.ts mars --dry-run
 ```
 
 패키지 스코프와 프로젝트명을 다르게 쓰고 싶으면 `--scope`를 사용합니다.
 
 ```bash
-pnpm init-project mars-project --scope mars
+node tooling/scripts/src/init-project.ts mars-project --scope mars
 ```
 
 기존 `.git` 디렉터리를 강제로 제거하려면 `--remove-git`을 사용합니다.
 
 ```bash
-pnpm init-project mars --remove-git
+node tooling/scripts/src/init-project.ts mars --remove-git
 ```
 
 기존 `.git` 디렉터리를 유지하려면 `--keep-git`을 사용합니다.
 
 ```bash
-pnpm init-project mars --keep-git
+node tooling/scripts/src/init-project.ts mars --keep-git
 ```
 
 ---
@@ -139,7 +145,7 @@ pnpm setup:scope mars
 pnpm setup:scope mars --dry-run
 ```
 
-기존 스코프가 `@repo`가 아닌 경우 `--from`을 사용합니다.
+현재 스코프는 `tooling/scripts/package.json`에서 자동 감지합니다. 감지값을 직접 지정해야 하는 경우에만 `--from`을 사용합니다.
 
 ```bash
 pnpm setup:scope eten --from mars
@@ -198,8 +204,8 @@ tooling/*/.turbo
 ```json
 {
   "scripts": {
-    "init-project": "pnpm --filter @repo/scripts init-project",
-    "setup:scope": "pnpm --filter @repo/scripts setup:scope",
+    "init-project": "node tooling/scripts/src/init-project.ts",
+    "setup:scope": "node tooling/scripts/src/setup-scope.ts",
     "db:seed": "pnpm --filter @repo/scripts run seed",
     "scripts:clean": "pnpm --filter @repo/scripts run clean"
   }
@@ -213,7 +219,7 @@ tooling/*/.turbo
 ## `init-project`
 
 ```bash
-pnpm --filter @repo/scripts init-project
+node tooling/scripts/src/init-project.ts <project-name>
 ```
 
 보일러플레이트를 새 프로젝트명과 패키지 스코프로 초기화합니다.
@@ -250,6 +256,16 @@ pnpm --filter @repo/scripts run seed
 
 ---
 
+## `test`
+
+```bash
+pnpm --filter @repo/scripts test
+```
+
+Node.js 기본 Test Runner로 프로젝트 치환, 기존 Local Environment 보호, Dry Run을 임시 파일시스템에서 검증합니다. 루트 `pnpm test`에도 포함됩니다.
+
+---
+
 ## `clean`
 
 ```bash
@@ -269,7 +285,7 @@ pnpm --filter @repo/scripts run clean
 ```txt
 프로젝트명 변경
 패키지 스코프 변경
-.env.example 확인
+Environment Example 변경 / 누락된 Local Environment 파일 생성
 캐시/빌드 산출물 정리
 .git 제거 여부 선택
 다음 작업 안내
@@ -278,7 +294,7 @@ pnpm --filter @repo/scripts run clean
 예:
 
 ```bash
-pnpm init-project mars
+node tooling/scripts/src/init-project.ts mars
 ```
 
 ---
@@ -371,9 +387,9 @@ codegen
 예:
 
 ```bash
-pnpm init-project mars --dry-run
-pnpm init-project mars --remove-git
-pnpm init-project mars --keep-git
+node tooling/scripts/src/init-project.ts mars --dry-run
+node tooling/scripts/src/init-project.ts mars --remove-git
+node tooling/scripts/src/init-project.ts mars --keep-git
 ```
 
 ---
@@ -465,19 +481,19 @@ check-workspace.ts
 처음에는 반드시 다음 명령으로 변경 대상을 확인하는 것을 권장합니다.
 
 ```bash
-pnpm init-project mars --dry-run
+node tooling/scripts/src/init-project.ts mars --dry-run
 ```
 
 문제가 없으면 실제 적용합니다.
 
 ```bash
-pnpm init-project mars
+node tooling/scripts/src/init-project.ts mars
 ```
 
-적용 후에는 의존성과 lockfile을 갱신합니다.
+적용 후에는 의존성과 Lockfile을 갱신하고 Source Format을 정리합니다. Scope 치환으로 Import 경로 길이가 바뀌면 기존 줄바꿈이 Prettier 규칙과 달라질 수 있으므로 검증 전에 `pnpm format`을 실행합니다.
 
 ```bash
-pnpm install
+pnpm install --no-frozen-lockfile
 pnpm format
 pnpm check
 ```
@@ -486,13 +502,13 @@ pnpm check
 
 ## `setup:scope`
 
-`setup:scope`는 기본적으로 `@repo`를 다른 스코프로 변경합니다.
+`setup:scope`는 현재 감지한 Package Scope를 지정한 스코프로 변경합니다.
 
 ```bash
 pnpm setup:scope mars
 ```
 
-이미 한 번 스코프를 바꾼 프로젝트에서 다시 바꿀 때는 `--from`을 사용합니다.
+기존 Scope는 자동 감지합니다. 감지값을 직접 지정해야 할 때만 `--from`을 사용합니다.
 
 ```bash
 pnpm setup:scope eten --from mars
@@ -524,10 +540,9 @@ turbo cache 제거
 보일러플레이트를 새 프로젝트로 사용할 때는 다음 순서를 권장합니다.
 
 ```bash
-pnpm install
-pnpm init-project mars --dry-run
-pnpm init-project mars
-pnpm install
+node tooling/scripts/src/init-project.ts mars --dry-run
+node tooling/scripts/src/init-project.ts mars --remove-git
+pnpm install --no-frozen-lockfile
 pnpm format
 pnpm check
 ```

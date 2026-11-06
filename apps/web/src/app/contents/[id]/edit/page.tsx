@@ -2,10 +2,10 @@ import { notFound } from "next/navigation";
 
 import type { Metadata } from "next";
 
-import { requireUser } from "@repo/auth/server";
 import { ContentIdParam } from "@repo/domain/content/client";
 import { canUpdateContent, getContentByIdService } from "@repo/domain/content/server";
 
+import { requirePageUser } from "@/shared/auth";
 import { UpdateContentView } from "@/views/update-content-view";
 
 export const runtime = "nodejs";
@@ -26,7 +26,7 @@ function shouldRenderNotFound(code: string) {
 }
 
 export default async function UpdateContentPage({ params }: UpdateContentPageProps) {
-  const session = await requireUser();
+  const session = await requirePageUser();
 
   const { id } = await params;
 

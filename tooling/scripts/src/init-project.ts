@@ -61,13 +61,16 @@ interface InitProjectResult {
 function printHelp() {
   console.info(`
 Usage:
-  pnpm init-project <project-name> [options]
+  node tooling/scripts/src/init-project.ts <project-name> [options]
 
 Examples:
-  pnpm init-project mars
-  pnpm init-project athena-doctrine --scope athena
-  pnpm init-project athena-doctrine --scope athena --dry-run
-  pnpm init-project athena-doctrine --scope athena --remove-git
+  node tooling/scripts/src/init-project.ts mars
+  node tooling/scripts/src/init-project.ts athena-doctrine --scope athena
+  node tooling/scripts/src/init-project.ts athena-doctrine --scope athena --dry-run
+  node tooling/scripts/src/init-project.ts athena-doctrine --scope athena --remove-git
+
+Run directly with Node.js before the first install. After installation,
+pnpm init-project <project-name> [options] is also available.
 
 Options:
   --scope <scope-name>
@@ -576,7 +579,8 @@ function printResult(params: {
     [
       "",
       "Next steps:",
-      "  pnpm install",
+      "  pnpm install --no-frozen-lockfile",
+      "  pnpm format",
       "  configure .env.local",
       "  pnpm db:generate",
       "  pnpm db:push",

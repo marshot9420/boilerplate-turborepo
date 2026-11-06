@@ -34,6 +34,12 @@ const targetExtensions = new Set([
 
 const targetFilenames = new Set([".npmrc", ".nvmrc", "Dockerfile"]);
 
+const environmentExampleFilenames = new Set([
+  ".env.example",
+  ".env.test.example",
+  ".env.e2e.example",
+]);
+
 export interface ReplaceProjectTextResult {
   checkedFileCount: number;
   changedFileCount: number;
@@ -122,7 +128,7 @@ function shouldProcessFile(filePath: string): boolean {
   }
 
   if (isEnvFile(fileName)) {
-    return true;
+    return environmentExampleFilenames.has(fileName);
   }
 
   if (targetFilenames.has(fileName)) {

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
-import { requireUser } from "@repo/auth/server";
-
+import { requirePageUser } from "@/shared/auth";
 import { CreateContentView } from "@/views/create-content-view";
 
 export const runtime = "nodejs";
@@ -12,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CreateContentPage() {
-  await requireUser();
+  await requirePageUser();
 
   return <CreateContentView />;
 }

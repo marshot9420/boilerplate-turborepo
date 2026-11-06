@@ -71,51 +71,36 @@ cd my-project
 
 ### 2. 프로젝트 초기화
 
-Dependency 설치 전에 실행합니다.
+요구 버전의 Node.js와 pnpm을 준비한 뒤 확인합니다.
 
 ```bash
-pnpm init-project my-project --remove-git
+node --version
+pnpm --version
 ```
 
-Package Scope를 프로젝트 이름과 다르게 사용한다면:
+Dependency 설치 전에는 Node로 직접 실행합니다. 프로젝트명과 Package Scope를 다르게 사용하려면 `--scope my-scope`를 추가합니다.
 
 ```bash
-pnpm init-project my-project \
-  --scope my-scope \
-  --remove-git
+node tooling/scripts/src/init-project.ts my-project --dry-run
+node tooling/scripts/src/init-project.ts my-project --remove-git
 ```
 
-실제 변경 전에 확인하려면:
-
-```bash
-pnpm init-project my-project \
-  --scope my-scope \
-  --dry-run
-```
-
-초기화 과정에서 Example Env가 존재하면 Local Env 파일도 생성됩니다.
-
-```txt
-.env.example
-  → .env.local
-
-.env.test.example
-  → .env.test.local
-
-.env.e2e.example
-  → .env.e2e.local
-```
+초기화 과정에서 세 Example Environment를 기반으로 `.env.local`, `.env.test.local`, `.env.e2e.local`을 생성합니다. 이미 존재하는 Local Environment 파일은 보존합니다.
 
 ### 3. Dependency 설치
 
+Scope 변경으로 Manifest와 Lockfile이 달라지므로 첫 설치에서 Lockfile을 갱신하고, Import 경로 길이 변경에 맞춰 Source Format을 정리합니다.
+
 ```bash
-corepack enable
-pnpm install
+pnpm install --no-frozen-lockfile
+pnpm format
 ```
+
+갱신된 Lockfile을 포함한 이후 설치는 `pnpm install --frozen-lockfile`을 사용합니다.
 
 ### 4. 환경변수 설정
 
-생성된 `.env.local`에 개발 환경에서 필요한 값을 설정합니다.
+생성된 `.env.local`에 개발 DB와 OAuth 값을 설정합니다. PostgreSQL 준비, 실제 로그인·관리자 계정 준비, Test / E2E 환경 분리는 [프로젝트 초기화 안내](./docs/15_프로젝트_초기화.md)를 따릅니다.
 
 환경변수 기준은 [`docs/06_환경변수.md`](./docs/06_환경변수.md)를 참고합니다.
 
@@ -147,7 +132,9 @@ Clone
   ↓
 init-project
   ↓
-pnpm install
+pnpm install --no-frozen-lockfile
+  ↓
+pnpm format
   ↓
 Environment
   ↓
@@ -303,7 +290,7 @@ pnpm generate view order-detail-view \
 | Seed                  | `pnpm db:seed`             |
 | Prisma Studio         | `pnpm db:studio`           |
 | 코드 생성             | `pnpm generate`            |
-| 프로젝트 초기화       | `pnpm init-project <name>` |
+| 프로젝트 초기화       | `node tooling/scripts/src/init-project.ts <name>` |
 | Package Scope 변경    | `pnpm setup:scope <scope>` |
 
 전체 명령과 사용 기준은 [`docs/16_개발_워크플로우.md`](./docs/16_개발_워크플로우.md)를 참고합니다.
