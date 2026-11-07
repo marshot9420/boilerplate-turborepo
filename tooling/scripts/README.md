@@ -254,6 +254,8 @@ pnpm --filter @repo/scripts run seed
 
 개발용 초기 데이터를 생성합니다.
 
+Seed의 환경별 로딩 순서와 대상 DB 검사는 [환경변수 로딩 규칙](../../docs/06_환경변수.md#96-실행-환경별-로딩-우선순위)과 [데이터베이스 가이드](../../docs/07_데이터베이스.md)를 따릅니다.
+
 ---
 
 ## `test`
@@ -262,7 +264,7 @@ pnpm --filter @repo/scripts run seed
 pnpm --filter @repo/scripts test
 ```
 
-Node.js 기본 Test Runner로 프로젝트 치환, 기존 Local Environment 보호, Dry Run을 임시 파일시스템에서 검증합니다. 루트 `pnpm test`에도 포함됩니다.
+Node.js 기본 Test Runner로 프로젝트 초기화와 Seed·Playwright 환경 로딩을 검증합니다. 임시 환경 파일과 가짜 DB 모듈을 사용하며 루트 `pnpm test`에도 포함됩니다.
 
 ---
 
