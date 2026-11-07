@@ -14,7 +14,7 @@ const OAuthAuthorizeEndpointMap = {
 const OAuthDefaultScopeMap = {
   google: ["openid", "email", "profile"],
   naver: [],
-  kakao: ["profile", "account_email"],
+  kakao: ["profile_nickname", "profile_image", "account_email"],
 } as const satisfies Record<OAuthProviderId, readonly string[]>;
 
 const OAuthScopeSeparatorMap = {

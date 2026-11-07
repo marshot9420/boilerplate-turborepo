@@ -157,14 +157,13 @@ KAKAO_CLIENT_SECRET=
 
 ## OAuth callback URL
 
-각 OAuth provider 콘솔에는 앱별 callback URL을 등록해야 합니다.
+각 OAuth provider 콘솔에 앱별 callback URL을 등록합니다. 아래 Web·Admin 목록은 Google과 Naver의 로컬 예시입니다.
 
 ### Web
 
 ```txt
 http://localhost:3000/api/auth/google/callback
 http://localhost:3000/api/auth/naver/callback
-http://localhost:3000/api/auth/kakao/callback
 ```
 
 ### Admin
@@ -172,10 +171,26 @@ http://localhost:3000/api/auth/kakao/callback
 ```txt
 http://localhost:3001/api/auth/google/callback
 http://localhost:3001/api/auth/naver/callback
-http://localhost:3001/api/auth/kakao/callback
 ```
 
-실제 운영 환경에서는 각 앱의 production origin에 맞춰 등록합니다.
+배포 환경에서는 각 앱의 실제 origin에 맞춰 등록합니다.
+
+### Kakao 로그인 설정
+
+1. 카카오디벨로퍼스 앱에서 **카카오 로그인 → 사용 설정**을 켭니다. 서버의 `KAKAO_CLIENT_ID`에 REST API 키를, `KAKAO_CLIENT_SECRET`에 같은 키의 클라이언트 시크릿을 설정합니다. [카카오 로그인 설정 안내](https://developers.kakao.com/docs/ko/kakaologin/prerequisite)
+2. **카카오 로그인 → 동의항목 → 개인정보**에서 닉네임(`profile_nickname`), 프로필 사진(`profile_image`), 카카오계정 이메일(`account_email`)을 설정합니다. 공용 인가 URL은 세 항목을 기본으로 요청합니다. 닉네임과 사진은 선택 동의로 설정할 수 있습니다. 로그인에 필요한 이메일은 필수 동의로 설정합니다. [카카오 개인정보 동의항목](https://developers.kakao.com/docs/ko/kakaologin/utilize)
+
+   이메일 동의항목은 비즈 앱과 테스트 앱에서 설정할 수 있습니다. 사업자등록번호가 없는 경우 개인 개발자 비즈 앱 전환 요건을 확인합니다. 테스트 앱은 앱 멤버로 검증할 때 사용하며, 실제 서비스에서는 원본 앱의 키를 사용합니다. [카카오 비즈 앱 및 테스트 앱 설정](https://developers.kakao.com/docs/ko/app-setting/app)
+
+3. **앱 → 플랫폼 키**에서 사용하는 **REST API 키**를 선택하고, **카카오 로그인 리다이렉트 URI**에 아래 주소 중 사용하는 환경의 Web·Admin 주소를 각각 등록합니다. 배포 예시의 도메인은 실제 주소로 바꾸고, Preview의 실제 로그인 검증에는 고정 HTTPS 주소를 사용합니다. 등록한 URI의 프로토콜, 호스트, 포트, 경로와 끝 슬래시는 요청의 `redirect_uri`와 일치해야 합니다. [카카오 리다이렉트 URI 등록 안내](https://developers.kakao.com/docs/ko/app-setting/app)
+
+| 환경            | Web (`WEB_APP_URL` 기준)                                  | Admin (`ADMIN_APP_URL` 기준)                                |
+| --------------- | --------------------------------------------------------- | ----------------------------------------------------------- |
+| Local           | `http://localhost:3000/api/auth/kakao/callback`           | `http://localhost:3001/api/auth/kakao/callback`             |
+| Preview 예시    | `https://web-preview.example.com/api/auth/kakao/callback` | `https://admin-preview.example.com/api/auth/kakao/callback` |
+| Production 예시 | `https://web.example.com/api/auth/kakao/callback`         | `https://admin.example.com/api/auth/kakao/callback`         |
+
+로그인에는 유효하고 인증된 이메일이 필요합니다. 응답에서 닉네임이나 프로필 사진이 빠지면 해당 프로필 필드는 `null`입니다. [OAuth 이메일 검증 정책](../../docs/17_보안_및_운영_기본정책.md#51-oauth-identity와-이메일-충돌)
 
 ---
 

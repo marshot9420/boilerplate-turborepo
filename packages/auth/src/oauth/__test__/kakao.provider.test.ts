@@ -45,6 +45,27 @@ describe("getKakaoOAuthProfile", () => {
     });
   });
 
+  it("동의하지 않은 선택 프로필 정보는 null로 반환한다", async () => {
+    fetchMock.mockResolvedValue(
+      Response.json({
+        id: 12345,
+        kakao_account: {
+          email: "user@example.com",
+          is_email_valid: true,
+          is_email_verified: true,
+        },
+      }),
+    );
+
+    await expect(getKakaoOAuthProfile("test-access-token")).resolves.toEqual({
+      provider: "KAKAO",
+      providerUserId: "12345",
+      email: "user@example.com",
+      name: null,
+      avatarUrl: null,
+    });
+  });
+
   it.each([
     { flag: "is_email_valid", value: false },
     { flag: "is_email_valid", value: undefined },
