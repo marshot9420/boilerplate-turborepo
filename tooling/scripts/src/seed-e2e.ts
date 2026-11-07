@@ -1,39 +1,10 @@
-import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { parse } from "dotenv";
+import { loadSeedEnv } from "./seed-env.ts";
 
 const currentDir = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(currentDir, "../../..");
-
-const originalEnvKeys = new Set(Object.keys(process.env));
-
-function applyEnvFile(filePath: string, options?: { overrideLoaded?: boolean }) {
-  if (!existsSync(filePath)) {
-    return;
-  }
-
-  const parsedEnv = parse(readFileSync(filePath));
-
-  for (const [key, value] of Object.entries(parsedEnv)) {
-    const isOriginalEnv = originalEnvKeys.has(key);
-
-    if (isOriginalEnv) {
-      continue;
-    }
-
-    if (process.env[key] === undefined || options?.overrideLoaded === true) {
-      process.env[key] = value;
-    }
-  }
-}
-
-function loadEnv() {
-  applyEnvFile(resolve(rootDir, ".env"));
-  applyEnvFile(resolve(rootDir, ".env.local"), { overrideLoaded: true });
-  applyEnvFile(resolve(rootDir, ".env.e2e.local"), { overrideLoaded: true });
-}
 
 function withoutSeedKey<TData extends { key: string }>(data: TData): Omit<TData, "key"> {
   const { key: _key, ...rest } = data;
@@ -49,7 +20,7 @@ function withoutSeedKeyAndId<TData extends { id: string; key: string }>(
   return rest;
 }
 
-loadEnv();
+loadSeedEnv("e2e", rootDir);
 
 const { disconnectScriptPrisma, scriptPrisma } = await import("@repo/database/script-client");
 

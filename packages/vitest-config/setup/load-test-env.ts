@@ -3,6 +3,10 @@ import path from "node:path";
 
 import dotenv from "dotenv";
 
+if (process.env.VERCEL_ENV === "preview" || process.env.VERCEL_ENV === "production") {
+  throw new Error("Tests cannot run in a Vercel deployment environment.");
+}
+
 process.env.NODE_ENV = "test";
 
 function resolveWorkspaceRoot(startDir: string): string {
@@ -45,8 +49,8 @@ for (const { fileName, override } of envFiles) {
     continue;
   }
 
-  dotenv.config({
-    path: envPath,
-    override,
-  });
+  for (const [key, value] of Object.entries(dotenv.parse(fs.readFileSync(envPath)))) {
+    if (["NODE_ENV", "E2E", "VERCEL_ENV"].includes(key)) continue;
+    if (override || process.env[key] === undefined) process.env[key] = value;
+  }
 }

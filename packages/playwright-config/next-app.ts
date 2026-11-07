@@ -46,7 +46,7 @@ export function defineNextAppE2EConfig({
       command,
       url: baseURL,
 
-      reuseExistingServer: !isCI,
+      reuseExistingServer: false,
 
       timeout: 120_000,
 
