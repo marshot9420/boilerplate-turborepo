@@ -182,6 +182,8 @@ http://localhost:3001/api/auth/naver/callback
 
    이메일 동의항목은 비즈 앱과 테스트 앱에서 설정할 수 있습니다. 사업자등록번호가 없는 경우 개인 개발자 비즈 앱 전환 요건을 확인합니다. 테스트 앱은 앱 멤버로 검증할 때 사용하며, 실제 서비스에서는 원본 앱의 키를 사용합니다. [카카오 비즈 앱 및 테스트 앱 설정](https://developers.kakao.com/docs/ko/app-setting/app)
 
+   Web·Admin은 인가 요청마다 고정된 `scope`를 보냅니다. 최초 로그인에서 선택 동의인 닉네임이나 사진을 건너뛴 사용자가 재로그인하면, 카카오는 미동의 항목을 추가 동의 화면에서 필수로 표시할 수 있습니다. [카카오 데브톡 추가 동의 안내](https://devtalk.kakao.com/t/plusfriends/149354)
+
 3. **앱 → 플랫폼 키**에서 사용하는 **REST API 키**를 선택하고, **카카오 로그인 리다이렉트 URI**에 아래 주소 중 사용하는 환경의 Web·Admin 주소를 각각 등록합니다. 배포 예시의 도메인은 실제 주소로 바꾸고, Preview의 실제 로그인 검증에는 고정 HTTPS 주소를 사용합니다. 등록한 URI의 프로토콜, 호스트, 포트, 경로와 끝 슬래시는 요청의 `redirect_uri`와 일치해야 합니다. [카카오 리다이렉트 URI 등록 안내](https://developers.kakao.com/docs/ko/app-setting/app)
 
 | 환경            | Web (`WEB_APP_URL` 기준)                                  | Admin (`ADMIN_APP_URL` 기준)                                |
@@ -190,7 +192,15 @@ http://localhost:3001/api/auth/naver/callback
 | Preview 예시    | `https://web-preview.example.com/api/auth/kakao/callback` | `https://admin-preview.example.com/api/auth/kakao/callback` |
 | Production 예시 | `https://web.example.com/api/auth/kakao/callback`         | `https://admin.example.com/api/auth/kakao/callback`         |
 
-로그인에는 유효하고 인증된 이메일이 필요합니다. 응답에서 닉네임이나 프로필 사진이 빠지면 해당 프로필 필드는 `null`입니다. [OAuth 이메일 검증 정책](../../docs/17_보안_및_운영_기본정책.md#51-oauth-identity와-이메일-충돌)
+로그인에는 유효하고 인증된 이메일이 필요합니다. 프로필 응답을 처리할 때는 카카오 동의 화면의 표시 방식과 별개로, 응답에서 빠진 닉네임과 사진을 각각 `null`로 매핑합니다. [OAuth 이메일 검증 정책](../../docs/17_보안_및_운영_기본정책.md#51-oauth-identity와-이메일-충돌)
+
+### 기존 Kakao 앱의 `profile` 동의항목 전환
+
+1. 운영 앱의 App ID, REST API 키와 클라이언트 시크릿, Web·Admin의 등록된 콜백 주소를 유지합니다. 운영 전환 전에 분리된 동의항목을 사용하는 Staging에서 두 앱의 로그인과 재로그인을 검증합니다. 최초 로그인에서 닉네임과 사진 동의를 건너뛴 뒤 재동의 화면도 확인합니다.
+2. 카카오 데브톡 신청 양식에 기존 App ID, 변경할 두 항목(닉네임과 프로필 사진), 서비스 업데이트 완료 여부를 적어 전환을 신청합니다. 분리 적용 후 카카오 콘솔에서 `profile_nickname`과 `profile_image`를 모두 활성화하고, `account_email`의 필수 동의 설정을 확인합니다. [카카오 프로필 동의항목 변경 신청](https://devtalk.kakao.com/t/request-to-change-scope-for-profile/116264)
+3. 카카오 설정 전환과 Web·Admin 배포 시점을 맞춥니다. 전환 전에 새 Scope를 요청하거나 전환 후 기존 `profile`을 요청하면 카카오에 설정되지 않은 항목이므로 `KOE205`가 발생할 수 있습니다. 전환 직후 두 앱의 신규 로그인과 기존 계정 재로그인을 확인하고, 기존 사용자가 같은 계정으로 연결되는지 검증합니다. [카카오 로그인 오류 코드](https://developers.kakao.com/docs/ko/kakaologin/trouble-shooting)
+
+카카오에서 분리를 적용하면 기존 `profile` 설정으로 되돌릴 수 없습니다. 운영 복구에는 분리된 두 Scope를 요청하는 버전을 사용합니다. [카카오 프로필 동의항목 전환 주의사항](https://devtalk.kakao.com/t/request-to-change-scope-for-profile/116264)
 
 ---
 

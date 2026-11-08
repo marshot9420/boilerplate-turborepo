@@ -45,15 +45,30 @@ describe("getKakaoOAuthProfile", () => {
     });
   });
 
-  it("동의하지 않은 선택 프로필 정보는 null로 반환한다", async () => {
+  it.each([
+    {
+      scenario: "프로필 정보가 모두 없으면 두 필드를 null로 반환한다",
+      profile: undefined,
+      name: null,
+      avatarUrl: null,
+    },
+    {
+      scenario: "사진만 있으면 닉네임은 null로 반환하고 사진은 유지한다",
+      profile: { profile_image_url: KAKAO_ACCOUNT.profile.profile_image_url },
+      name: null,
+      avatarUrl: KAKAO_ACCOUNT.profile.profile_image_url,
+    },
+    {
+      scenario: "닉네임만 있으면 사진은 null로 반환하고 닉네임은 유지한다",
+      profile: { nickname: KAKAO_ACCOUNT.profile.nickname },
+      name: KAKAO_ACCOUNT.profile.nickname,
+      avatarUrl: null,
+    },
+  ])("$scenario", async ({ profile, name, avatarUrl }) => {
     fetchMock.mockResolvedValue(
       Response.json({
         id: 12345,
-        kakao_account: {
-          email: "user@example.com",
-          is_email_valid: true,
-          is_email_verified: true,
-        },
+        kakao_account: { ...KAKAO_ACCOUNT, profile },
       }),
     );
 
@@ -61,8 +76,8 @@ describe("getKakaoOAuthProfile", () => {
       provider: "KAKAO",
       providerUserId: "12345",
       email: "user@example.com",
-      name: null,
-      avatarUrl: null,
+      name,
+      avatarUrl,
     });
   });
 
