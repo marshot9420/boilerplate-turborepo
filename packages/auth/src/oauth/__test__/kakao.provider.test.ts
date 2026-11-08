@@ -46,6 +46,42 @@ describe("getKakaoOAuthProfile", () => {
   });
 
   it.each([
+    {
+      scenario: "프로필 정보가 모두 없으면 두 필드를 null로 반환한다",
+      profile: undefined,
+      name: null,
+      avatarUrl: null,
+    },
+    {
+      scenario: "사진만 있으면 닉네임은 null로 반환하고 사진은 유지한다",
+      profile: { profile_image_url: KAKAO_ACCOUNT.profile.profile_image_url },
+      name: null,
+      avatarUrl: KAKAO_ACCOUNT.profile.profile_image_url,
+    },
+    {
+      scenario: "닉네임만 있으면 사진은 null로 반환하고 닉네임은 유지한다",
+      profile: { nickname: KAKAO_ACCOUNT.profile.nickname },
+      name: KAKAO_ACCOUNT.profile.nickname,
+      avatarUrl: null,
+    },
+  ])("$scenario", async ({ profile, name, avatarUrl }) => {
+    fetchMock.mockResolvedValue(
+      Response.json({
+        id: 12345,
+        kakao_account: { ...KAKAO_ACCOUNT, profile },
+      }),
+    );
+
+    await expect(getKakaoOAuthProfile("test-access-token")).resolves.toEqual({
+      provider: "KAKAO",
+      providerUserId: "12345",
+      email: "user@example.com",
+      name,
+      avatarUrl,
+    });
+  });
+
+  it.each([
     { flag: "is_email_valid", value: false },
     { flag: "is_email_valid", value: undefined },
     { flag: "is_email_valid", value: null },
