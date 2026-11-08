@@ -1,0 +1,6 @@
+# Add an independent reviewer with write access before enabling required Code Owner reviews.
+/.github/ @marshot9420
+/package.json @marshot9420
+/pnpm-workspace.yaml @marshot9420
+/tooling/scripts/src/audit-*.ts @marshot9420
+/tooling/scripts/config/audit-exceptions.json @marshot9420

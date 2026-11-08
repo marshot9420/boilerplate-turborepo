@@ -103,6 +103,9 @@ jobs:
       - name: Unit and component tests
         run: pnpm test
 
+      - name: Audit input regression tests
+        run: ruby .github/scripts/stage-audit-input.test.rb
+
   build:
     name: Build
     runs-on: ubuntu-latest
