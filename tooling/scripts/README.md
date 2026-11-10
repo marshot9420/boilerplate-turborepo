@@ -264,7 +264,13 @@ Seed의 환경별 로딩 순서와 대상 DB 검사는 [환경변수 로딩 규�
 pnpm --filter @repo/scripts test
 ```
 
-Node.js 기본 Test Runner로 프로젝트 초기화와 Seed·Playwright 환경 로딩을 검증합니다. 임시 환경 파일과 가짜 DB 모듈을 사용하며 루트 `pnpm test`에도 포함됩니다.
+Node.js 기본 Test Runner로 프로젝트 초기화, Seed·Playwright 환경 로딩과 의존성 보안 판정을 검증합니다. 임시 환경 파일, 가짜 DB 모듈과 고정 Audit 입력을 사용하며 루트 `pnpm test`에도 포함됩니다.
+
+---
+
+## 의존성 보안 판정
+
+저장소 루트에서 `pnpm security:audit`를 실행합니다. 판정 기준과 예외, CI 활성화 절차는 [보안 및 운영 기본 정책](../../docs/17_보안_및_운영_기본정책.md#221-의존성-보안-판정)을 따릅니다.
 
 ---
 

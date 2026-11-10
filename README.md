@@ -13,7 +13,7 @@ Turborepo 기반의 Next.js 풀스택 모노레포 보일러플레이트입니�
 
 <p>
   <img src="https://img.shields.io/badge/Turborepo-2.10.0-EF4444?logo=turborepo&logoColor=white" alt="Turborepo" />
-  <img src="https://img.shields.io/badge/pnpm-11.9.0-F69220?logo=pnpm&logoColor=white" alt="pnpm" />
+  <img src="https://img.shields.io/badge/pnpm-11.28.11-F69220?logo=pnpm&logoColor=white" alt="pnpm" />
   <img src="https://img.shields.io/badge/Prisma-7-2D3748?logo=prisma&logoColor=white" alt="Prisma" />
   <img src="https://img.shields.io/badge/Zod-v4-3E67B1?logo=zod&logoColor=white" alt="Zod" />
 </p>
@@ -53,7 +53,7 @@ Claude Code 설정
 
 ```txt
 Node.js >= 24.16.0 < 25
-pnpm >= 11.6.0 < 12
+pnpm >= 11.11.0 < 12
 ```
 
 권장 버전은 `.nvmrc`와 루트 `package.json`을 기준으로 합니다.

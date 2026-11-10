@@ -1,0 +1,84 @@
+name: Dependency Security
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, reopened, synchronize, ready_for_review, edited]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+cache-mode: none
+
+concurrency:
+  group: dependency-audit-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Dependency Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout the trusted main revision
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24.16.0
+          package-manager-cache: false
+
+      - name: Setup the trusted pnpm version
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
+        with:
+          run_install: false
+
+      - name: Fetch immutable candidate data
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          [[ "$CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          if [[ "$GITHUB_EVENT_NAME" == pull_request_target ]]; then
+            [[ "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]
+            git -c credential.helper= -c credential.helper='!gh auth git-credential' \
+              fetch --no-tags --depth=1 origin "refs/pull/$PR_NUMBER/head"
+            test "$(git rev-parse FETCH_HEAD)" = "$CANDIDATE_SHA"
+          else
+            test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          fi
+
+      - name: Validate and stage dependency data
+        env:
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: ruby .github/scripts/stage-audit-input.rb "$CANDIDATE_SHA" "$RUNNER_TEMP/audit-input"
+
+      - name: Audit dependencies with the trusted policy
+        env:
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          audit_status=0
+          node tooling/scripts/src/audit-dependencies.ts \
+            --lockfile "$RUNNER_TEMP/audit-input/pnpm-lock.yaml" \
+            --commit "$CANDIDATE_SHA" > "$RUNNER_TEMP/dependency-audit.tmp" || audit_status=$?
+          if test -s "$RUNNER_TEMP/dependency-audit.tmp"; then
+            mv "$RUNNER_TEMP/dependency-audit.tmp" "$RUNNER_TEMP/dependency-audit.json"
+          fi
+          exit "$audit_status"
+
+      - name: Upload Audit evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: dependency-audit-${{ github.event.pull_request.head.sha || github.sha }}
+          path: ${{ runner.temp }}/dependency-audit.json
+          if-no-files-found: ignore
